@@ -27,6 +27,7 @@ function App() {/////
         <Route path="/students" element={<Students/>}></Route>
         <Route path="/student/new" element={<NewStudent/>}></Route>
         <Route path="/teacher/new" element={<NewTeacher/>}></Route>
+        <Route path="/student/:studentId" element={<NewTeacher/>}></Route>
       </Routes>
     );
   }

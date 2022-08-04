@@ -32,6 +32,10 @@ const NewStudent = () => {
         email:{
             value: '',
             isValid: false
+        },
+        admissionDate: {
+            value: '',
+            isValid: true
         }
 
     }, false);
@@ -92,7 +96,17 @@ const NewStudent = () => {
                 errorText="Please enter a valid address"
                 onInput = {InputHandler}
             />
-            
+            <Input
+                id = "admissionDate"
+                label = "Date of admission"
+                element = "input"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please enter a valid date"
+                onInput = {InputHandler}
+                initialValue={new Date().toDateString()}
+                initialValid={formState.inputs.admissionDate.isValid}
+                readOnly = {true} 
+            />
             <Button type='submit' disabled={!formState.isValid}>ADD STUDENT</Button>
         </form>
     );
