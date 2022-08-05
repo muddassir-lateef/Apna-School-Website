@@ -5,7 +5,7 @@ import { useForm } from '../../shared/hooks/form-hook';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import { VALIDATOR_REQUIRE, VALIDATOR_EMAIL, VALIDATOR_GENDER } from '../../shared/util/validators';
-import './NewStudent'
+import './NewStudent.css'
 import Card from '../../shared/components/UIElements/Card';
 
 const STUDENTS = [
@@ -232,8 +232,9 @@ const UpdateStudent = () => {
             initialValue={formState.inputs.admissionDate.value}
             initialValid={formState.inputs.admissionDate.isValid}
           />
-
+        <div className='submit-btn'>
         <Button type='submit' disabled={!formState.isValid}>Update Student</Button>
+        </div>
 
       </form>
     );

@@ -48,10 +48,10 @@ function App() {/////
       value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
     >
       <Router>
-        <MainNavigation />
-        <main>
-          {routes}
-        </main>
+        <div className="app-global-styles">
+          <MainNavigation />
+          <main>{routes}</main>
+        </div>
       </Router>
     </AuthContext.Provider>
   );

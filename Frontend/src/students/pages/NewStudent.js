@@ -107,7 +107,9 @@ const NewStudent = () => {
                 initialValid={formState.inputs.admissionDate.isValid}
                 readOnly = {true} 
             />
-            <Button type='submit' disabled={!formState.isValid}>ADD STUDENT</Button>
+            <div className="submit-btn">
+            <Button className='add-student-btn' type='submit' disabled={!formState.isValid}>ADD STUDENT</Button>
+            </div>
         </form>
     );
 };
