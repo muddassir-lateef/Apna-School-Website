@@ -8,8 +8,10 @@ import Auth from './staff/pages/Auth';
 import Students from './students/pages/Students';
 import NewStudent from './students/pages/NewStudent';
 import NewTeacher from './teachers/pages/NewTeacher';
+import StudentInfo from './students/pages/StudentInfo';
+import UpdateStudent from './students/pages/UpdateStudent';
 
-function App() {
+function App() {/////
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const login = useCallback(()=>{
     setIsLoggedIn(true);
@@ -27,6 +29,9 @@ function App() {
         <Route path="/students" element={<Students/>}></Route>
         <Route path="/student/new" element={<NewStudent/>}></Route>
         <Route path="/teacher/new" element={<NewTeacher/>}></Route>
+        <Route path="/student/:studentId" element={<StudentInfo/>}></Route>
+        <Route path="/updateStudent/:studentId" element={<UpdateStudent/>}></Route>
+
       </Routes>
     );
   }
@@ -43,10 +48,10 @@ function App() {
       value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
     >
       <Router>
-        <MainNavigation />
-        <main>
-          {routes}
-        </main>
+        <div className="app-global-styles">
+          <MainNavigation />
+          <main>{routes}</main>
+        </div>
       </Router>
     </AuthContext.Provider>
   );

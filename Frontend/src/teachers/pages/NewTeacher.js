@@ -68,8 +68,9 @@ const NewTeacher = () => {
                 errorText="Please enter a valid email address"
                 onInput = {InputHandler}
             />
-            
+            <div className="submit-btn">
             <Button type='submit' disabled={!formState.isValid}>ADD TEACHER</Button>
+            </div>
         </form>
     );
 };

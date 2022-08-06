@@ -6,8 +6,11 @@ import MainHeader from './MainHeader';
 import NavLinks from './NavLinks';
 import SideDrawer from './SideDrawer';
 import Backdrop from '../UIElements/Backdrop';
+import SideBarNavLinks from './SideBarNavLinks';
 
 const MainNavigation = (props) =>{
+
+
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
     const openDrawerHandler =() =>{
         setDrawerIsOpen(true);
@@ -18,10 +21,10 @@ const MainNavigation = (props) =>{
     }
 
     return(
-        <React.Fragment>
+        <div className='main-navigation'>
             {drawerIsOpen? <Backdrop onClick={closeDrawerHandler}/>: null};
             <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
-              <nav className='main-navigation__drawer-nav'><NavLinks/></nav>
+              <nav className='main-navigation__drawer-nav'><SideBarNavLinks/></nav>
             </SideDrawer>
             <MainHeader className='main_vertical_nav'>
                 <button className='main-navigation__menu-btn' onClick={openDrawerHandler}>
@@ -32,11 +35,16 @@ const MainNavigation = (props) =>{
                 <h1 className='main-navigation__title'>
                     <Link to='/'>Apna School</Link>
                 </h1>
+                
                 <nav className='main-navigation__header-nav'>
                     <NavLinks/>
                 </nav>
             </MainHeader>
-        </React.Fragment>
+            
+            <nav className="sidenav">
+                <SideBarNavLinks/>
+            </nav>
+        </div>
     );
 };
 
