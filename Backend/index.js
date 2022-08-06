@@ -24,5 +24,5 @@ app.post("/addAdmin", async (req,res) => {
     res.json(object);
 })
 app.listen(3001, () => {
-    console.log("Zuberi is beauitful very")
+    console.log("Zuberi is beauitful very much")
 })
