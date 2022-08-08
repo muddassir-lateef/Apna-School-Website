@@ -36,12 +36,12 @@ const Class = mongoose.model('Class', new mongoose.Schema({
         type:Number,
         reqiured:true, 
         },
-    students_list: [
+    students_list: 
         {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Students'
         }
-    ]
+    
 }));
 
 module.exports = {Students, Class}
