@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose')
-<<<<<<< HEAD
+
 const AdminModel = require('./models/Admin');
 const usersRoutes = require('./routes/users-routes');
 const HttpError = require("./models/http-error");
@@ -15,13 +15,9 @@ app.use(bodyParser.json());
 
 app.use('/api/users', usersRoutes);
 
-=======
-
 const { Students, Class } = require('./models/schemas');
 
 
-mongoose.connect("mongodb+srv://Salar:ApnaSchool@apnaschool.y3ountm.mongodb.net/Apna-School-DB?retryWrites=true&w=majority");
-app.use(express.json());
 //GET && POST FOR STUDENT
 app.get("/getStudents", (req,res) => {
     Students.find({}, (err,result) => {
@@ -37,8 +33,6 @@ app.post("/addStudent", async (req,res) => {
     const object = req.body;
     const newObject = new Students(object);
     await newObject.save();
->>>>>>> bb6e2dca96ce47f96fa9d4fdb4ca11522daf8f40
-
     res.json(object);
 })
 //------------//
@@ -59,10 +53,6 @@ app.post("/addClass", async (req,res) => {
 
     res.json(object);
 })
-
-
-<<<<<<< HEAD
-
 
 
 
@@ -86,11 +76,6 @@ app.use((error, req, res, next)=>{
     });
 }); 
 
-
-
-
-=======
->>>>>>> bb6e2dca96ce47f96fa9d4fdb4ca11522daf8f40
 app.listen(3001, () => {
     console.log("Zuberi is beauitful very much")
 })
