@@ -1,10 +1,19 @@
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const mongoose = require('mongoose')
 const AdminModel = require('./models/Admin');
-mongoose.connect("mongodb+srv://Salar:ApnaSchool@apnaschool.y3ountm.mongodb.net/Apna-School-DB?retryWrites=true&w=majority");
+const usersRoutes = require('./routes/users-routes');
+const HttpError = require("./models/http-error");
+mongoose.connect("mongodb+srv://Shayan:ApnaSchool@apnaschool.y3ountm.mongodb.net/Apna-School-DB?retryWrites=true&w=majority");
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
+
+
+app.use('/api/users', usersRoutes);
+
 
 app.get("/getAdmins", (req,res) => {
     AdminModel.find({}, (err,result) => {
@@ -23,6 +32,35 @@ app.post("/addAdmin", async (req,res) => {
 
     res.json(object);
 })
+
+
+
+
+
+
+//only runs if we get some request which did not get a response from upper middlewares
+app.use((req, res, next)=>{
+    const error = new HttpError('Could not find this route', 404);
+    throw error;
+});
+
+//error middelware
+//special middleware function for error handling
+app.use((error, req, res, next)=>{
+    if(res.headerSent){
+        return next(error);
+    }
+    //no response has been sent yet
+    res.status(error.code || 500);
+    res.json({
+
+        message: error.message || 'An unknown error occured!'
+    });
+}); 
+
+
+
+
 app.listen(3001, () => {
     console.log("Zuberi is beauitful very much")
 })

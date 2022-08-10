@@ -44,7 +44,7 @@ export const validate = (value, validators) => {
       isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
     }
     if (validator.type === VALIDATOR_TYPE_GENDER) {
-      isValid = isValid && (value.trim() === 'M' || value.trim() ==='F');
+      isValid = isValid && (value.trim() === 'M' || value.trim() ==='F' );
     }
   }
   return isValid;

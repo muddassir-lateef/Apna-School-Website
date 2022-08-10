@@ -9,6 +9,10 @@ import Button from "../../shared/components/FormElements/Button";
 const NewStudent = () => {
 
     const [formState, InputHandler] = useForm({
+        id:{
+            value: '',  //to be updated later
+            isValid: true
+        },
         name:{
             value: '',
             isValid: false
