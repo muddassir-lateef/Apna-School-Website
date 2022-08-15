@@ -38,7 +38,7 @@ async function getUser(req, res, next) {
     user = await User.findById(req.params.userId);
     if (user == null) {
       return next(new HttpError("Cannot find user", 404));
-    }
+    } //lol
   } catch (err) {
     return next(new HttpError(err.message, 500));
   }
