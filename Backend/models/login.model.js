@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-let User = require('../models/user.model');
+let Admin = require('../models/admin.model');
+let Teacher = require('../models/teacher.model');
+let Staff = require('../models/staff.model');
 
 const Schema = mongoose.Schema;
 
@@ -15,10 +17,27 @@ const loginSchema = new Schema({
     type: String,
     required:true,
   },
-  userid:{
-    type:Schema.Types.ObjectId ,ref:"User",
+  // type of user which should always be one of the: Staff,Admin,Teacher
+  type:{
+    type: String,
+    required:true,
+  },  
+  //_id of the admin from the Admin model
+  adminId:{
+    type:Schema.Types.ObjectId ,ref:"Admin",
     
   },
+  //_id of the staff from the Staff model
+  staffId:{
+    type:Schema.Types.ObjectId ,ref:"Staff",
+    
+  },
+  //_id of the teacher from the Teacher model
+  teacherId:{
+    type:Schema.Types.ObjectId ,ref:"Teacher",
+    
+  },
+
 }, {
   timestamps: true,
 });
