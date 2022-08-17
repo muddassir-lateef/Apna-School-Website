@@ -4,9 +4,12 @@ const Schema = mongoose.Schema;
 
 const feeRecordSchema = new Schema({
   //List of all the indivdual fees of months
-  feeList: {
-    type:Schema.Types.ObjectId ,ref:"FeeDetails",
-  },
+  feeList: 
+  [
+  {
+    type:Schema.Types.ObjectId ,ref:FeeDetails,
+  }
+  ],
   //Fee still to be paid of all months combined
   outstandingFees:{
     type: Number,

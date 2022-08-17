@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 let Section = require('../models/section.model');
+let FeeRecord = require('../models/feeRecord.model')
 const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
@@ -56,7 +57,11 @@ const studentSchema = new Schema({
   //Reference to the ID of section the student belongs too
   },
   sectionId:{
-    type:Schema.Types.ObjectId ,ref:"Section",
+    type:Schema.Types.ObjectId ,ref:Section,
+    
+  },
+  feeRecord:{
+    type:Schema.Types.ObjectId ,ref:FeeRecord,
     
   },
 
