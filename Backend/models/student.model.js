@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const studentSchema = new Schema({
   //Unique for all students
   rollNumber: {
-    type: Number,
+    type: Intger,
     required: true,
     unique: true,
   },

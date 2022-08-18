@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 const classSchema = new Schema({
   //The class level (Class 1/2/3 etc)
   classYear : {
-    type: Number,
+    type: Integer,
     required:true,
   },
   //The total no. of students in the class (sections combined)
   classStrength : {
-    type: Number,
+    type: Integer,
     required: true
   },
   //List of Sections IDs this class contains
