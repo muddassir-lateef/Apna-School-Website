@@ -12,7 +12,7 @@ const sectionSchema = new Schema({
   },
   //Total Number of Students
   strength:{
-    type: Number,
+    type: Integer,
     required: true,
 
   },
