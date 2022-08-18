@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 let Class = require('../models/class.model');
 let Marks = require('../models/marks.model');
+let Teacher = require('../models/teacher.model');
 
 const examSchema = new Schema({
   
@@ -22,7 +23,7 @@ const examSchema = new Schema({
   },
 
   totalMarks:{
-    type: Number,
+    type: Integer,
     required: true,
   },
 
@@ -35,10 +36,10 @@ const examSchema = new Schema({
     type:Schema.Types.ObjectId ,ref:Class,
   },
 
-  //reference the teacher as well later 
-  /*teacherId:{
+  //reference the teacher as well 
+  teacherId:{
     type:Schema.Types.ObjectId ,ref:Teacher,
-  }*/
+  },
 
   //list of marks for all students 
   marks: [

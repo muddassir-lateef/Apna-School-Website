@@ -12,7 +12,7 @@ const calendarSchema = new Schema({
 
   //Calendar for the year
   year:{
-    type: Number,
+    type: Integer,
     required: true,
   },
 
@@ -21,7 +21,7 @@ const calendarSchema = new Schema({
     {
         title: String,
         date: Date,
-        budget: Number,
+        budget: Integer,
         wasHoliday: Boolean,
         required: true
     }
