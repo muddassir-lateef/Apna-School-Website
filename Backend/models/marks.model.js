@@ -17,7 +17,7 @@ const marksSchema = new Schema({
   },
 
   studentId:{
-    type:Schema.Types.ObjectId ,ref:Student
+    type:Schema.Types.ObjectId ,ref:'Student'
     
   },
 

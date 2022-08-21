@@ -24,7 +24,7 @@ const calendarSchema = new Schema({
   //calendar has a list of exams
   exams: [
     {
-      type:Schema.Types.ObjectId ,ref:Exam
+      type:Schema.Types.ObjectId ,ref:'Exam'
     }
   ] 
 },
