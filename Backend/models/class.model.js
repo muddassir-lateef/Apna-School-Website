@@ -17,7 +17,7 @@ const classSchema = new Schema({
   //List of Sections IDs this class contains
   sectionList: 
   [{
-    type:Schema.Types.ObjectId ,ref:Section,  
+    type:Schema.Types.ObjectId ,ref:'Section',  
   }],
 }, {
   timestamps: true,

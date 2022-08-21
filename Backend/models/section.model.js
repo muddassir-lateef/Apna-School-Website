@@ -28,7 +28,7 @@ const sectionSchema = new Schema({
   //List of IDs refering to Students belonging to the section
   studentIdList : [
     {
-      type:Schema.Types.ObjectId ,ref:Student,
+      type:Schema.Types.ObjectId ,ref:'Student',
     }
   ],
   //Reference to ID of Section Head
