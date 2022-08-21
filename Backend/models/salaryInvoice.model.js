@@ -6,7 +6,7 @@ const salaryInvoiceSchema = new Schema({
   
     // total salary of the employee for the particular month
   totalamount: {
-    type: Integer,
+    type: Number,
     required: true,
 
   },
@@ -22,12 +22,12 @@ const salaryInvoiceSchema = new Schema({
   },
   // the basic pay of the employee per month
   basicPay: {
-    type: Integer,
+    type: Number,
     required: true,
   },
   // incentives to the pay of the employee
   incentives: {
-    type: Integer,
+    type: Number,
     required: true,
   },
 

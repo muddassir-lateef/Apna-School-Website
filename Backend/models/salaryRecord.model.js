@@ -7,17 +7,17 @@ const Schema = mongoose.Schema;
 const salaryRecordSchema = new Schema({
   // the basic pay of the employee per month
   basicPay: {
-    type: Integer,
+    type: Number,
     required: true,
   },
   // total amount of the salary paid to the employee till date
   amountPaid:{
-    type: Integer,
+    type: Number,
     required:true,
     },  
     // total amount of salary that needs to be paid and is due
   amountDue:{
-    type: Integer,
+    type: Number,
     required:true,
     },  
     // the date at which the employee becomes eligible for next salary(joining date)
