@@ -24,7 +24,6 @@ const calendarSchema = new Schema({
       date: Date,
       budget: Number,
       wasHoliday: Boolean,
-      required: true
     }
   ],
 
