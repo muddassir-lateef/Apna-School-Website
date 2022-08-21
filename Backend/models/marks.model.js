@@ -12,7 +12,7 @@ const marksSchema = new Schema({
   },
 
   obtainedMarks:{
-    type: Integer,
+    type: Number,
     required: true
   },
 

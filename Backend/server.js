@@ -25,6 +25,7 @@ const loginRouter = require('./routes/login');
 //app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/calendar', calendarRouter)
 
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{
@@ -38,7 +39,7 @@ app.use((error, req, res, next)=>{
   if(res.headerSent){
       return next(error);
   }
-  //no response has been sent yet
+  //no response has been sent yet 
   res.status(error.code || 500);
   res.json({
 
