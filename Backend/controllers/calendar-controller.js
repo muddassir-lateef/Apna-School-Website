@@ -19,4 +19,33 @@ const addCalendar = async(req, res, next) => {
 
 }
 
+const getAllCalendars = async (req, res, next) => {
+  try {
+    Calendar.find()
+      .populate("exams")
+      .then((calendars) => res.status(201).json(calendars))
+      .catch((err) => res.status(400).json("Error: " + err));
+  } catch (err) {
+    return next(new HttpError(err.message, 500));
+  }
+};
+
+const getCalendarByYear = async (req, res, next) => {
+  try {
+    const year = req.params.year;
+    const calendar = await Calendar.find({'year': year});
+    if (calendar.length == 0){
+        return next(new HttpError("Cannot find calendar", 404));
+    }
+    else{
+        res.status(201).json({message: "Calendar found", Calendar: calendar});
+    }
+  } catch (err) {
+    return next(new HttpError(err.message, 500));
+  }
+};
+
+
 exports.addCalendar = addCalendar;
+exports.getAllCalendars = getAllCalendars;
+exports.getCalendarByYear = getCalendarByYear;
