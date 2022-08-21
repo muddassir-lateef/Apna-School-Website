@@ -24,17 +24,17 @@ const loginSchema = new Schema({
   },  
   //_id of the admin from the Admin model
   adminId:{
-    type:Schema.Types.ObjectId ,ref:"Admin",
+    type:Schema.Types.ObjectId ,ref:'Admin',
     
   },
   //_id of the staff from the Staff model
   staffId:{
-    type:Schema.Types.ObjectId ,ref:"Staff",
+    type:Schema.Types.ObjectId ,ref:'Staff',
     
   },
   //_id of the teacher from the Teacher model
   teacherId:{
-    type:Schema.Types.ObjectId ,ref:"Teacher",
+    type:Schema.Types.ObjectId ,ref:'Teacher',
     
   },
 

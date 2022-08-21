@@ -7,7 +7,7 @@ const feeRecordSchema = new Schema({
   feeList: 
   [
   {
-    type:Schema.Types.ObjectId ,ref:FeeDetails,
+    type:Schema.Types.ObjectId ,ref:'FeeDetails',
   }
   ],
   //Fee still to be paid of all months combined

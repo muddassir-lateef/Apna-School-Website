@@ -33,18 +33,18 @@ const examSchema = new Schema({
   
    //Class for which the exam is created
    classId:{
-    type:Schema.Types.ObjectId ,ref:Class,
+    type:Schema.Types.ObjectId ,ref:'Class',
   },
 
   //reference the teacher as well 
   teacherId:{
-    type:Schema.Types.ObjectId ,ref:Teacher,
+    type:Schema.Types.ObjectId ,ref:'Teacher',
   },
 
   //list of marks for all students 
   marks: [
     {
-        type:Schema.Types.ObjectId ,ref:Marks,
+        type:Schema.Types.ObjectId ,ref:'Marks',
     }
   ]
 

@@ -61,7 +61,7 @@ const studentSchema = new Schema({
     
   },
   feeRecord:{
-    type:Schema.Types.ObjectId ,ref:FeeRecord,
+    type:Schema.Types.ObjectId ,ref:'FeeRecord',
     
   },
 
