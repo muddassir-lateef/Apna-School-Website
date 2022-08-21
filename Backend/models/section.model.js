@@ -12,7 +12,7 @@ const sectionSchema = new Schema({
   },
   //Total Number of Students
   strength:{
-    type: Integer,
+    type: Number,
     required: true,
 
   },
@@ -28,7 +28,7 @@ const sectionSchema = new Schema({
   //List of IDs refering to Students belonging to the section
   studentIdList : [
     {
-        type:Schema.Types.ObjectId ,ref:Student,
+      type:Schema.Types.ObjectId ,ref:Student,
     }
   ],
   //Reference to ID of Section Head
