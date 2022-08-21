@@ -15,7 +15,7 @@ const adminSchema = new Schema({
     required: true,
   },
   age: {
-    type: Integer,
+    type: Number,
     required: true,
   },
 

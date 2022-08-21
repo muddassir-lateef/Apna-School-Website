@@ -12,12 +12,12 @@ const feeRecordSchema = new Schema({
   ],
   //Fee still to be paid of all months combined
   outstandingFees:{
-    type: Integer,
+    type: Number,
     required: true,
   },
   //Just a sample as of now, will change later
   sampleAttribute: {
-    type: Integer,
+    type: Number,
     required: true,
 },
 }, {

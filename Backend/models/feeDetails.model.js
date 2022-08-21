@@ -11,33 +11,33 @@ const feeDetailsSchema = new Schema({
   },
   //Sum of all individual fees
   totalFee: {
-    type: Integer,
+    type: Number,
     required: true,
 
   //tuition Fee
   },
   tuitionFee: {
-    type: Integer,
+    type: Number,
     required: true,
 
   },
   //If any fines
   fineFee: {
-    type: Integer,
+    type: Number,
     required: true,
   },
   //If any security
   securityFee: {
-    type : Integer,
+    type : Number,
     required : true,
   },
   //Amount paid as of yet
   paidFee: {
-    type : Integer,
+    type : Number,
     required : true,
   },
   remainingFee: {
-    type : Integer,
+    type : Number,
     required : true,
   }
 
