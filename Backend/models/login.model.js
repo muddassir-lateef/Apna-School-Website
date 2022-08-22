@@ -23,17 +23,17 @@ const loginSchema = new Schema({
     required:true,
   },  
   //_id of the admin from the Admin model
-  adminId:{
+  admin:{
     type:Schema.Types.ObjectId ,ref:'Admin',
     
   },
   //_id of the staff from the Staff model
-  staffId:{
+  staff:{
     type:Schema.Types.ObjectId ,ref:'Staff',
     
   },
   //_id of the teacher from the Teacher model
-  teacherId:{
+  teacher:{
     type:Schema.Types.ObjectId ,ref:'Teacher',
     
   },

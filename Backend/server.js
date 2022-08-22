@@ -20,7 +20,7 @@ connection.once('open', () => {
 
 //const exercisesRouter = require('./routes/exercises');
 const usersRouter = require('./routes/users-routes');
-const loginRouter = require('./routes/login');
+const loginRouter = require('./routes/login-routes');
 const calendarRouter = require('./routes/calendar-routes');
 
 //app.use('/exercises', exercisesRouter);
