@@ -4,7 +4,13 @@ const Schema = mongoose.Schema;
 
 const teacherSchema = new Schema({
   
-
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
   firstName: {
     type: String,
     required: true,
@@ -27,6 +33,6 @@ const teacherSchema = new Schema({
   timestamps: true,
 });
 
-const User = mongoose.model('Teacher', teacherSchema);
-
-module.exports = User;
+const Teacher = mongoose.model('Teacher', teacherSchema);
+Teacher.createIndexes();
+module.exports = Teacher;

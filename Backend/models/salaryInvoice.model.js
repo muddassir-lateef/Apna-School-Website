@@ -35,6 +35,6 @@ const salaryInvoiceSchema = new Schema({
   timestamps: true,
 });
 
-const User = mongoose.model('SalaryInvoice', salaryInvoiceSchema);
-
-module.exports = User;
+const SalaryInvoice = mongoose.model('SalaryInvoice', salaryInvoiceSchema);
+SalaryInvoice.createIndexes();
+module.exports = SalaryInvoice;

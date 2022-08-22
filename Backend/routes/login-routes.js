@@ -18,10 +18,13 @@ required JSON format:
   "age":20
 }
 */
-
+//get a login by username
+router.get('/:username', loginController.getLoginByUsername)
 
 //get a list of all logins
 router.get('/', loginController.getAllLogin)
+
+
 
 //update a login by username
 router.patch('/:username', loginController.updateLogin)

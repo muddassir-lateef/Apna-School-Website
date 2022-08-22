@@ -16,7 +16,7 @@ const addUser = async(req, res, next) => {
 
         if(type=='Admin')
         {
-            const newAdmin = new Admin({firstName,lastName,age});
+            const newAdmin = new Admin({username,firstName,lastName,age});
             newAdmin.save()
             .then(() => {
               const newLogin =new Login({username,password,type,admin: newAdmin._id});
@@ -31,7 +31,7 @@ const addUser = async(req, res, next) => {
         }
         else if(type=='Staff')
         {
-            const newStaff = new Staff({firstName,lastName,age});
+            const newStaff = new Staff({username,firstName,lastName,age});
             newStaff.save()
             .then(() => {
               const newLogin =new Login({username,password,type,staff: newStaff._id});
@@ -46,7 +46,7 @@ const addUser = async(req, res, next) => {
         }
         else if(type=='Teacher')
         {
-            const newTeacher = new Teacher({firstName,lastName,age});
+            const newTeacher = new Teacher({username,firstName,lastName,age});
             newTeacher.save()
             .then(() => {
               const newLogin =new Login({username,password,type,teacher: newTeacher._id});
@@ -78,7 +78,20 @@ const getAllLogin = async (req, res, next) => {
       return next(new HttpError(err.message, 500));
     }
   };
-
+  const getLoginByUsername = async (req, res, next) => {
+    try {
+      const username=req.params.username;
+      Login.findOne({username:username})
+        .populate("admin")
+        .populate("staff")
+        .populate("teacher")
+        .then((login) => res.status(201).json(login))
+        .catch((err) => res.status(400).json("Error: " + err));
+    } catch (err) {
+      return next(new HttpError(err.message, 500));
+    }
+  };
+  
   const updateLogin = async (req, res, next) => {
     try {
         const username ={username:req.params.username};
@@ -107,3 +120,4 @@ exports.addUser = addUser;
 exports.getAllLogin = getAllLogin;
 exports.updateLogin = updateLogin;
 exports.deleteLogin = deleteLogin;
+exports.getLoginByUsername = getLoginByUsername;

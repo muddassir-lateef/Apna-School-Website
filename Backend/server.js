@@ -19,16 +19,17 @@ connection.once('open', () => {
 })
 
 //const exercisesRouter = require('./routes/exercises');
-const usersRouter = require('./routes/users-routes');
+
 const loginRouter = require('./routes/login-routes');
 const calendarRouter = require('./routes/calendar-routes');
 const studentRouter = require('./routes/student-routes')
+const adminRouter = require('./routes/admin-routes')
 
 //app.use('/exercises', exercisesRouter);
-app.use('/users', usersRouter);
+app.use('/Admin',adminRouter);
 app.use('/login', loginRouter);
-app.use('/calendar', calendarRouter)
-app.use('/Student',studentRouter)
+app.use('/calendar', calendarRouter);
+app.use('/Student',studentRouter);
 
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{

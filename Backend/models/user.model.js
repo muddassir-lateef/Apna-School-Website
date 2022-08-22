@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const adminSchema = new Schema({
+const userSchema = new Schema({
   
   username: {
     type: String,
@@ -11,6 +11,11 @@ const adminSchema = new Schema({
     trim: true,
     minlength: 3
   },
+  type:{
+    type: String,
+    required: true,
+
+  },
   firstName: {
     type: String,
     required: true,
@@ -18,17 +23,15 @@ const adminSchema = new Schema({
   },
   lastName: {
     type: String,
+    required: true,
 
   },
-  age: {
-    type: Number,
 
-  },
 
 }, {
   timestamps: true,
 });
 
-const Admin = mongoose.model('Admin', adminSchema);
-Admin.createIndexes();
-module.exports = Admin;
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;

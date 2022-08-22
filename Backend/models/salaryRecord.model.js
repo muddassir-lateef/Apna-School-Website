@@ -34,6 +34,6 @@ const salaryRecordSchema = new Schema({
 });
   
 
-const Login = mongoose.model('SalaryRecord', salaryRecordSchema);
-
-module.exports = Login;
+const SalaryRecord = mongoose.model('SalaryRecord', salaryRecordSchema);
+SalaryRecord.createIndexes();
+module.exports = SalaryRecord;

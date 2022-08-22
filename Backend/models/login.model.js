@@ -44,5 +44,5 @@ const loginSchema = new Schema({
   
 
 const Login = mongoose.model('Login', loginSchema);
-
+Login.createIndexes();
 module.exports = Login;
