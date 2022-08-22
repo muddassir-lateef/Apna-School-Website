@@ -33,5 +33,5 @@ const calendarSchema = new Schema({
 });
 
 const Calendar = mongoose.model('Calendar', calendarSchema);
-
+Calendar.createIndexes();
 module.exports = Calendar;

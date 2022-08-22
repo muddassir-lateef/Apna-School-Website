@@ -32,5 +32,5 @@ const marksSchema = new Schema({
 });
 
 const Marks = mongoose.model('Marks', marksSchema);
-
+Marks.createIndexes();
 module.exports = Marks;

@@ -24,5 +24,5 @@ const lectureSchema = new Schema({
 });
 
 const Lecture = mongoose.model('Lecture', lectureSchema);
-
+Lecture.createIndexes();
 module.exports = Lecture;
