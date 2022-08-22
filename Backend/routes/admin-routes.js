@@ -16,7 +16,10 @@ router.patch('/:username', adminController.updateAdmin)
 /*
 required JSON format:
 {
-  "password":"abcdef"
+  "firstName":"newuser",
+  "lastName":"newuserlastname",
+  "age":"18"
+  
 }
 */
 
