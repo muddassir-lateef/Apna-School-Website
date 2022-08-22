@@ -12,11 +12,11 @@ const teacherSchema = new Schema({
   },
   lastName: {
     type: String,
-    required: true,
+
   },
   age: {
     type: Number,
-    required: true,
+
   },
     // _id of the salaryRecord associated with the employee
 
