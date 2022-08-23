@@ -41,5 +41,5 @@ const sectionSchema = new Schema({
 });
 
 const Section = mongoose.model('Section', sectionSchema);
-
+Section.createIndexes();
 module.exports = Section;

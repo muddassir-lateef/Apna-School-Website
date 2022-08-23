@@ -25,5 +25,5 @@ const classSchema = new Schema({
   
 
 const Class = mongoose.model('Class', classSchema);
-
+Class.createIndexes();
 module.exports = Class;
