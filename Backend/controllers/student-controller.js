@@ -46,7 +46,31 @@ const getAllStudents = async (req, res, next) => {
   }
 };
 
+const getStudentByRollNumber = async (req, res, next) => {
+  try {
+    const rollNumber={rollNumber:req.params.rollNumber};
+    Student.findOne(rollNumber)
+    .then((student) => res.status(201).json(student))
+    .catch((err) => res.status(400).json("Error: " + err));
+  }
+  catch(err) {
+    return next(new HttpError(err.message, 500));
+  }
+};
 
+const updateStudent = async(req,res,next) => {
+  try {
+    const rollNumber ={rollNumber:req.params.rollNumber};
+    const updates=req.body;
+    Student.findOneAndUpdate(rollNumber,updates)
+    .then(() => res.json("Update operation called successfuly!"))
+    .catch((err) => res.status(400).json("Error: " + err));
+} catch (err) {
+  return next(new HttpError(err.message, 500));
+}
+};
 
+exports.getStudentByRollNumber = getStudentByRollNumber;
+exports.updateStudent = updateStudent;
 exports.addStudent = addStudent;
 exports.getAllStudents = getAllStudents;

@@ -21,8 +21,11 @@ router.post('/addStudent', StudentController.addStudent)
   }
 */
 
+router.patch('/:rollNumber', StudentController.updateStudent)
+/*
 
-
+*/
+router.get('/:rollNumber' , StudentController.getStudentByRollNumber)
 //get all Students
 router.get('/', StudentController.getAllStudents);
 // get /Student/
