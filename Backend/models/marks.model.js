@@ -5,11 +5,6 @@ let Student = require('../models/student.model');
 let Exam = require('../models/exam.model');
 
 const marksSchema = new Schema({
-  
-  marksID: {
-    type: String,  
-    required: true
-  },
 
   obtainedMarks:{
     type: Number,
@@ -22,9 +17,9 @@ const marksSchema = new Schema({
   },
 
   //Exam to which the marks belong
-  examId:{
-    type:Schema.Types.ObjectId ,ref:'Exam',
-  }
+  //examId:{
+    //type:Schema.Types.ObjectId ,ref:'Exam',
+  //}
 
 },
  {

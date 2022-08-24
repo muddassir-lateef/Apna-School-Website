@@ -6,11 +6,6 @@ let Marks = require('../models/marks.model');
 let Teacher = require('../models/teacher.model');
 
 const examSchema = new Schema({
-  
-  examID: {
-    type: String,
-    required: true
-  },
 
   date:{
     type: Date,

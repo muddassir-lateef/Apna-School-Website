@@ -24,13 +24,18 @@ const loginRouter = require('./routes/login-routes');
 const calendarRouter = require('./routes/calendar-routes');
 const studentRouter = require('./routes/student-routes')
 const adminRouter = require('./routes/admin-routes')
+const examRouter = require('./routes/exam-routes');
+const marksRouter = require('./routes/marks-routes');
+const lectureRouter = require('./routes/lecture-routes');
 
 //app.use('/exercises', exercisesRouter);
-app.use('/Admin',adminRouter);
+app.use('/admin',adminRouter);
 app.use('/login', loginRouter);
 app.use('/calendar', calendarRouter);
-app.use('/Student',studentRouter);
-
+app.use('/student',studentRouter);
+app.use('/exam', examRouter);
+app.use('/marks', marksRouter);
+app.use('/lecture', lectureRouter);
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{
   const error = new HttpError('Could not find this route', 404);
