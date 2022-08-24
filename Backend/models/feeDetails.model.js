@@ -47,5 +47,5 @@ const feeDetailsSchema = new Schema({
 });
 
 const FeeDetails = mongoose.model('FeeDetails', feeDetailsSchema);
-
+FeeDetails.createIndexes();
 module.exports = FeeDetails;
