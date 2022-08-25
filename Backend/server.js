@@ -24,6 +24,7 @@ const loginRouter = require('./routes/login-routes');
 const calendarRouter = require('./routes/calendar-routes');
 const studentRouter = require('./routes/student-routes')
 const adminRouter = require('./routes/admin-routes')
+const sectionRouter = require('./routes/section-routes')
 const examRouter = require('./routes/exam-routes');
 const marksRouter = require('./routes/marks-routes');
 const lectureRouter = require('./routes/lecture-routes');
@@ -32,6 +33,7 @@ const lectureRouter = require('./routes/lecture-routes');
 app.use('/admin',adminRouter);
 app.use('/login', loginRouter);
 app.use('/calendar', calendarRouter);
+app.use('/section', sectionRouter);
 app.use('/student',studentRouter);
 app.use('/exam', examRouter);
 app.use('/marks', marksRouter);

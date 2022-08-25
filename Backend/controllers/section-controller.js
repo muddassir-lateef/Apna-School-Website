@@ -1,5 +1,7 @@
-let Section = require('../models/section.model');
 const HttpError = require('../models/http-error');
+let Section = require('../models/section.model');
+let Student = require('../models/student.model');
+
 
 const addSection = async(req, res, next) => {
     try{
@@ -27,53 +29,50 @@ const addSection = async(req, res, next) => {
     }catch(err){
         return next( new HttpError(err.message, 500));
     }
+};
+
+const addStudentToSection = async(req,res,next) => {
+  const section_query = {sectionName : req.body.sectionName};
+  const temp_section = await Section.findOne(section_query).populate('lectures', 'studentIdList');
+  const student_query = {rollNumber : req.body.rollNumber}
+  const temp_student = await Student.findOne(student_query)
+  if (temp_section == null){
+    return next(new HttpError("Section could not be found", 409));
 }
+    temp_section.studentIdList = temp_section.studentIdList || [];
+  temp_section.studentIdList.push(temp_student._id);
+  temp_section
+  .save()
+      .then(() => res.json({ message: "Student added!", Section: temp_section }))
+      .catch((err) => res.status(400).json("Error: " + err));
+};
+
 
 const getAllSections = async(req,res,next) => {
     try {
         Section.find()
-        .populate("lectures", "studentIdList", "sectionHead")
+        .populate('lectures', 'studentIdList')
         .then((sections) => res.status(201).json(sections))
         .catch((err) => res.status(400).json("Error: " + err));
     } catch(err) {
         return next (new HttpError(err.message,500));
     }
     };
-/*
-const getAllStudents = async (req, res, next) => {
-  try {
-    Student.find()
-      .populate("sectionId", "feeRecord")
-      .then((students) => res.status(201).json(students))
-      .catch((err) => res.status(400).json("Error: " + err));
-  } catch (err) {
-    return next(new HttpError(err.message, 500));
-  }
+
+const getSectionById = async(req,res,next) => {
+    const id = new ObjectId(req.params.sectionName);
+    try {
+        Section.findById(id)
+          .populate('lectures', 'studentIdList')
+          .then((sections) => res.status(201).json(sections))
+          .catch((err) => res.status(400).json("Error: " + err));
+      } catch (err) {
+        return next(new HttpError(err.message, 500));
+      }
 };
 
-const getStudentByRollNumber = async (req, res, next) => {
-  try {
-    const rollNumber={rollNumber:req.params.rollNumber};
-    Student.findOne(rollNumber)
-    .then((student) => res.status(201).json(student))
-    .catch((err) => res.status(400).json("Error: " + err));
-  }
-  catch(err) {
-    return next(new HttpError(err.message, 500));
-  }
-};
 
-const updateStudent = async(req,res,next) => {
-  try {
-    const rollNumber ={rollNumber:req.params.rollNumber};
-    const updates=req.body;
-    Student.findOneAndUpdate(rollNumber,updates)
-    .then(() => res.json("Update operation called successfuly!"))
-    .catch((err) => res.status(400).json("Error: " + err));
-} catch (err) {
-  return next(new HttpError(err.message, 500));
-}
-};
-*/
+exports.getSectionById = getSectionById;
+exports.addStudentToSection = addStudentToSection;
 exports.addSection = addSection;
 exports.getAllSections = getAllSections;

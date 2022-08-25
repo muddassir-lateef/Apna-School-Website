@@ -16,7 +16,9 @@ router.post('/addSection',SectionController.addSection);
 
   }
 */
+router.patch('/addStudentToSection', SectionController.addStudentToSection);
 
+router.get('/getSectionById',SectionController.getSectionById);
 router.get('/', SectionController.getAllSections);
 
 module.exports = router;
