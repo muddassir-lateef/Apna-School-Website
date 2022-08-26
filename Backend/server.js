@@ -28,11 +28,15 @@ const sectionRouter = require('./routes/section-routes')
 const examRouter = require('./routes/exam-routes');
 const marksRouter = require('./routes/marks-routes');
 const lectureRouter = require('./routes/lecture-routes');
+const feeRecordRouter = require('./routes/feeRecord-routes');
+const classRouter = require('./routes/class-routes');
 
 //app.use('/exercises', exercisesRouter);
 app.use('/admin',adminRouter);
 app.use('/login', loginRouter);
+app.use('/feeRecord', feeRecordRouter);
 app.use('/calendar', calendarRouter);
+app.use('/class', classRouter);
 app.use('/section', sectionRouter);
 app.use('/student',studentRouter);
 app.use('/exam', examRouter);

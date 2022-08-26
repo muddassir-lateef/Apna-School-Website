@@ -8,7 +8,7 @@ const StudentController = require('../controllers/student-controller');
 router.post('/addStudent', StudentController.addStudent)
 /*
 {
-    "rollNumber": "Salar",
+    "rollNumber": 6000,
     "Age": 12,
     "firstName": "Salar",
     "lastName": "123",
@@ -18,7 +18,8 @@ router.post('/addStudent', StudentController.addStudent)
     "emailAddress" : "hotmail",
     "houseAddress" : "Street lmao",
     "phoneNumber" : "0300panji"
-  }
+}
+
 */
 //Update student by roll numbber, have to verify whether if RollNumber is to be passed in URl or Body only
 router.patch('/:rollNumber', StudentController.updateStudent)

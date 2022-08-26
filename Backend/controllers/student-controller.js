@@ -1,4 +1,5 @@
 let Student = require('../models/student.model');
+let FeeRecord = require('../models/feeRecord.model');
 const HttpError = require('../models/http-error');
 
 const addStudent = async(req, res, next) => {
@@ -14,7 +15,13 @@ const addStudent = async(req, res, next) => {
         const phoneNumber = req.body.phoneNumber;
         const emailAddress = req.body.emailAddress;
         const sectionId = req.body.sectionId? req.body.sectionId: null;
-        const feeRecord = req.body.feeRecord? req.body.feeRecord: null;
+        const feeList = req.body.feeList? req.body.feeList: null;
+        const outStandingFees = 0;
+        const sampleAttribute = 0;
+        const feeRecord = new FeeRecord({
+          feeList, outStandingFees,sampleAttribute
+        })
+        feeRecord.save();
 
         const newStudent= new Student({
 
@@ -69,6 +76,7 @@ const updateStudent = async(req,res,next) => {
   return next(new HttpError(err.message, 500));
 }
 };
+
 
 exports.getStudentByRollNumber = getStudentByRollNumber;
 exports.updateStudent = updateStudent;

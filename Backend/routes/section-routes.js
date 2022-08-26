@@ -3,22 +3,25 @@ const router = express.Router();
 
 const SectionController = require('../controllers/section-controller');
 
-router.post('/addSection',SectionController.addSection);
-/*
-{
-    "sectionName": "A",
-    "strength" : 30,
-    //These below 3 lines are optinal as not needed while creating
-    "lectures": "Salar",
-    "studentIdList": "123",
-    "sectionHead": "Street 69",
-    //
 
-  }
-*/
+
 router.patch('/addStudentToSection', SectionController.addStudentToSection);
+/*
+  "sectionName" : "A",
+  "rollNumber" : 6000
+*/
+
 
 router.get('/getSectionById',SectionController.getSectionById);
+/*
+  STUDENTS ROLL NUMBER
+  "rollNumber" : 6000
+*/
 router.get('/', SectionController.getAllSections);
 
+router.get('/getAllStudentsInSection', SectionController.getAllStudentsInSection);
+/*
+  "className" : "A"
+  "classYear" : 7 (HAS TO BE IMPLEMENTED)
+*/
 module.exports = router;

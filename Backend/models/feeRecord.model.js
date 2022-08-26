@@ -11,7 +11,7 @@ const feeRecordSchema = new Schema({
   }
   ],
   //Fee still to be paid of all months combined
-  outstandingFees:{
+  outStandingFees:{
     type: Number,
     required: true,
   },
