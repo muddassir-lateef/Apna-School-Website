@@ -63,20 +63,50 @@ const deleteCalendar = async (req, res, next) => {
 }
 
 const updateCalendar = async(req, res, next) => {
-  const exam = req.body.exam? req.body.exam : null;
+  const year = req.params.year;
+  const examId = req.body.examId? req.body.examId : null;
   const event = req.body.event? req.body.event: null;
 
   //checking if the calendar already exists
-  const calendar = await Calendar.find({'year': year});
+  const calendar = await Calendar.find({'year': year}).populate('exams');
   if (calendar.length == 0){
     return next(new HttpError("Cannot find calendar", 400));
   }  
-  calendar.exams.push(exam);
+  if (examId){
+    console.log("CALENDAR: " + calendar);
+    //calendar.exams = calendar.exams || [];
+    calendar.exams.push(examId);
+  }
 
+  if (event){
+    const tempEvent = {title: event.title, date: event.date, budget: event.budget, wasHoliday: event.wasHoliday};
+    //calendar.events = calendar.events || [];
+    calendar.events.push(tempEvent);
+    calendar
+      .save()
+      .then(() => res.status(201).json({ message: "Calendar updated!", calendar }))
+      .catch((err) => res.status(400).json("Error: " + err));
+    return;
+  }
+  
+  res.status(400).json({message: "Bad request, calendar was not updated"});
+
+  /* 
+  {
+    "examId": id,
+    "event": {
+      "title": "Some Event",
+      "date" : "10/25/2022",
+      "budget": 25000,
+      "wasHoliday": false
+    }
+  }
+  */
 }
 
 exports.addCalendar = addCalendar;
 exports.getAllCalendars = getAllCalendars;
 exports.getCalendarByYear = getCalendarByYear;
 exports.deleteCalendar = deleteCalendar;
+exports.updateCalendar = updateCalendar;
 
