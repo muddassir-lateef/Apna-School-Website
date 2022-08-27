@@ -50,7 +50,7 @@ const addNewSectionToClass = async(req, res, next) => {
         const temp_class = await Class.findOne(class_query)
 
         temp_class.sectionList = temp_class.sectionList || [];
-        temp_class.sectionList.push(newSection);
+        temp_class.sectionList.push(newSection._id);
         temp_class.save()
       .then(() => res.json({ message: "New Section has been added to class", Class: temp_class }))
       .catch((err) => res.status(400).json("Error: " + err));
