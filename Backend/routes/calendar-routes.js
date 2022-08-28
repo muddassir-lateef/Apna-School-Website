@@ -24,15 +24,18 @@ router.delete('/:year', calendarController.deleteCalendar);
 //e.g: delete /calendar/2022
 
 //update a calendar 
-router.patch('/calendar/:year', calendarController.getAllCalendars);
+router.patch('/:year', calendarController.updateCalendar);
 // patch /calendar/:year
-/*
-{
-    event: {}, 
-    exam: []
-    either of these or both
-
-}
+/* 
+  {
+    "examId": id,
+    "event": {
+      "title": "Some Event",
+      "date" : "10/25/2022",
+      "budget": 25000,
+      "wasHoliday": false
+    }
+  }
 */
 
 //get all calendars

@@ -48,8 +48,6 @@ const addMarks = async(req, res, next) => {
     const examId = req.params.examId;
     const obtainedMarks = req.body.obtainedMarks;
     const studentId = req.body.studentId? req.body.studentId : null;
-    const mark = new Marks({obtainedMarks, studentId});
-    mark.save();
 
     const exam = await Exam.findById(examId);
     if (exam == null){
@@ -58,11 +56,13 @@ const addMarks = async(req, res, next) => {
     //before entering marks, we need to check if marks for that student are already present
     for (let i=0; i<exam.marks.length; i++){
         temp_mark = await Marks.findById(exam.marks[i]);
-        if (temp_mark.studentId == studentId){
+        if (temp_mark && temp_mark.studentId == studentId){
             return next(new HttpError("Marks already present for the student", 409));
         }
     }
 
+    const mark = new Marks({obtainedMarks, studentId});
+    mark.save();
     exam.marks.push(mark._id);
     exam
       .save()
