@@ -26,7 +26,7 @@ const addFeeDetailToStudentFeeRecord = async(req,res,next) => {
     const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
     
     tempFeeRecord.feeList = tempFeeRecord.feeList || [];
-    tempFeeRecord.feeList.push(newFeeDetails);
+    tempFeeRecord.feeList.push(newFeeDetails._id);
     tempFeeRecord.save()
       .then(() => res.json({ message: "FeeRecord has been updated with new Fee", FeeRecord: tempFeeRecord }))
       .catch((err) => res.status(400).json("Error: " + err));
@@ -67,6 +67,8 @@ const addFeeDetailToStudentFeeRecord = async(req,res,next) => {
             tempFee.save()
             .then(() => res.json({message: "Student Fee Updates!" ,FeeDetail : tempFee}))
             .catch((err) => res.status(400).json("Error : " + err));
+
+            return;
         }
     }
 
