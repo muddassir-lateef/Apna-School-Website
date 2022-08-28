@@ -1,4 +1,4 @@
-let Calendar = require('../models/calendar.model');
+const Calendar = require('../models/calendar.model');
 const HttpError = require('../models/http-error');
 
 const addCalendar = async(req, res, next) => {
@@ -62,21 +62,76 @@ const deleteCalendar = async (req, res, next) => {
   res.status(200).json({message: "Calendar deleted Successfully"});
 }
 
-const updateCalendar = async(req, res, next) => {
-  const exam = req.body.exam? req.body.exam : null;
-  const event = req.body.event? req.body.event: null;
+const updateCalendar = async (req, res, next) => {
+  const year_picker = req.params.year;
+  const examId = req.body.examId ? req.body.examId : null;
+  const event = req.body.event ? req.body.event : null;
+  var responseMessage = '';
 
   //checking if the calendar already exists
-  const calendar = await Calendar.find({'year': year});
-  if (calendar.length == 0){
+  const calendar = await Calendar.find({ year: year_picker }).populate("exams");
+  if (calendar.length == 0) {
     return next(new HttpError("Cannot find calendar", 400));
-  }  
-  calendar.exams.push(exam);
+  }
+  if (examId) {
+    //console.log("CALENDAR: " + calendar);
+    //calendar.exams = calendar.exams || [];
+    //calendar.exams.push(examId);
+    let tempResult = await Calendar.findOneAndUpdate(
+      { year: year_picker },
+      { $push: { exams: examId } }
+    );
 
-}
+    if (tempResult){
+      responseMessage+='Exam and ';
+    }
+  }
+
+  if (event) {
+    const tempEvent = {
+      title: event.title,
+      date: event.date,
+      budget: event.budget,
+      wasHoliday: event.wasHoliday,
+    };
+    //calendar.events = calendar.events || [];
+    //calendar.events.push(tempEvent);
+    let result = await Calendar.findOneAndUpdate(
+      { year: year_picker },
+      { $push: { events: tempEvent } }
+    );
+
+    if (result){
+      responseMessage += 'Event was added and calendar was updated'
+      return res.status(201).json({ message: responseMessage, calendar });
+    }
+    
+  }
+
+  if (responseMessage == ''){
+    res.status(400).json({ message: "Bad request, calendar was not updated" });
+  }
+
+  else{
+    res.status(201).json({ message: 'Exam was added and calendar was updated successfully', calendar });
+  }
+
+  /* 
+  {
+    "examId": id,
+    "event": {
+      "title": "Some Event",
+      "date" : "10/25/2022",
+      "budget": 25000,
+      "wasHoliday": false
+    }
+  }
+  */
+};
 
 exports.addCalendar = addCalendar;
 exports.getAllCalendars = getAllCalendars;
 exports.getCalendarByYear = getCalendarByYear;
 exports.deleteCalendar = deleteCalendar;
+exports.updateCalendar = updateCalendar;
 

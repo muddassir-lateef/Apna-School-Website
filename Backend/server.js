@@ -28,10 +28,16 @@ const sectionRouter = require('./routes/section-routes')
 const examRouter = require('./routes/exam-routes');
 const marksRouter = require('./routes/marks-routes');
 const lectureRouter = require('./routes/lecture-routes');
+
+const staffRouter = require('./routes/staff-routes')
+const teacherRouter = require('./routes/teacher-routes')
+
 const feeRecordRouter = require('./routes/feeRecord-routes');
 const classRouter = require('./routes/class-routes');
 
 //app.use('/exercises', exercisesRouter);
+app.use('/staff',staffRouter);
+app.use('/teacher',teacherRouter);
 app.use('/admin',adminRouter);
 app.use('/login', loginRouter);
 app.use('/feeRecord', feeRecordRouter);
@@ -42,6 +48,7 @@ app.use('/student',studentRouter);
 app.use('/exam', examRouter);
 app.use('/marks', marksRouter);
 app.use('/lecture', lectureRouter);
+
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{
   const error = new HttpError('Could not find this route', 404);

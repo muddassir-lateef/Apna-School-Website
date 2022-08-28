@@ -1,25 +1,25 @@
 let Login = require('../models/login.model');
-let Admin = require('../models/admin.model');
+let Teacher = require('../models/teacher.model');
 
 
 const HttpError = require('../models/http-error');
 
 
-const getAllAdmin = async (req, res, next) => {
+const getAllTeacher = async (req, res, next) => {
     try {
-        Admin.find()
-        .then((admins) => res.status(201).json(admins))
+        Teacher.find()
+        .then((teachers) => res.status(201).json(teachers))
         .catch((err) => res.status(400).json("Error: " + err));
     } catch (err) {
       return next(new HttpError(err.message, 500));
     }
   };
 
-  const updateAdmin = async (req, res, next) => {
+  const updateTeacher = async (req, res, next) => {
     try {
         const username ={username:req.params.username};
         const updates=req.body;
-        Admin.findOneAndUpdate(username,updates)
+        Teacher.findOneAndUpdate(username,updates)
         .then(() => res.json("Update operation called successfuly!"))
         .catch((err) => res.status(400).json("Error: " + err));
     } catch (err) {
@@ -27,11 +27,11 @@ const getAllAdmin = async (req, res, next) => {
     }
   };
 
-  const deleteAdmin = async (req, res, next) => {
+  const deleteTeacher = async (req, res, next) => {
     try {
         const username ={username:req.params.username};
 
-        Admin.findOneAndDelete(username)
+        Teacher.findOneAndDelete(username)
         .then(() => res.json("Delete operation called successfuly!"))
         .catch((err) => res.status(400).json("Error: " + err));
     } catch (err) {
@@ -39,17 +39,17 @@ const getAllAdmin = async (req, res, next) => {
     }
   };
 
-  const getAdminByUsername = async (req, res, next) => {
+  const getTeacherByUsername = async (req, res, next) => {
     try {
       const username=req.params.username;
-      Admin.findOne({username:username})
-        .then((staff) => res.status(201).json(staff))
+      Teacher.findOne({username:username})
+        .then((teachers) => res.status(201).json(teachers))
         .catch((err) => res.status(400).json("Error: " + err));
     } catch (err) {
       return next(new HttpError(err.message, 500));
     }
   };
-exports.getAllAdmin = getAllAdmin;
-exports.updateAdmin = updateAdmin;
-exports.deleteAdmin = deleteAdmin;
-exports.getAdminByUsername = getAdminByUsername;
+exports.getAllTeacher = getAllTeacher;
+exports.updateTeacher = updateTeacher;
+exports.deleteTeacher = deleteTeacher;
+exports.getTeacherByUsername = getTeacherByUsername;
