@@ -1,9 +1,48 @@
+import { useState, useCallback } from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {AuthContext} from './context/AuthContext';
+
 import './App.css';
 import SignIn from'./pages/SignIn/Signin';
+import AdminHome from './pages/AdminHome/AdminHome';
 
-function App() {/////
+
+function App() {
+  /////
+
+  const [loggedIn, setIsLoggedIn] = useState(false);
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  let routes;
+  if (loggedIn){
+    routes = (
+      <Routes>
+        <Route path='/' element = {<AdminHome/>}/>
+      </Routes>
+    );
+
+  }
+  else{
+    routes = (
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+      </Routes>
+    );
+  }
+
   return (
-    <SignIn/>
+    <AuthContext.Provider
+      value={{ isLogged: loggedIn, login: login, logout: logout }}
+    >
+      <Router>
+        <main>{routes}</main>
+      </Router>
+    </AuthContext.Provider>
   );
 }
 

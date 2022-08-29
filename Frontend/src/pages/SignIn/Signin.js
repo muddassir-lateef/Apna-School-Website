@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +13,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import { AuthContext } from '../../context/AuthContext';
 
 function Copyright(props) {
   return (
@@ -40,6 +43,9 @@ const theme = createTheme({
 });
 
 export default function SignInSide() {
+
+  const auth = useContext(AuthContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -47,6 +53,8 @@ export default function SignInSide() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    auth.login();
+
   };
 
   return (
@@ -135,4 +143,4 @@ export default function SignInSide() {
       </Grid>
     </ThemeProvider>
   );
-}
+} 
