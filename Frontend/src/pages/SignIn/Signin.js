@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { AuthContext } from '../../context/AuthContext';
+import {login as LoginUser} from '../../services/UserService';
 
 function Copyright(props) {
   return (
@@ -49,12 +50,18 @@ export default function SignInSide() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const password = data.get("password");
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email,
+      password,
     });
-    auth.login();
 
+    LoginUser(email, password)
+    //.then((log)=>{if (log.status == 201){
+     // auth.login();
+    //}})
+    //.catch((err)=>{(console.log('Error: '+ err))});
   };
 
   return (
