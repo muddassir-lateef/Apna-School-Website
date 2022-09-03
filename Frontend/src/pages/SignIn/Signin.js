@@ -57,11 +57,15 @@ export default function SignInSide() {
       password,
     });
 
-    LoginUser(email, password)
-    //.then((log)=>{if (log.status == 201){
-     // auth.login();
-    //}})
-    //.catch((err)=>{(console.log('Error: '+ err))});
+    const res = LoginUser(email, password)
+      .then((log) => {
+        if (log.status === 201) {
+          auth.login();
+        }
+      })
+      .catch((err) => {
+        console.log("Error: " + err);
+      });
   };
 
   return (

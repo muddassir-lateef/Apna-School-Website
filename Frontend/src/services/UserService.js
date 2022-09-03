@@ -2,17 +2,16 @@ import axios from 'axios';
 let url = process.env.API_URL;
 
 export async function login(username, password){
-    try {
-        url += 'login/verify/';
-        let tempURL = 'http://localhost:5000/login/verify/';
-        const response = await axios.post(tempURL, {
-            username,
-            password
-          }).catch((error)=>{return error});
-        if (response.status === 201)
-            return response;
-      } catch (error) {
-        console.error(error);
-      }
 
+  let tempURL = 'http://localhost:5000/login/verify/';
+  let loginDetails = {username, password};
+
+  const response = await axios.post(tempURL, loginDetails);
+  if (response.status === 201){
+    return response;
+  }
+  else if (response.status === 401){
+    console.log("HELLOOO2");
+    return -1;
+  }
 }
