@@ -91,6 +91,24 @@ const getAllLogin = async (req, res, next) => {
       return next(new HttpError(err.message, 500));
     }
   };
+  const verifyLogin = async (req, res, next) => {
+    try {
+      const user=req.body.username;
+      const pass=req.body.password;
+      const log= await Login.findOne({username:user, password:pass});
+      if(log)
+      {
+        res.status(201).json(log)
+
+      }
+      else
+      {
+        res.status(401).json("Username or Password not found!")
+      }
+    } catch (err) {
+      return next(new HttpError(err.message, 500));
+    }
+  };
   
   const updateLogin = async (req, res, next) => {
     try {
@@ -121,3 +139,4 @@ exports.getAllLogin = getAllLogin;
 exports.updateLogin = updateLogin;
 exports.deleteLogin = deleteLogin;
 exports.getLoginByUsername = getLoginByUsername;
+exports.verifyLogin = verifyLogin;
