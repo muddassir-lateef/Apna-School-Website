@@ -3,6 +3,16 @@ const router = express.Router();
 
 const loginController = require('../controllers/login-controller');
 
+//verify a login by username and password
+router.get('/verify', loginController.verifyLogin)
+/*
+required JSON format:
+
+{
+  "username":"user14",
+  "password":"pswd",
+}
+*/
 
 //adds a new user and refers it in a new login
 router.post('/add', loginController.addUser)
@@ -37,5 +47,8 @@ required JSON format:
 
 //delete a login by username
 router.delete('/:username', loginController.deleteLogin)
+
+
+
 
 module.exports = router;
