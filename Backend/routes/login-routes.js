@@ -4,7 +4,7 @@ const router = express.Router();
 const loginController = require('../controllers/login-controller');
 
 //verify a login by username and password
-router.get('/verify', loginController.verifyLogin)
+router.post('/verify', loginController.verifyLogin)
 /*
 required JSON format:
 
