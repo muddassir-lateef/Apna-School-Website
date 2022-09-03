@@ -57,9 +57,10 @@ export default function SignInSide() {
       password,
     });
 
-    const res = LoginUser(email, password)
+    LoginUser(email, password)
       .then((log) => {
         if (log.status === 201) {
+          auth.setUser(log.data.username);
           auth.login();
         }
       })
