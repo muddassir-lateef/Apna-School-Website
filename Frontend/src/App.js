@@ -5,6 +5,8 @@ import {AuthContext} from './context/AuthContext';
 import './App.css';
 import SignIn from'./pages/SignIn/Signin';
 import AdminHome from './pages/AdminHome/AdminHome';
+import SideDrawer from './components/SideDrawer';
+import AllStudents from './pages/Students/AllStudents';
 
 
 function App() {
@@ -26,7 +28,8 @@ function App() {
   if (loggedIn){
     routes = (
       <Routes>
-        <Route path='/' element = {<AdminHome/>}/>
+        <Route path="/student" element={<AllStudents />} />
+        <Route path="/" element={<AdminHome />} />
       </Routes>
     );
 
@@ -44,6 +47,7 @@ function App() {
       value={{ isLogged: loggedIn, login: login, logout: logout, user:user, setUser:setCurrentUser }}
     >
       <Router>
+      {loggedIn && <SideDrawer/>}
         <main>{routes}</main>
       </Router>
     </AuthContext.Provider>
