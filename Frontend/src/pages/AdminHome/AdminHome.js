@@ -7,7 +7,7 @@ const AdminHome = () => {
   return (
     <>
       <h1>Admin Panel</h1>
-      <h2>Hello get siked gashti {auth.user}</h2>
+      <h2>Hello Nigga {auth.user}</h2>
     </>
   );
 };
