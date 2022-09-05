@@ -77,7 +77,19 @@ const updateStudent = async(req,res,next) => {
 }
 };
 
+const deleteStudent = async(req,res,next) => {
+  try {
+    const rollNumber={rollNumber:req.params.rollNumber};
 
+    Student.findOneAndDelete(rollNumber)
+    .then(() => res.json("Delete operation called successfuly!"))
+    .catch((err) => res.status(400).json("Error: " + err));
+} catch (err) {
+  return next(new HttpError(err.message, 500));
+}
+}
+
+exports.deleteStudent = deleteStudent;
 exports.getStudentByRollNumber = getStudentByRollNumber;
 exports.updateStudent = updateStudent;
 exports.addStudent = addStudent;

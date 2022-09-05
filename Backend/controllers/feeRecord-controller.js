@@ -75,5 +75,17 @@ const addFeeDetailToStudentFeeRecord = async(req,res,next) => {
     return next(new HttpError("Could not find particual Fee", 409));
     
 }
+
+const getAllFeeDetailsFromStudentFeeRecord = async(req,res,next) => {
+    const student_query = {rollNumber : req.body.rollNumber};
+    const tempStudent = await Student.findOne(student_query).populate('sectionId','feeRecord');
+    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
+
+    res.json(tempFeeRecord.feeList);
+    return;
+
+}
+
+  exports.getAllFeeDetailsFromStudentFeeRecord = getAllFeeDetailsFromStudentFeeRecord;
   exports.updateStudentFeeRecord = updateStudentFeeRecord;
   exports.addFeeDetailToStudentFeeRecord = addFeeDetailToStudentFeeRecord;

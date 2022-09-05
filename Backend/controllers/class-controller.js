@@ -70,8 +70,8 @@ const getAllSectionsInClass = async(req ,res , next) => {
     const class_query = {classYear : req.body.classYear};
 
     const temp_class = await Class.findOne(class_query);
-    const temp_section_list = temp_class.sectionList;
-    res.json(temp_section_list);
+    temp_class.sectionList = temp_class.sectionList || [];
+    res.json(temp_class.sectionList);
 };
 
 exports.getAllSectionsInClass = getAllSectionsInClass;

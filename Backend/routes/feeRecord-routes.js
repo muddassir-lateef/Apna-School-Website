@@ -20,4 +20,10 @@ router.post('/addFeeDetailToStudentFeeRecord', FeeRecordController.addFeeDetailT
 */
 router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeRecord);
 
+router.get('/getAllFeeDetailsFromStudentFeeRecord', FeeRecordController.getAllFeeDetailsFromStudentFeeRecord);
+/*
+{
+    "rollNumber" : 6000
+}
+*/
 module.exports = router;

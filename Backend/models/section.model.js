@@ -5,7 +5,7 @@ let Teacher = require('../models/teacher.model');
 const Schema = mongoose.Schema;
 
 const sectionSchema = new Schema({
-  //The basic section (A/B/C or 1/2/3)
+  //The basic section (1A / 2B / 3C) The Number before Alphabet has to be added on runtime by the servirside itself
   sectionName: {
     type: String,
     required: true,

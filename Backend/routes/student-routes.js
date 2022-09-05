@@ -44,6 +44,8 @@ router.get('/:rollNumber' , StudentController.getStudentByRollNumber)
 router.get('/', StudentController.getAllStudents);
 
 
+router.delete('/deleteStudent/:rollNumber', StudentController.deleteStudent);
+
 
 
 

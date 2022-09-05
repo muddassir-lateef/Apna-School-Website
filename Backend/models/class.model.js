@@ -8,6 +8,7 @@ const classSchema = new Schema({
   classYear : {
     type: Number,
     required:true,
+    unique:true
   },
   //The total no. of students in the class (sections combined)
   classStrength : {
