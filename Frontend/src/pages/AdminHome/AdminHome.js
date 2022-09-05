@@ -1,13 +1,12 @@
 import React, {useContext} from 'react';
-
+import NavBar from '../../components/NavBar';
 import { AuthContext } from '../../context/AuthContext';
 
 const AdminHome = () => {
   const auth = useContext(AuthContext);
   return (
     <>
-      <h1>Admin Panel</h1>
-      <h2>Hello Nigga {auth.user}</h2>
+      <NavBar/>
     </>
   );
 };
