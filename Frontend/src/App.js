@@ -21,8 +21,7 @@ function App() {
     setUser(u);
   }, []);
 
-  let routes = loggedIn? LoggedInRoutes() : LoggedOutRoutes(); 
-  
+  let routes = loggedIn ? LoggedInRoutes() : LoggedOutRoutes();
 
   return (
     <AuthContext.Provider
@@ -37,14 +36,16 @@ function App() {
       <Router>
         <Box sx={{ display: "flex" }}>
           {loggedIn && <NavigationUI />}
-          { loggedIn && <Box component="main" sx={{ flexGrow: 1, p:3 }}>
-            {routes}
-          </Box>
-          }
-          {!loggedIn && <Box component="main" sx={{ flexGrow: 1 }}>
-            {routes}
-          </Box>
-          }
+          {loggedIn && (
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+              {routes}
+            </Box>
+          )}
+          {!loggedIn && (
+            <Box component="main" sx={{ flexGrow: 1 }}>
+              {routes}
+            </Box>
+          )}
         </Box>
       </Router>
     </AuthContext.Provider>
