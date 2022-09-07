@@ -11,6 +11,8 @@ const AdminHome = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
+    console.log("Drawer toggled")
+
     setMobileOpen(!mobileOpen);
   };
   return (

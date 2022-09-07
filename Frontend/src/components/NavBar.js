@@ -51,8 +51,8 @@ const LogoutButton = styled(Button)(({ theme }) => ({
 
 const NavBar = (props) => {
   const auth = useContext(AuthContext);
-  const {logoutHandler}=props.logoutHandler;
-  const {handleDrawerToggle}=props.handleDrawerToggle;
+  const {logoutHandler}=props;
+  const {handleDrawerToggle}=props;
 
 
 
