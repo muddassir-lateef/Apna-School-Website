@@ -1,15 +1,14 @@
 import { useState, useCallback } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-
+import { Box } from "@mui/material";
 import "./App.css";
-import SignIn from "./pages/SignIn/Signin";
-import AdminHome from "./pages/AdminHome/AdminHome";
-import AllStudents from "./pages/Students/AllStudents";
+
+import NavigationUI from "./components/NavigationUI";
+import { LoggedInRoutes, LoggedOutRoutes } from "./routes/AllRoutes";
 
 function App() {
   /////
-
   const [loggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState("");
   const login = useCallback(() => {
@@ -22,21 +21,8 @@ function App() {
     setUser(u);
   }, []);
 
-  let routes;
-  if (loggedIn) {
-    routes = (
-      <Routes>
-        <Route path="/student" element={<AllStudents />} />
-        <Route path="/" element={<AdminHome />} />
-      </Routes>
-    );
-  } else {
-    routes = (
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-      </Routes>
-    );
-  }
+  let routes = loggedIn? LoggedInRoutes() : LoggedOutRoutes(); 
+  
 
   return (
     <AuthContext.Provider
@@ -49,7 +35,17 @@ function App() {
       }}
     >
       <Router>
-          {routes}
+        <Box sx={{ display: "flex" }}>
+          {loggedIn && <NavigationUI />}
+          { loggedIn && <Box component="main" sx={{ flexGrow: 1, p:3 }}>
+            {routes}
+          </Box>
+          }
+          {!loggedIn && <Box component="main" sx={{ flexGrow: 1 }}>
+            {routes}
+          </Box>
+          }
+        </Box>
       </Router>
     </AuthContext.Provider>
   );

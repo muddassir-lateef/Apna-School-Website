@@ -1,4 +1,5 @@
 import {Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import React from "react";
 
@@ -9,25 +10,29 @@ const drawerWidth = 240;
 const menuItems = [
     {
         title: "All students",
-        path: '/students',
+        path: '/admin/students',
         icon: <Face6Icon/>
     },
     {
         title: "All teachers",
-        path: '/teachers',
+        path: '/admin/teachers',
         icon: <Face6Icon/>
     },
     {
         title: "Calendar",
-        path: '/calendar',
+        path: '/admin/calendar',
         icon: <CalendarMonthIcon/>
     }
 ]
 
 const SDrawer = (props) => {
+  const navigate = useNavigate();
 
   const {mobileOpen}=props;
   const {handleDrawerToggle}=props;
+  const handleSideBarClick = (path) => {
+    navigate(path, { replace: true });
+  }
 
   return (
     <div>
@@ -50,7 +55,7 @@ const SDrawer = (props) => {
         <Toolbar />
         <List>
             {menuItems.map(item => (
-                <ListItem button key={item.title} >
+                <ListItem button key={item.title} onClick={() => handleSideBarClick(item.path)}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.title}/>
                 </ListItem>
