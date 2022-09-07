@@ -49,17 +49,12 @@ const LogoutButton = styled(Button)(({ theme }) => ({
 
 
 
-const NavBar = () => {
+const NavBar = (props) => {
   const auth = useContext(AuthContext);
+  const {logoutHandler}=props.logoutHandler;
+  const {handleDrawerToggle}=props.handleDrawerToggle;
 
-  const logoutHandler = () => {
-    auth.logout();
-  }
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   return (
     <div>
@@ -91,28 +86,7 @@ const NavBar = () => {
 
       </AppBar>
 
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: "none", sm: "block" },
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar />
-        <List>
-          {menuItems.map(item => (
-            <ListItem button key={item.title} >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+
 
     </div>
   );
