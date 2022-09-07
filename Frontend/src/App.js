@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-import { Box } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 import "./App.css";
 
 import NavigationUI from "./components/NavigationUI";
@@ -38,6 +38,7 @@ function App() {
           {loggedIn && <NavigationUI />}
           {loggedIn && (
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+              <Toolbar/>
               {routes}
             </Box>
           )}

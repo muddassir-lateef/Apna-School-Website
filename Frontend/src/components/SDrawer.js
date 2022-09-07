@@ -30,7 +30,9 @@ const SDrawer = (props) => {
 
   const {mobileOpen}=props;
   const {handleDrawerToggle}=props;
+  
   const handleSideBarClick = (path) => {
+    if (mobileOpen) handleDrawerToggle();
     navigate(path, { replace: true });
   }
 
@@ -77,7 +79,7 @@ const SDrawer = (props) => {
         <Toolbar />
         <List>
             {menuItems.map(item => (
-                <ListItem button key={item.title} >
+                <ListItem button key={item.title} onClick={() => handleSideBarClick(item.path)}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.title}/>
                 </ListItem>

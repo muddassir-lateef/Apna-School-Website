@@ -20,7 +20,7 @@ export const LoggedInRoutes = () => {
     let routes;
     routes = (
       <Routes>
-        <Route path="/admin/student" element={<AllStudents />} />
+        <Route path="/admin/students" element={<AllStudents />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
       </Routes>
