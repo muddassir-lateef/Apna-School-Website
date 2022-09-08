@@ -58,10 +58,10 @@ const getStudentByRollNumber = async (req, res, next) => {
     const rollNumber={rollNumber:req.params.rollNumber};
     Student.findOne(rollNumber)
     .then((student) => res.status(201).json(student))
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(401).json("Error: " + err));
   }
   catch(err) {
-    return next(new HttpError(err.message, 500));
+    return next(new HttpError(err.message, 401));
   }
 };
 

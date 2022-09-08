@@ -17,8 +17,8 @@ export async function login(username, password){
   }
 }
 
-export async function getStudents() {
-  let tempURL = URL + 'student/6969'
+export async function getStudents(rollNo) {
+  let tempURL = URL + rollNo // 'student/6969'
   console.log(tempURL);
   const response = await axios.get(tempURL);
   if(response.status == 201) {
