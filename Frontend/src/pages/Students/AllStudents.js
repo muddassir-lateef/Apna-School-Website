@@ -9,7 +9,6 @@ const AllStudents = () => {
   const [rollNo, setrollNo] = useState('');
   const [student, setStudent] = useState([]);
   const [studentFlag, setStudentFlag] = useState();
-  const [errormessage, setErrorMessage] = useState('');
 
   const textChange = event => {
     setrollNo(event.target.value);
@@ -44,7 +43,7 @@ const AllStudents = () => {
       <h1>
       <Button variant="contained" onClick={buttonClick}>Search</Button>
       </h1>
-      {studentFlag
+      {studentFlag == 1
         ? 
         <Container>
         <h1>
