@@ -3,26 +3,28 @@ import { useNavigate } from "react-router-dom";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import React from "react";
+import React, { useState } from "react";
 
 import Face6Icon from '@mui/icons-material/Face6';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import NestedList from "./NestedList";
 import Divider from '@mui/material/Divider';
+import AddIcon from '@mui/icons-material/Add';
 const drawerWidth = 240;
-const menuItems = [
+const initial_menuItems = [
   {
     
     menuTitle: "Student",
+    visible: true,
     enteries: [{
       title: "All students",
       path: '/admin/students',
       icon: <Face6Icon />
     },
     {
-      title: "All teachers",
+      title: "New Student",
       path: '/admin/teachers',
-      icon: <Face6Icon />
+      icon: <AddIcon />
     },
     {
       title: "Calendar",
@@ -34,15 +36,37 @@ const menuItems = [
 
   {
     menuTitle: "Teacher",
+    visible: true,
     enteries: [{
       title: "All students",
       path: '/admin/students',
       icon: <Face6Icon />
     },
     {
-      title: "All teachers",
+      title: "New Teacher",
       path: '/admin/teachers',
+      icon: <AddIcon />
+    },
+    {
+      title: "Calendar",
+      path: '/admin/calendar',
+      icon: <CalendarMonthIcon />
+    }
+    ]
+  },
+
+  {
+    menuTitle: "Exams",
+    visible: true,
+    enteries: [{
+      title: "All Exams",
+      path: '/admin/students',
       icon: <Face6Icon />
+    },
+    {
+      title: "New Exam",
+      path: '/admin/teachers',
+      icon: <AddIcon />
     },
     {
       title: "Calendar",
@@ -52,11 +76,19 @@ const menuItems = [
     ]
   }
 
+
 ]
 
 
 const SDrawer = (props) => {
   const navigate = useNavigate();
+  const [menuItems, setMenuItems] = useState(initial_menuItems);
+
+  const updateMenuItemsVisibility = (index) => {
+    let temp_menu_items = menuItems;
+    temp_menu_items[index].visible = !temp_menu_items[index].visible;
+    setMenuItems(temp_menu_items);
+  }
 
   const { mobileOpen } = props;
   const { handleDrawerToggle } = props;
@@ -67,7 +99,8 @@ const SDrawer = (props) => {
   }
   const [studentMenuOpen, setStudentMenuOpen] = React.useState(true);
 
-  const handleStudentMenuClick = () => {
+  const handleStudentMenuClick = (index) => {
+    updateMenuItemsVisibility(index);
     setStudentMenuOpen(!studentMenuOpen);
   };
 
@@ -92,13 +125,13 @@ const SDrawer = (props) => {
         <Toolbar />
         <List >
 
-          {menuItems.map((menu) => (
+          {menuItems.map((menu, index) => (
             <>
-              <ListItemButton onClick={handleStudentMenuClick}>
+              <ListItemButton onClick={()=>handleStudentMenuClick(index)}>
                 <ListItemText primary={menu.menuTitle} />
-                {studentMenuOpen ? <ExpandLess /> : <ExpandMore />}
+                {menu.visible ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              <Collapse in={studentMenuOpen} timeout="auto" unmountOnExit>
+              <Collapse in={menu.visible} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
 
                   {menu.enteries.map(item => (
@@ -116,6 +149,9 @@ const SDrawer = (props) => {
 
         </List>
       </Drawer>
+
+
+      
       <Drawer
         variant="permanent"
         sx={{
@@ -131,13 +167,13 @@ const SDrawer = (props) => {
         <Toolbar />
         <List >
 
-          {menuItems.map((menu) => (
+          {menuItems.map((menu, index) => (
             <>
-              <ListItemButton onClick={handleStudentMenuClick}>
+              <ListItemButton onClick={()=>handleStudentMenuClick(index)}>
                 <ListItemText primary={menu.menuTitle} />
-                {studentMenuOpen ? <ExpandLess /> : <ExpandMore />}
+                {menu.visible ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              <Collapse in={studentMenuOpen} timeout="auto" unmountOnExit>
+              <Collapse in={menu.visible} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
 
                   {menu.enteries.map(item => (
