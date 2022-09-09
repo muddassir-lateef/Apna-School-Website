@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Container } from "@mui/material";
+import { Button, Container, Box, Grid } from "@mui/material";
 import { getStudents } from "../../services/UserService";
 import StudentSearchBox from "../../components/StudentSeacrhBox";
 import { getAllStudents } from "../../services/UserService";
@@ -51,13 +51,13 @@ const AllStudents = () => {
   };
 
   return (
-    <>
+    <Box>
       <StudentSearchBox onChange={textChange} inputValue={rollNo} options={studentOptions}/>
-      <h1>
-        <Button variant="contained" onClick={buttonClick}>
+      <Grid  justifyContent="center" display="flex">
+        <Button  variant="contained" onClick={buttonClick} sx={{mt:2, width:'100%'}}>
           Search
         </Button>
-      </h1>
+      </Grid>
       {studentFlag === 1 ? (
         <Container>
           <h1>Roll Number : {student.rollNumber}</h1>
@@ -69,7 +69,7 @@ const AllStudents = () => {
       ) : (
         <h1>Student Not Found</h1>
       )}
-    </>
+    </Box>
   );
 };
 

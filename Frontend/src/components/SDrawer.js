@@ -42,7 +42,7 @@ const initial_menuItems = [
     },
     {
       title: "New Teacher",
-      path: '/admin/teachers',
+      path: '/admin/teachers/new',
       icon: <AddIcon />
     },
     {
