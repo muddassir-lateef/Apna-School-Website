@@ -23,7 +23,7 @@ const initial_menuItems = [
     },
     {
       title: "New Student",
-      path: '/admin/teachers',
+      path: '/admin/students/addNew',
       icon: <AddIcon />
     },
     {
@@ -165,7 +165,7 @@ const SDrawer = (props) => {
         }}
       >
         <Toolbar />
-        <List >
+        <List>
 
           {menuItems.map((menu, index) => (
             <>
