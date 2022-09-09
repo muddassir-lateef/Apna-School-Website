@@ -33,8 +33,8 @@ const addStudent = async(req, res, next) => {
 
         newStudent
         .save()
-        .then(() => res.json({ message: "Student added!", Student: newStudent }))
-        .catch((err) => res.status(400).json("Error: " + err));
+        .then(() => res.status(201).json({ message: "Student added!", Student: newStudent }))
+        .catch((err) => res.status(401).json("Error: " + err));
 
     }catch(err){
         return next( new HttpError(err.message, 500));

@@ -1,17 +1,10 @@
 import { Typography, Card } from "@mui/material";
 import React from "react";
+import FormPropsTextFields from "../../components/AddNewStudentInputForm";
 
 const AddNewStudent = () => {
   return (
-    <>
-      <Card>
-        <Typography variant="h6" width={"100%"} textAlign={"center"}>
-          Add a new Student
-        </Typography>
-
-        
-      </Card>
-    </>
+    <FormPropsTextFields/>
   );
 };
 

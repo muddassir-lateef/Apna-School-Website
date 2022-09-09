@@ -24,7 +24,7 @@ const AllStudents = () => {
         alert("Student not found");
         console.log(response.data);
       }
-    }, []);
+    }, );
   });
 
   const textChange = (value) => {
@@ -37,6 +37,8 @@ const AllStudents = () => {
     event.preventDefault();
     console.log('ROLL NUMBER: ' + rollNo);
     let URL = "student/" + rollNo;
+    if(rollNo > 0)
+    {
     getStudents(URL).then((response) => {
       if (response.status === 201) {
         console.log(response.data);
@@ -47,7 +49,12 @@ const AllStudents = () => {
         console.log(response.data);
         setStudentFlag(-1);
       }
+      if(rollNo == -1)
+      {
+        setStudent(-1)
+      }
     });
+  }
   };
 
   return (

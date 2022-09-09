@@ -15,6 +15,22 @@ export async function login(username, password){
     return -1;
   }
 }
+export async function addStudent
+(
+rollNumber,Age,firstName,lastName,guardianFirstName,guardianLastName,cnic,emailAddress,phoneNumber,houseAddress
+)
+{
+  let tempURL =  URL  + 'student/addStudent';
+  const response = await axios.post(tempURL, {
+    rollNumber,Age,firstName,lastName,guardianFirstName,guardianLastName,cnic,emailAddress,phoneNumber,houseAddress
+  });
+  if(response.status == 201) {
+    return response
+  }
+  else if(response.status == 401){
+    return -1
+  }
+}
 
 export async function getStudents(rollNo) {
   let tempURL = URL + rollNo // 'student/6969'

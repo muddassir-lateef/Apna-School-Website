@@ -15,7 +15,7 @@ const initial_menuItems = [
     menuTitle: "Student",
     visible: true,
     enteries: [{
-      title: "All students",
+      title: "Students",
       path: '/admin/students',
       icon: <Face6Icon />
     },
