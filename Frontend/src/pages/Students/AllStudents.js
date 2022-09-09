@@ -1,20 +1,41 @@
 import React from "react";
 import { useState } from "react";
-import { TextField, Button, Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { getStudents } from "../../services/UserService";
 import StudentSearchBox from "../../components/StudentSeacrhBox";
+import { getAllStudents } from "../../services/UserService";
+const studentOptions = [];
 
 const AllStudents = () => {
   const [rollNo, setrollNo] = useState("");
   const [student, setStudent] = useState([]);
   const [studentFlag, setStudentFlag] = useState();
 
-  const textChange = (event) => {
-    setrollNo(event.target.value);
+  React.useEffect(() => {
+    getAllStudents().then((response) => {
+      if (response.status === 201) {
+        console.log(response.data);
+        if (response.data.length !== studentOptions.length){
+        for (let i = 0; i < response.data.length; i++) { 
+            let tempObj = {label: String(response.data[i].rollNumber)};
+            studentOptions.push(tempObj) 
+        }}
+      } else if (response.status === 401) {
+        alert("Student not found");
+        console.log(response.data);
+      }
+    }, []);
+  });
+
+  const textChange = (value) => {
+    setrollNo(value);
     console.log(rollNo);
+  
   };
 
   const buttonClick = (event) => {
+    event.preventDefault();
+    console.log('ROLL NUMBER: ' + rollNo);
     let URL = "student/" + rollNo;
     getStudents(URL).then((response) => {
       if (response.status === 201) {
@@ -31,14 +52,7 @@ const AllStudents = () => {
 
   return (
     <>
-      <StudentSearchBox onChange={textChange}/>
-      <h1>
-        <TextField
-          id="outlined-name"
-          label="Roll Number"
-          onChange={textChange}
-        />
-      </h1>
+      <StudentSearchBox onChange={textChange} inputValue={rollNo} options={studentOptions}/>
       <h1>
         <Button variant="contained" onClick={buttonClick}>
           Search
