@@ -16,7 +16,8 @@ export default function StudentSearchBox(props) {
       options={studentOptions}
       sx={{ width: "100%" }}
       onChange={(event, newValue) => {
-        props.onChange(newValue)
+        if (newValue !== null){
+        props.onChange(newValue)}
       }}
       inputValue={props.inputValue}
       onInputChange={(event, newInputValue) => {
