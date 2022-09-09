@@ -1,4 +1,4 @@
-import { Drawer, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Toolbar, Collapse, ListSubheader } from "@mui/material";
+import { Drawer, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Toolbar, Collapse } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -7,8 +7,6 @@ import React, { useState } from "react";
 
 import Face6Icon from '@mui/icons-material/Face6';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import NestedList from "./NestedList";
-import Divider from '@mui/material/Divider';
 import AddIcon from '@mui/icons-material/Add';
 const drawerWidth = 240;
 const initial_menuItems = [

@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { TextField, Button, Box, Container } from "@mui/material";
+import { TextField, Button, Container } from "@mui/material";
 import { getStudents } from "../../services/UserService";
+import StudentSearchBox from "../../components/StudentSeacrhBox";
 
 const AllStudents = () => {
   const [rollNo, setrollNo] = useState("");
@@ -16,11 +17,11 @@ const AllStudents = () => {
   const buttonClick = (event) => {
     let URL = "student/" + rollNo;
     getStudents(URL).then((response) => {
-      if (response.status == 201) {
+      if (response.status === 201) {
         console.log(response.data);
         setStudent(response.data);
         setStudentFlag(1);
-      } else if (response.status == 401) {
+      } else if (response.status === 401) {
         alert("Student not found");
         console.log(response.data);
         setStudentFlag(-1);
@@ -30,7 +31,7 @@ const AllStudents = () => {
 
   return (
     <>
-      <h3>Enter the Roll Number of the student </h3>
+      <StudentSearchBox onChange={textChange}/>
       <h1>
         <TextField
           id="outlined-name"
@@ -43,7 +44,7 @@ const AllStudents = () => {
           Search
         </Button>
       </h1>
-      {studentFlag == 1 ? (
+      {studentFlag === 1 ? (
         <Container>
           <h1>Roll Number : {student.rollNumber}</h1>
           <h1>
