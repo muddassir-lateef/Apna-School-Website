@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Button, Container, Box, Grid } from "@mui/material";
 import { getStudents } from "../../services/UserService";
-import StudentSearchBox from "../../components/StudentSeacrhBox";
+import SearchBox from "../../components/SearchBox";
 import { getAllStudents } from "../../services/UserService";
 const studentOptions = [];
 
@@ -59,7 +59,7 @@ const AllStudents = () => {
 
   return (
     <Box>
-      <StudentSearchBox onChange={textChange} inputValue={rollNo} options={studentOptions}/>
+      <SearchBox onChange={textChange} inputValue={rollNo} options={studentOptions} label="student roll no"/>
       <Grid  justifyContent="center" display="flex">
         <Button  variant="contained" onClick={buttonClick} sx={{mt:2, width:'100%'}}>
           Search

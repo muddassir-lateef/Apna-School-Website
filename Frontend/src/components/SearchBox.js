@@ -4,16 +4,16 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 
 
-export default function StudentSearchBox(props) {
+export default function SearchBox(props) {
   //this function will run only when the component is loaded
 
-  const studentOptions = props.options;
-
+  const Options = props.options;
+  const label= props.label
   return (
     <Autocomplete
       disablePortal
       id="combo-box-demo"
-      options={studentOptions}
+      options={Options}
       sx={{ width: "100%" }}
       onChange={(event, newValue) => {
         if (newValue !== null){
@@ -25,7 +25,7 @@ export default function StudentSearchBox(props) {
         props.onChange(newInputValue)}
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Student Roll Number"   />
+        <TextField {...params} label={props.label}   />
       )}
     />
   );
