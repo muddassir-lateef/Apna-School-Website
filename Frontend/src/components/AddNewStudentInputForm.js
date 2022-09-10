@@ -168,7 +168,7 @@ export default function FormPropsTextFields() {
          
          </Grid>
          <Grid>
-         <StatusAlert>Hey </StatusAlert>
+         <StatusAlert></StatusAlert>
          </Grid>
         </Box>
       </Card>
