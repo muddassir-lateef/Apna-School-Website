@@ -36,10 +36,6 @@ export default function FormPropsTextFields() {
       return (
         <Alert severity="success">Student Added Succesfully!</Alert>
       )
-      if(status == 20)
-      return (
-        <Alert severity="info">Enter the Student Credentials!</Alert>
-      )
     }
    
     
