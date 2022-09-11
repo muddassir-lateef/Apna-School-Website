@@ -80,3 +80,15 @@ export async function addNewTeacher(firstName, lastName, age, username) {
   }
 
 }
+export async function getAllTeachers() {
+  let tempURL = URL + 'teacher' // 'http://localhost:5000/student'
+  console.log(tempURL);
+  const response = await axios.get(tempURL);
+  if(response.status === 201) {
+    return response;
+  }
+  else if(response.status === 401)
+  {
+    return -1
+  }
+}

@@ -2,9 +2,11 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Too
 import { useNavigate } from "react-router-dom";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import React, { useState } from "react";
-
+import ClassIcon from '@mui/icons-material/Class';
 import Face6Icon from '@mui/icons-material/Face6';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AddIcon from '@mui/icons-material/Add';
@@ -36,20 +38,26 @@ const initial_menuItems = [
     menuTitle: "Teacher",
     visible: true,
     enteries: [{
-      title: "All students",
-      path: '/admin/students',
-      icon: <Face6Icon />
+      title: "Search Teacher",
+      path: '/teacher/search',
+      icon: <PersonSearchIcon />
     },
     {
-      title: "New Teacher",
-      path: '/admin/teachers/new',
-      icon: <AddIcon />
+      title: "Add Teacher",
+      path: '/teacher/add',
+      icon: <PersonAddIcon />
     },
     {
-      title: "Calendar",
-      path: '/admin/calendar',
-      icon: <CalendarMonthIcon />
+      title: "Remove Teacher",
+      path: '/teacher/remove',
+      icon: <PersonRemoveIcon />
+    },
+    {
+      title: "Assign Class",
+      path: '/teacher/assign',
+      icon: <ClassIcon />
     }
+
     ]
   },
 

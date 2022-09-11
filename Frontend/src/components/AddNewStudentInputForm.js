@@ -3,8 +3,16 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card'
+import Avatar from '@mui/material/Avatar'
+import SendIcon from "@mui/icons-material/Send";
+import Alert from '@mui/material/Alert'
+import  Typography from '@mui/material/Typography';
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { useState } from 'react';
 import { addStudent as add} from '../services/UserService';
+
+
 
 export default function FormPropsTextFields() {
     //Prolly bad coding practice here, but it works I guess
@@ -18,23 +26,61 @@ export default function FormPropsTextFields() {
     const [emailAddress, setemailAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [houseAddress, setHouseAddress] = useState();
-
-
+    const [status,setStatus] = useState(0);
+    const StatusAlert = () => {
+      if(status == -1) 
+      return (
+        <Alert severity="error">Invalid Student Credentials!</Alert>
+      )
+      if(status == 1)
+      return (
+        <Alert severity="success">Student Added Succesfully!</Alert>
+      )
+    }
+   
+    
     const StudentAdded = () => {
         console.log(rollNo)
-       let res = add(rollNo,Age,firstName,lastName,guardianFirstName,guardianLastName,cnic,emailAddress,phoneNumber,houseAddress)
-      console.log(res);
+          add(rollNo,Age,firstName,lastName,guardianFirstName,guardianLastName,cnic,emailAddress,phoneNumber,houseAddress)
+       .then((res) => {
+        if(res.status == 201) {
+           //("Student added")
+            setStatus(1)
+        }
+       })
+       .catch((err) => {
+          setStatus(-1)
+       });
     };
   return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
+
+    <Grid justifyContent="center" display="flex">
+      <Card sx={{ width: "90%" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            p: 1,
+            m: 1,
+          }}
+        >
+          <Avatar sx={{ mr: 1 }}>
+            <PersonAddAlt1Icon />
+          </Avatar>
+          <Typography variant="h5">Student Admission</Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            flexWrap: "wrap",
+            alignItems: "center",
+            p: 1,
+          }}
+        >
+   
         <TextField
           required
           id="outlined-required"
@@ -43,8 +89,6 @@ export default function FormPropsTextFields() {
             setrollNo(event.target.value)
           }}
         />
-        </div>
-        <div>
         <TextField
           required
           id="outlined-required"
@@ -61,8 +105,6 @@ export default function FormPropsTextFields() {
             setlastName(event.target.value)
           }}
         />
-        </div>
-        <div>
         <TextField
           required
           id="outlined-required"
@@ -79,8 +121,6 @@ export default function FormPropsTextFields() {
             setCnic(event.target.value)
           }}
         />
-        </div>
-        <div>
         <TextField
           required
           id="outlined-required"
@@ -97,8 +137,6 @@ export default function FormPropsTextFields() {
             setguardianLastName(event.target.value)
           }}
         />
-        </div>
-        <div>
         <TextField
           required
           id="outlined-required"
@@ -115,9 +153,6 @@ export default function FormPropsTextFields() {
             setPhoneNumber(event.target.value)
           }}
         />
-        </div>
-        
-        <div>
         <TextField
           required
           id="outlined-required"
@@ -126,12 +161,19 @@ export default function FormPropsTextFields() {
             setHouseAddress(event.target.value)
           }}
         />
-      </div>
-      <Grid  justifyContent="center" display="flex">
-        <Button  variant="contained"  sx={{mt:3, width:'100%'}} onClick = {StudentAdded}>
-            Add Student
-        </Button>
-        </Grid>
-    </Box>
+        <Grid container display="flex" justifyContent="flex-end">
+            <Button variant="contained" endIcon={<SendIcon />} sx={{ mt: 2 }} onClick = {StudentAdded}>
+              Submit
+           </Button>
+         
+         </Grid>
+         <Grid>
+         <StatusAlert></StatusAlert>
+         </Grid>
+        </Box>
+      </Card>
+      
+    </Grid>
+      
   );
 }
