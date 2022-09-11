@@ -49,7 +49,7 @@ const AllStudents = () => {
         console.log(response.data);
         setStudentFlag(-1);
       }
-      if(rollNo == -1)
+      if(rollNo === -1)
       {
         setStudent(-1)
       }

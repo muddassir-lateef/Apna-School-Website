@@ -23,7 +23,7 @@ export default function FormPropsTextFields() {
     const StudentAdded = () => {
         console.log(rollNo)
        let res = add(rollNo,Age,firstName,lastName,guardianFirstName,guardianLastName,cnic,emailAddress,phoneNumber,houseAddress)
-   
+      console.log(res);
     };
   return (
     <Box

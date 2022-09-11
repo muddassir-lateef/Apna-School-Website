@@ -1,12 +1,12 @@
-import { Typography, Card, Grid, Box, Button } from "@mui/material";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import Avatar from "@mui/material/Avatar";
+//import { Typography, Card, Grid, Box, Button } from "@mui/material";
+//import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+//import Avatar from "@mui/material/Avatar";
 import React from "react";
 import FormPropsTextFields from "../../components/AddNewStudentInputForm";
-import { useState } from 'react';
-import { addStudent } from '../../services/UserService';
-import TextField from "@mui/material/TextField";
-import SendIcon from "@mui/icons-material/Send";
+//import { useState } from 'react';
+//import { addStudent } from '../../services/UserService';
+//import TextField from "@mui/material/TextField";
+//import SendIcon from "@mui/icons-material/Send";
 
 const AddNewStudent = () => {
   
