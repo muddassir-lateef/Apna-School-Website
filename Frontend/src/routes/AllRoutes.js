@@ -3,11 +3,10 @@ import AllStudents from "../pages/Students/AllStudents";
 import AdminHome from "../pages/AdminHome/AdminHome";
 import SignIn from "../pages/SignIn/Signin";
 import AddNewStudent from '../pages/Students/AddNewStudent';
-import AddTeacher from '../pages/Teacher/AddTeacher'
 import RemoveTeacher from '../pages/Teacher/RemoveTeacher'
-import AssignTeacher from '../pages/Teacher/AssignTeacher'
 import SearchTeacher from '../pages/Teacher/SearchTeacher'
-
+import AddNewTeacher from "../pages/Teacher/AddNewTeacher";
+import AssignTeacher from '../pages/Teacher/AssignTeacher'
 export const LoggedOutRoutes = () => {
   let routes;
 
@@ -26,9 +25,8 @@ export const LoggedInRoutes = () => {
       <Routes>
         <Route path="/admin/students" element={<AllStudents />} />
         <Route path="/admin/students/addNew" element={<AddNewStudent />} />
-        <Route path="/admin/teachers/new" element={<AddNewTeacher />} />
+        <Route path="/teacher/add" element={<AddNewTeacher />} />
         <Route path="/admin" element={<AdminHome />} />
-        <Route path="/teacher/add" element={<AddTeacher/>} />
         <Route path="/teacher/search" element={<SearchTeacher/>} />
         <Route path="/teacher/remove" element={<RemoveTeacher/>} />
         <Route path="/teacher/assign" element={<AssignTeacher/>} />
