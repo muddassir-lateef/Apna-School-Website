@@ -8,6 +8,7 @@ const teacherController = require('../controllers/teacher-controller');
 //get a teacher by username
 router.get('/:username', teacherController.getTeacherByUsername)
 
+router.post('/addNew', teacherController.addTeacher)
 //get a list of all teachers
 router.get('/', teacherController.getAllTeacher)
 

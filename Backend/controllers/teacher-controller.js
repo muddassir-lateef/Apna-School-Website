@@ -49,7 +49,33 @@ const getAllTeacher = async (req, res, next) => {
       return next(new HttpError(err.message, 500));
     }
   };
+
+
+  const addTeacher = async(req, res, next) => {
+    try{
+        const firstName = req.body.firstName;
+        const age = req.body.Age;
+        const lastName = req.body.lastName;
+        const username = req.body.username;
+
+        const newTeacher= new Teacher({
+
+            firstName, lastName, age, username
+                                    });
+
+
+        newTeacher
+        .save()
+        .then(() => res.status(201).json({ message: "Teacher added!"}))
+        .catch((err) => res.status(401).json("Error: " + err));
+
+    }catch(err){
+        return next( new HttpError(err.message, 500));
+    }
+
+}
 exports.getAllTeacher = getAllTeacher;
 exports.updateTeacher = updateTeacher;
 exports.deleteTeacher = deleteTeacher;
 exports.getTeacherByUsername = getTeacherByUsername;
+exports.addTeacher = addTeacher;
