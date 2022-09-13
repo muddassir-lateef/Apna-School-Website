@@ -9,7 +9,6 @@ const AdminHome = () => {
   return (
     <>
     <Toolbar/>
-    
       <h1>This is an admin page, {auth.user}</h1>
     </>
   );
