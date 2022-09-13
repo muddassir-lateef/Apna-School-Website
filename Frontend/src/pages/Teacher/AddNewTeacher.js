@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Typography, Card, Grid, Box, Button } from "@mui/material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -10,9 +10,14 @@ import { VALIDATOR_MIN, VALIDATOR_MINLENGTH } from "../../services/validators";
 import { addNewTeacher } from "../../services/UserService";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
+import InputLabel from "@mui/material/InputLabel";
 
 const AddNewTeacher = () => {
-  const [submitStatus, setSubmitStatus] = React.useState(0);
+  const [submitStatus, setSubmitStatus] = useState(0);
+  const [selectedFile, setSelectedFile] = useState("");
+  const [fileInputState, setFileInputState] = useState("");
+  const [previewSource, setPreviewSource] = useState("");
+
   const [formState, InputHandler] = useForm(
     {
       firstName: {
@@ -41,11 +46,14 @@ const AddNewTeacher = () => {
   const [snackOpen, setSnackOpen] = React.useState(false);
 
   const teacherSubmitHandler = () => {
+    const image = previewSource || '';
+    console.log(previewSource)
     addNewTeacher(
       formState.inputs.firstName.value,
       formState.inputs.lastName.value,
       formState.inputs.age.value,
-      formState.inputs.username.value
+      formState.inputs.username.value,
+      image
     )
       .then((res) => {
         if (res.status === 201) {
@@ -66,22 +74,46 @@ const AddNewTeacher = () => {
   };
 
   const StatusAlert = () => {
-    if(submitStatus === -1) 
-    return (
-      <Alert onClose={()=>setSnackOpen(false)} severity="error" sx={{ width: '100%' }}>
+    if (submitStatus === -1)
+      return (
+        <Alert
+          onClose={() => setSnackOpen(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
           Teacher was not added!
-      </Alert>
-    )
-    if(submitStatus === 1)
-    return (
-      <Alert onClose={()=>setSnackOpen(false)} severity="success" sx={{ width: '100%' }}>
-          Teacher Added Successfully! 
-      </Alert>
-    )
-  }
+        </Alert>
+      );
+    if (submitStatus === 1)
+      return (
+        <Alert
+          onClose={() => setSnackOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Teacher Added Successfully!
+        </Alert>
+      );
+  };
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    previewFile(file);
+    setSelectedFile(file);
+    setFileInputState(e.target.value);
+  };
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
   return (
-    <Grid justifyContent="center" display="flex" flex-direction= 'row'>
-      <Card sx={{ width: "90%" }}>
+    <Grid justifyContent="center" display="flex" flex-direction="row">
+      <Card sx={{ width: "90%", maxWidth: "900px" }}>
         <Box
           sx={{
             display: "flex",
@@ -144,6 +176,39 @@ const AddNewTeacher = () => {
             errorText="Username must be at least 5 characters"
           />
 
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              alignItems: "center",
+              width: "100%",
+              p: 1,
+            }}
+          >
+            <InputLabel sx={{ p: "-1px", w: "100%" }}>
+              Teacher Profile Picture
+            </InputLabel>
+            <input
+              style={{
+                display: "inline-block",
+                padding: "6px 12px",
+                cursor: "pointer",
+              }}
+              id="imagefile"
+              type="file"
+              onChange={handleFileInputChange}
+              value={fileInputState}
+            />
+          </Box>
+          {previewSource && (
+            <img
+              src={previewSource}
+              alt="chosen"
+              style={{ height: "300px", class: "center", borderRadius: "50%" }}
+            />
+          )}
+
           <Grid container display="flex" justifyContent="flex-end">
             <Button
               onClick={onSubmitHandler}
@@ -157,13 +222,18 @@ const AddNewTeacher = () => {
           </Grid>
         </Box>
       </Card>
-      <Snackbar open={snackOpen} autoHideDuration={6000} onClose={()=>setSnackOpen(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-        <div><StatusAlert/></div>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <div>
+          <StatusAlert />
+        </div>
       </Snackbar>
     </Grid>
   );
 };
-
-
 
 export default AddNewTeacher;
