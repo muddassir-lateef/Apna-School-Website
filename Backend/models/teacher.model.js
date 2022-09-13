@@ -24,6 +24,9 @@ const teacherSchema = new Schema({
     type: Number,
 
   },
+  image: {
+    type: String,
+  },
     // _id of the salaryRecord associated with the employee
 
   salaryRecordId:{

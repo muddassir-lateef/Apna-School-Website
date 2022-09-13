@@ -54,6 +54,7 @@ const Input = (props) => {
       sx={props.sx}
       id={props.id}
       label={props.label}
+      typeof= {props.type}
       variant={props.variant}
       onChange={changeHandler}
       onBlur={touchHandler}

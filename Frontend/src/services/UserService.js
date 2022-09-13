@@ -68,10 +68,10 @@ export async function getAllStudents() {
 }
 
 
-export async function addNewTeacher(firstName, lastName, age, username) {
+export async function addNewTeacher(firstName, lastName, age, username, image) {
   let tempURL = URL + "teacher/addNew";
   const response = await axios.post(tempURL, {
-    firstName, lastName, age, username
+    firstName, lastName, age, username, image
   });
   if (response.status === 201) {
     return response;
