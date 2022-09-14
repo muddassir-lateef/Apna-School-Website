@@ -98,15 +98,38 @@ const AllStudents = () => {
           })
       );
       if(studentFlag == 1 && rollNo > 0)
-      return (
-        <Container>
-        <h1>Roll Number : {student.rollNumber}</h1>
-        <h1>
-          Student Name : {student.firstName} {student.lastName}
-        </h1>
-        <h1>Age : {student.Age}</h1>
-      </Container>
-      )
+
+        return(
+              
+          <Grid justifyContent="center" display="flex">
+          <Card  sx={{
+              display: "flex",
+              width : "50%",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+              alignItems: "center",
+              p: 1,
+            }}>
+            
+          <List   component="nav" aria-label="mailbox folders">
+        <ListItem button>
+          <ListItemText primary = {student.firstName} />
+        </ListItem>
+        <Divider />
+        <ListItem button divider>
+          <ListItemText primary= {student.rollNumber} />
+        </ListItem>
+        <Divider />
+        <ListItem button divider>
+          <ListItemText primary= {student.Age} />
+        </ListItem>
+        </List>
+            </Card>
+            <Toolbar></Toolbar>
+            </Grid>
+            
+              );
+            
       }
 
   return (
