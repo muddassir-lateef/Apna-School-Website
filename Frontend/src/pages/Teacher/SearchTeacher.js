@@ -44,10 +44,14 @@ const SearchTeacher = () => {
 
   const textChange = (value) => {
     setUsername(value);
-    console.log("here: " + value)
-    const filteredArray = teachersMasterList.filter((teacher)=>{return teacher.username.includes(value)});
-    setTeachersList(filteredArray);
-    if (value.length === 0) setTeachersList(teachersMasterList)
+    console.log("here: " + value);
+    if (typeof value === "string") {
+      const filteredArray = teachersMasterList.filter((teacher) => {
+        return teacher.username.toLowerCase().includes(value.toLowerCase());
+      });
+      setTeachersList(filteredArray);
+    }
+    if (value.length === 0) setTeachersList(teachersMasterList);
   };
 
   return (
@@ -62,14 +66,13 @@ const SearchTeacher = () => {
       </Grid>
 
       {teachersList.map((item) => (
-        <Grid item sm={12} md={6} lg={4} key={item.username} >
+        <Grid item sm={12} md={6} lg={4} key={item.username}>
           <Card sx={{ maxWidth: 340 }}>
             <Image
               cloudName="dqxdmayga"
               publicId={item.image}
               width={340}
               height={250}
-              
             />
 
             <CardContent>
