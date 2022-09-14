@@ -23,7 +23,8 @@ const AllStudents = () => {
         if (response.data.length !== studentOptions.length){
         for (let i = 0; i < response.data.length; i++) { 
             let tempObj = {label: String(response.data[i].rollNumber)};
-            studentOptions.push(tempObj) 
+            if (studentOptions.find(stu => stu.label == tempObj.label) === undefined) 
+              studentOptions.push(tempObj) 
         }}
       } else if (response.status === 401) {
         alert("Student not found");
