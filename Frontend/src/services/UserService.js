@@ -23,7 +23,8 @@ export async function addStudent(
   cnic,
   emailAddress,
   phoneNumber,
-  houseAddress
+  houseAddress,
+  image
 ) {
   let tempURL = URL + "student/addStudent";
   const response = await axios.post(tempURL, {
@@ -37,6 +38,7 @@ export async function addStudent(
     emailAddress,
     phoneNumber,
     houseAddress,
+    image
   });
   if (response.status === 201) {
     return response;

@@ -33,7 +33,7 @@ const studentSchema = new Schema({
   },
   guardianLastName: {
     type: String,
-    required: true,
+    
   },
   //SelfExplanatory
   cnic: {
@@ -63,6 +63,10 @@ const studentSchema = new Schema({
   feeRecord:{
     type:Schema.Types.ObjectId ,ref:'FeeRecord',
     
+  },
+  image: {
+    type: String,
+    required : true,
   },
 
 }, {

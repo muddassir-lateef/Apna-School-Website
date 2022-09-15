@@ -14,7 +14,7 @@ const drawerWidth = 240;
 const initial_menuItems = [
   {
     
-    menuTitle: "Student",
+    menuTitle: "All Students",
     visible: true,
     enteries: [{
       title: "Students",
@@ -22,7 +22,7 @@ const initial_menuItems = [
       icon: <Face6Icon />
     },
     {
-      title: "New Student",
+      title: "Add Student",
       path: '/admin/students/addNew',
       icon: <AddIcon />
     },

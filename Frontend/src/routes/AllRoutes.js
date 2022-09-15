@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import AllStudents from "../pages/Students/AllStudents";
+import SearchStudent from "../pages/Students/SearchStudent";
 import AdminHome from "../pages/AdminHome/AdminHome";
 import SignIn from "../pages/SignIn/Signin";
 import AddNewStudent from '../pages/Students/AddNewStudent';
@@ -23,7 +23,7 @@ export const LoggedInRoutes = () => {
     let routes;
     routes = (
       <Routes>
-        <Route path="/admin/students" element={<AllStudents />} />
+        <Route path="/admin/students" element={<SearchStudent />} />
         <Route path="/admin/students/addNew" element={<AddNewStudent />} />
         <Route path="/teacher/add" element={<AddNewTeacher />} />
         <Route path="/admin" element={<AdminHome />} />

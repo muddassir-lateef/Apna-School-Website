@@ -58,11 +58,11 @@ const addTeacher = async (req, res, next) => {
     const image = req.body.image || "";
 
     var uploadResponse;
-
     if (image !== "") {
+      
        uploadResponse = await cloudinary.uploader.upload(image,{
         upload_preset: 'Teachers',
-    });
+    })
       console.log(uploadResponse);
     }
     else{
