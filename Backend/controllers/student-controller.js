@@ -8,12 +8,12 @@ const addStudent = async(req, res, next) => {
         const Age = req.body.Age;
         const lastName = req.body.lastName;
         const rollNumber = req.body.rollNumber;
-        const guardianFirstName = JSON.stringify(req.body.guardianFirstName);
-        const guardianLastName = JSON.stringify(req.body.guardianLastName);
+        const guardianFirstName = req.body.guardianFirstName;
+        const guardianLastName = req.body.guardianLastName;
         const cnic = req.body.cnic;
-        const houseAddress = JSON.stringify(req.body.houseAddress);
-        const phoneNumber = JSON.stringify(req.body.phoneNumber);
-        const emailAddress = JSON.stringify(req.body.emailAddress);
+        const houseAddress = req.body.houseAddress;
+        const phoneNumber = req.body.phoneNumber;
+        const emailAddress = req.body.emailAddress;
         const sectionId = req.body.sectionId? req.body.sectionId: null;
         const feeList = req.body.feeList? req.body.feeList: null;
         const outStandingFees = 0;

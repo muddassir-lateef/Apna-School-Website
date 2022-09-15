@@ -90,8 +90,14 @@ const  SearchStudent = () => {
         <Grid item sm={12} md={6} lg={4} key={student.rollNumber}>
           <Card sx={{ maxWidth: 340 }}>
             <CardContent>
+            <Image
+              cloudName="dqxdmayga"
+              publicId={student.image}
+              width={340}
+              height={250}
+            />
               <Typography gutterBottom variant="h5" component="div">
-                {student.firstName + " " + student.lastName}
+                {student.guardianFirstName + " " + student.guardianLastName}
               </Typography>
             </CardContent>
             <CardActions>

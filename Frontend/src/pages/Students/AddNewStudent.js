@@ -77,12 +77,12 @@ const AddNewTeacher = () => {
       formState.inputs.age.value,
       formState.inputs.firstName.value,
       formState.inputs.lastName.value,
-      formState.inputs.guardianFirstName,
-      formState.inputs.guardianLastName,
+      formState.inputs.guardianFirstName.value,
+      formState.inputs.guardianLastName.value,
       formState.inputs.cnic.value,
-      formState.inputs.email,
-      formState.inputs.phoneNumber,
-      formState.inputs.houseAddress,
+      formState.inputs.email.value,
+      formState.inputs.phoneNumber.value,
+      formState.inputs.houseAddress.value,
       image
     )
       .then((res) => {
