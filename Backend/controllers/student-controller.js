@@ -57,17 +57,7 @@ const addStudent = async(req, res, next) => {
         const newStudent = new Student({
 
             rollNumber, Age, firstName, lastName, guardianFirstName, 
-<<<<<<< Updated upstream
             guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id,
-=======
-<<<<<<< HEAD
-            guardianLastName, cnic, emailAddress, houseAddress,
-            phoneNumber, sectionId, feeRecord, image : uploadResponse.public_id
-=======
-            guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id,
->>>>>>> c1385c3915fa3762dbbf1c2b1e1abddaf72eca40
->>>>>>> Stashed changes
-
                                     });
 
 
