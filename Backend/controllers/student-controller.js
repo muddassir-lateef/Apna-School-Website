@@ -1,6 +1,7 @@
 let Student = require('../models/student.model');
 let FeeRecord = require('../models/feeRecord.model');
 const HttpError = require('../models/http-error');
+let { cloudinary } = require("../utils/cloudinary");
 
 const addStudent = async(req, res, next) => {
     try{
@@ -22,15 +23,29 @@ const addStudent = async(req, res, next) => {
         const feeRecord = new FeeRecord({
           feeList, outStandingFees,sampleAttribute
         })
-        console.log(guardianFirstName);
+       
        
         
         feeRecord.save();
+        console.log(guardianFirstName);
+        var uploadResponse;
+        if (image !== "") {
+          console.log("hit")
+           uploadResponse = await cloudinary.uploader.upload(image,{
+            upload_preset: 'Teachers',
+            
+        })
+        console.log("hit")
+          console.log(uploadResponse);
+        }
+        else{
+          uploadResponse = {public_id: ''};
+        }
 
         const newStudent = new Student({
 
             rollNumber, Age, firstName, lastName, guardianFirstName, 
-            guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image
+            guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id,
 
                                     });
 
