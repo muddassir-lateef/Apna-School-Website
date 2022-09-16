@@ -15,6 +15,7 @@ const addStudentToSection = async(req,res,next) => {
 }
     temp_section.studentIdList = temp_section.studentIdList || [];
   temp_section.studentIdList.push(temp_student._id);
+  temp_section.strength = temp_section.strength + 1;
   temp_section
   .save()
       .then(() => res.json({ message: "Student added!", Section: temp_section }))
@@ -34,14 +35,14 @@ const getAllSections = async(req,res,next) => {
     };
 
 const getSectionById = async(req,res,next) => {
-    const id = new ObjectId(req.params.sectionName);
     try {
-        Section.findById(id)
-          .populate('lectures', 'studentIdList')
-          .then((sections) => res.status(201).json(sections))
-          .catch((err) => res.status(400).json("Error: " + err));
-      } catch (err) {
-        return next(new HttpError(err.message, 500));
+        const section_query={sectionName:req.body.sectionName};
+        Section.findOne(section_query)
+        .then((section) => res.status(201).json(section))
+        .catch((err) => res.status(401).json("Error: " + err));
+      }
+      catch(err) {
+        return next(new HttpError(err.message, 401));
       }
 };
 
