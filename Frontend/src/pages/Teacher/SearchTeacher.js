@@ -44,7 +44,7 @@ const SearchTeacher = () => {
 
   const textChange = (value) => {
     setUsername(value);
-    console.log("here: " + value);
+    //console.log("here: " + value);
     if (typeof value === "string") {
       const filteredArray = teachersMasterList.filter((teacher) => {
         return teacher.username.toLowerCase().includes(value.toLowerCase());
