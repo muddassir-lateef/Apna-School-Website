@@ -4,6 +4,7 @@ const HttpError = require('../models/http-error');
 let { cloudinary } = require("../utils/cloudinary");
 
 const addStudent = async(req, res, next) => {
+  console.log("Hit")
     try{
         const firstName = req.body.firstName;
         const Age = req.body.Age;
@@ -20,6 +21,17 @@ const addStudent = async(req, res, next) => {
         const outStandingFees = 0;
         const sampleAttribute = 0;
         const image = req.body.image || "";
+        var uploadResponse;
+        if (image !== "") {
+          console.log("here")
+           uploadResponse = await cloudinary.uploader.upload(image,{
+            upload_preset: 'Teachers',
+        })
+          console.log("there");
+        }
+        else{
+          uploadResponse = {public_id: ''};
+        }
         const feeRecord = new FeeRecord({
           feeList, outStandingFees,sampleAttribute
         })
@@ -45,7 +57,16 @@ const addStudent = async(req, res, next) => {
         const newStudent = new Student({
 
             rollNumber, Age, firstName, lastName, guardianFirstName, 
+<<<<<<< Updated upstream
             guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id,
+=======
+<<<<<<< HEAD
+            guardianLastName, cnic, emailAddress, houseAddress,
+            phoneNumber, sectionId, feeRecord, image : uploadResponse.public_id
+=======
+            guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id,
+>>>>>>> c1385c3915fa3762dbbf1c2b1e1abddaf72eca40
+>>>>>>> Stashed changes
 
                                     });
 
