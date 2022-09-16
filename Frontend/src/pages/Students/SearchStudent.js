@@ -97,7 +97,7 @@ const  SearchStudent = () => {
               height={250}
             />
               <Typography gutterBottom variant="h5" component="div">
-                {student.guardianFirstName + " " + student.guardianLastName}
+                {student.firstName + " " + student.lastName}
               </Typography>
             </CardContent>
             <CardActions>
