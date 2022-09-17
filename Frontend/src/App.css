@@ -10,6 +10,14 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

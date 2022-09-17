@@ -54,6 +54,10 @@ const SearchTeacher = () => {
     if (value.length === 0) setTeachersList(teachersMasterList);
   };
 
+  const handleTeacherDelete = (teacherId) => {
+    //console.log(teacherId);
+    
+  }
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -66,7 +70,7 @@ const SearchTeacher = () => {
       </Grid>
 
       {teachersList.map((item) => (
-        <Grid item sm={12} md={6} lg={4} key={item.username}>
+        <Grid item sm={12} md={6} lg={4} key={item.username} sx={{display: 'flex', justifyContent:'center'}}>
           <Card sx={{ maxWidth: 340 }}>
             <Image
               cloudName="dqxdmayga"
@@ -82,7 +86,7 @@ const SearchTeacher = () => {
             </CardContent>
             <CardActions>
               <Button size="small">Edit</Button>
-              <Button size="small">Delete</Button>
+              <Button size="small" onClick={()=>handleTeacherDelete(item._id)}>Delete</Button>
             </CardActions>
           </Card>
         </Grid>
