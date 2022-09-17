@@ -9,11 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import SearchBox from "../../components/SearchBox";
-import { getAllTeachers } from "../../services/UserService";
+import { getAllTeachers, deleteTeacher } from "../../services/UserService";
 import { Image } from "cloudinary-react";
-const teacherOptions = [];
 
 const SearchTeacher = () => {
+  const [teacherOptions, setTeacherOptions] = useState([]);
   const [username, setUsername] = useState("");
   const [teachersList, setTeachersList] = useState([]);
   const [teachersMasterList, setTeachersMasterList] = useState([]);
@@ -25,6 +25,7 @@ const SearchTeacher = () => {
         setTeachersList(response.data);
         setTeachersMasterList(response.data);
         if (response.data.length !== teacherOptions.length) {
+          var temp_list = [];
           for (let i = 0; i < response.data.length; i++) {
             let tempObj = { label: String(response.data[i].username) };
             if (
@@ -32,8 +33,9 @@ const SearchTeacher = () => {
                 (teacher) => teacher.label === tempObj.label
               ) === undefined
             )
-              teacherOptions.push(tempObj);
+              temp_list.push(tempObj);
           }
+          setTeacherOptions(temp_list);
         }
       } else if (response.status === 401) {
         alert("Teacher not found");
@@ -55,8 +57,13 @@ const SearchTeacher = () => {
   };
 
   const handleTeacherDelete = (teacherId) => {
-    //console.log(teacherId);
-    
+    console.log(teacherId);
+    const temp_teachers = teachersList.filter((teacher)=> teacher.username !== teacherId);
+    setTeachersList(temp_teachers);
+    setTeacherOptions(teacherOptions.filter((option) => option.label !== teacherId))
+    let res =  deleteTeacher(teacherId);
+    if (res.status === 202) console.log("Student was deleted successfully")
+    else console.log(res);
   }
   return (
     <Grid container spacing={3}>
@@ -86,7 +93,7 @@ const SearchTeacher = () => {
             </CardContent>
             <CardActions>
               <Button size="small">Edit</Button>
-              <Button size="small" onClick={()=>handleTeacherDelete(item._id)}>Delete</Button>
+              <Button size="small" onClick={()=>handleTeacherDelete(item.username)}>Delete</Button>
             </CardActions>
           </Card>
         </Grid>

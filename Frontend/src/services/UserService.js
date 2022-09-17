@@ -94,3 +94,9 @@ export async function getAllTeachers() {
     return -1
   }
 }
+
+export async function deleteTeacher(username){
+  let tempURL = URL + `teacher/${username}`;
+  const response = await axios.delete(tempURL);
+  return response;
+}
