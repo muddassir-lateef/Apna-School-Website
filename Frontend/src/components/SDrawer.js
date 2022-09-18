@@ -80,6 +80,26 @@ const initial_menuItems = [
       icon: <CalendarMonthIcon />
     }
     ]
+  },
+  {
+    menuTitle: "Class",
+    visible: true,
+    enteries: [{
+      title: "Search Class",
+      path: '/admin/students',
+      icon: <Face6Icon />
+    },
+    {
+      title: "Add Class",
+      path: '/admin/teachers',
+      icon: <AddIcon />
+    },
+    {
+      title: "Delete Class",
+      path: '/admin/calendar',
+      icon: <CalendarMonthIcon />
+    }
+    ]
   }
 
 
