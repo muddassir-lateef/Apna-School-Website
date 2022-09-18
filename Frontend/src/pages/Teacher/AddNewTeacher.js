@@ -47,7 +47,7 @@ const AddNewTeacher = () => {
 
   const teacherSubmitHandler = () => {
     const image = previewSource || '';
-    console.log(previewSource)
+    //console.log(previewSource)
     addNewTeacher(
       formState.inputs.firstName.value,
       formState.inputs.lastName.value,
@@ -100,6 +100,7 @@ const AddNewTeacher = () => {
     const file = e.target.files[0];
     previewFile(file);
     setSelectedFile(file);
+    console.log(selectedFile);
     setFileInputState(e.target.value);
   };
 

@@ -28,11 +28,22 @@ const updateTeacher = async (req, res, next) => {
 
 const deleteTeacher = async (req, res, next) => {
   try {
-    const username = { username: req.params.username };
+    const username = req.params.username;
+    var temp_teacher = await Teacher.findOne({ username });
+    console.log("Teacher: " + temp_teacher)
+    const public_id = temp_teacher.image;
+    console.log("Public ID: " + public_id)
+    const deleteResponse = await cloudinary.uploader
+      .destroy(public_id)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
 
-    Teacher.findOneAndDelete(username)
-      .then(() => res.json("Delete operation called successfuly!"))
+    if (temp_teacher !== null){
+    Teacher.findByIdAndRemove(temp_teacher._id)
+      .then(() => res.status(202).json("Delete operation called successfuly!"))
       .catch((err) => res.status(400).json("Error: " + err));
+    }
+    else return res.status(404).json({message: 'Teacher was not found\deleted'})
   } catch (err) {
     return next(new HttpError(err.message, 500));
   }
@@ -59,14 +70,12 @@ const addTeacher = async (req, res, next) => {
 
     var uploadResponse;
     if (image !== "") {
-      
-       uploadResponse = await cloudinary.uploader.upload(image,{
-        upload_preset: 'Teachers',
-    })
+      uploadResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "Teachers",
+      });
       console.log(uploadResponse);
-    }
-    else{
-      uploadResponse = {public_id: ''};
+    } else {
+      uploadResponse = { public_id: "" };
     }
 
     const newTeacher = new Teacher({
