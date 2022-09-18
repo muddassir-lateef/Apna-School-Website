@@ -44,7 +44,7 @@ const addStudent = async(req, res, next) => {
         if (image !== "") {
           console.log("hit")
            uploadResponse = await cloudinary.uploader.upload(image,{
-            upload_preset: 'Teachers',
+            upload_preset: 'Students',
             
         })
         console.log("hit")
