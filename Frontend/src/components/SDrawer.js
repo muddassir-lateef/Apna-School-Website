@@ -29,7 +29,7 @@ const initial_menuItems = [
     {
       title: "Calendar",
       path: '/admin/calendar',
-      icon: <CalendarMonthIcon />
+      icon: <CalendarMonthIcon /> 
     }
     ]
   },
@@ -86,12 +86,12 @@ const initial_menuItems = [
     visible: true,
     enteries: [{
       title: "Search Class",
-      path: '/admin/students',
+      path: '/admin/class/searchClass',
       icon: <Face6Icon />
     },
     {
       title: "Add Class",
-      path: '/admin/teachers',
+      path: '/admin/class/addClass',
       icon: <AddIcon />
     },
     {

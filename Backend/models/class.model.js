@@ -15,6 +15,11 @@ const classSchema = new Schema({
     type: Number,
     required: true
   },
+
+  noOfSections : {
+    type: Number,
+    required : true
+  },
   //List of Sections IDs this class contains
   sectionList: 
   [{

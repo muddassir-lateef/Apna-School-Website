@@ -95,6 +95,32 @@ export async function getAllTeachers() {
   }
 }
 
+export async function getAllClasses() {
+  let tempURL = URL +'class/getAllClasses'
+  console.log(tempURL)
+  const response = await axios.get(tempURL);
+  if(response.status == 201) {
+    return response;
+  }
+  else if(response.status == 401) {
+    return -1;
+  }
+}
+
+export async function getClassByClassYear(tempClassYear) {
+  let tempURL = URL + 'class/getClass/' + tempClassYear
+  console.log(tempURL)
+  const response = await axios.get(tempURL);
+  if(response.status == 201)
+  {
+    return response;
+  }
+  else if(response.status == 401)
+  {
+    return -1;
+  }
+}
+
 export async function deleteTeacher(username){
   let tempURL = URL + `teacher/${username}`;
   const response = await axios.delete(tempURL);

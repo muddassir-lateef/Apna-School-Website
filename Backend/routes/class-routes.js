@@ -17,6 +17,11 @@ router.post('/addNewSectionToClass', classController.addNewSectionToClass)
     "sectionHead": "Street 69", ||OPTIONAL
     "classYear" : 7
 */
+
+router.get('/getClass/:classYear' , classController.getClass);
+/*
+
+*/
 router.get('/getAllClasses', classController.getAllClasses);
 
 router.get('/getAllSectionsInClass', classController.getAllSectionsInClass)
