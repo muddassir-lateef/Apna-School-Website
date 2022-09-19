@@ -3,20 +3,37 @@ import { useState, useEffect } from "react";
 import {
   Button,
   Grid,
+  Modal,
   Card,
   CardActions,
   CardContent,
   Typography,
+  Box,
+  Fade,
+  Backdrop,
 } from "@mui/material";
 import SearchBox from "../../components/SearchBox";
 import { getAllTeachers, deleteTeacher } from "../../services/UserService";
 import { Image } from "cloudinary-react";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 250,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const SearchTeacher = () => {
   const [teacherOptions, setTeacherOptions] = useState([]);
   const [username, setUsername] = useState("");
   const [teachersList, setTeachersList] = useState([]);
   const [teachersMasterList, setTeachersMasterList] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState('');
 
   useEffect(() => {
     getAllTeachers().then((response) => {
@@ -41,7 +58,7 @@ const SearchTeacher = () => {
         alert("Teacher not found");
         console.log(response.data);
       }
-    });
+    });// eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const textChange = (value) => {
@@ -57,14 +74,29 @@ const SearchTeacher = () => {
   };
 
   const handleTeacherDelete = (teacherId) => {
+    setSelectedTeacher(teacherId)
     console.log(teacherId);
-    const temp_teachers = teachersList.filter((teacher)=> teacher.username !== teacherId);
+    setModalOpen(true);
+  };
+
+  const handleDeleteTeacher = () => {
+    const teacherId = selectedTeacher;
+    setModalOpen(false);
+    const temp_teachers = teachersList.filter(
+      (teacher) => teacher.username !== teacherId
+    );
     setTeachersList(temp_teachers);
-    setTeacherOptions(teacherOptions.filter((option) => option.label !== teacherId))
-    let res =  deleteTeacher(teacherId);
-    if (res.status === 202) console.log("Student was deleted successfully")
+    setTeacherOptions(
+      teacherOptions.filter((option) => option.label !== teacherId)
+    );
+    let res = deleteTeacher(teacherId);
+    if (res.status === 202) console.log("Student was deleted successfully");
     else console.log(res);
-  }
+  };
+
+  const handleModalClose = () => {
+    setModalOpen((isOpen) => !isOpen);
+  };
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -75,9 +107,55 @@ const SearchTeacher = () => {
           label="Teacher Username"
         />
       </Grid>
+      <Grid item xs={11}>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={modalOpen}
+          onClose={handleModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={modalOpen}>
+            <Box sx={style}>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{mb:2}}
+              >
+                Are you sure you want to delete this teacher?
+              </Typography>
+              <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  onClick={() => setModalOpen((prevState) => !prevState)}
+                  variant="contained"
+                  component="label"
+                  sx={{mr:3}}
+                >
+                  Go Back
+                </Button>
+                <Button onClick={handleDeleteTeacher} variant="outlined" color="error">
+                  DELETE
+                </Button>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
+      </Grid>
 
       {teachersList.map((item) => (
-        <Grid item sm={12} md={6} lg={4} key={item.username} sx={{display: 'flex', justifyContent:'center'}}>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          lg={4}
+          key={item.username}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
           <Card sx={{ maxWidth: 340 }}>
             <Image
               cloudName="dqxdmayga"
@@ -93,7 +171,12 @@ const SearchTeacher = () => {
             </CardContent>
             <CardActions>
               <Button size="small">Edit</Button>
-              <Button size="small" onClick={()=>handleTeacherDelete(item.username)}>Delete</Button>
+              <Button
+                size="small"
+                onClick={() => handleTeacherDelete(item.username)}
+              >
+                Delete
+              </Button>
             </CardActions>
           </Card>
         </Grid>
