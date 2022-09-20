@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Grid,
@@ -12,6 +13,8 @@ import {
   Fade,
   Backdrop,
 } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import SearchBox from "../../components/SearchBox";
 import { getAllTeachers, deleteTeacher } from "../../services/UserService";
 import { Image } from "cloudinary-react";
@@ -34,7 +37,7 @@ const SearchTeacher = () => {
   const [teachersMasterList, setTeachersMasterList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState('');
-
+  const navigate = useNavigate();
   useEffect(() => {
     getAllTeachers().then((response) => {
       if (response.status === 201) {
@@ -97,6 +100,11 @@ const SearchTeacher = () => {
   const handleModalClose = () => {
     setModalOpen((isOpen) => !isOpen);
   };
+
+  const handleTeacherCardClick = (username) => {
+    let url = `/teacher/${username}`;
+    navigate(url);
+  }
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -156,27 +164,35 @@ const SearchTeacher = () => {
           key={item.username}
           sx={{ display: "flex", justifyContent: "center" }}
         >
-          <Card sx={{ maxWidth: 340 }}>
+          
+          <Card sx={{ maxWidth: 320 }}>
+          <Button onClick={()=>handleTeacherCardClick(item.username)} style={{ padding: "0px" }}>
             <Image
               cloudName="dqxdmayga"
               publicId={item.image}
-              width={340}
+              width={320}
               height={250}
             />
+            </Button>
 
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 {item.firstName + " " + item.lastName}
               </Typography>
             </CardContent>
+            
             <CardActions>
-              <Button size="small">Edit</Button>
+            <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
+              <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>}>Edit</Button>
               <Button
-                size="small"
+              sx={{width:'40%'}}
+                variant="outlined" color="error"
                 onClick={() => handleTeacherDelete(item.username)}
+                startIcon={<DeleteIcon />}
               >
                 Delete
               </Button>
+              </Box>
             </CardActions>
           </Card>
         </Grid>
@@ -186,3 +202,4 @@ const SearchTeacher = () => {
 };
 
 export default SearchTeacher;
+
