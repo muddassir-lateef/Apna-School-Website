@@ -2,13 +2,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { 
   Button, Box, Grid, Card, CardContent, CardActions, Typography,Fade,
-  Backdrop, Modal
+  Backdrop, Modal, Alert
        } from "@mui/material";
 import { getStudents, getAllStudents, deleteStudent } from "../../services/UserService";
-import StudentSearchBox from "../../components/SearchBox";
 import { Image } from "cloudinary-react";
+
+import StudentSearchBox from "../../components/SearchBox";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import Snackbar from "@mui/material/Snackbar";
 const style = {
   position: "absolute",
   top: "50%",
@@ -29,6 +31,8 @@ const SearchStudent = () => {
   const [tempStudent, setTempStudent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [refreshFlag, setRefreshFlag] = useState(false); 
+  const [snackOpen, setSnackOpen] = React.useState(false);
+
 
   React.useEffect(() => {
     getAllStudents().then((response) => {
@@ -83,6 +87,19 @@ const SearchStudent = () => {
     setModalOpen(true);
   }
 
+  const StatusAlert = () => {
+    if (refreshFlag === true)
+      return (
+        <Alert
+          onClose={() => setSnackOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Student deleted Successfully!
+        </Alert>
+      );
+  };
+
   const DeleteStudent = () => {
     console.log(tempStudent);
     deleteStudent(tempStudent).then((response) => {
@@ -91,11 +108,15 @@ const SearchStudent = () => {
         if(refreshFlag == true)
         {
           setRefreshFlag(false)
+          setRefreshFlag(true)
         }
         else if(refreshFlag == false)
         {
           setRefreshFlag(true)
         }
+      }
+      else {
+        setRefreshFlag(false);
       }
     })
   }
@@ -252,6 +273,7 @@ const SearchStudent = () => {
 
 
       <StudentDisplay></StudentDisplay>
+      <StatusAlert/>
 
     </Grid>
 
