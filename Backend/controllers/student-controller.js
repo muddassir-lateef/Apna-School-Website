@@ -1,7 +1,9 @@
 let Student = require('../models/student.model');
 let FeeRecord = require('../models/feeRecord.model');
+let FeeList = require('../models/feeDetails.model');
 const HttpError = require('../models/http-error');
 let { cloudinary } = require("../utils/cloudinary");
+const FeeDetails = require('../models/feeDetails.model');
 
 const addStudent = async (req, res, next) => {
   console.log("In")
@@ -122,24 +124,34 @@ const deleteStudent = async (req, res, next) => {
   try {
     const rollNumber = req.params.rollNumber;
     var temp_student = await Student.findOne({ rollNumber });
-    console.log("Teacher: " + temp_student)
     const public_id = temp_student.image;
     console.log("Public ID: " + public_id)
     const deleteResponse = await cloudinary.uploader
       .destroy(public_id)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+    console.log("hit")
+    const tempFeeRecord = await FeeRecord.findById(temp_student.feeRecord).populate('feeList')
+    
+    const feeList = await FeeDetails.findById(tempFeeRecord.feeList);
+    if(feeList != null)
+    {
+    const deletefeecheck = await FeeDetails.findById(feeList._id)
+    }
+    const deletecheck = await FeeRecord.findByIdAndDelete(tempFeeRecord._id);
 
     if (temp_student !== null) {
       Student.findByIdAndRemove(temp_student._id)
         .then(() => res.status(201).json("Delete operation called successfuly!"))
         .catch((err) => res.status(400).json("Error: " + err));
     }
+    
     else return res.status(404).json({ message: 'Student was not found\deleted' })
   } catch (err) {
     return next(new HttpError(err.message, 500));
   }
 };
+
 
 
 

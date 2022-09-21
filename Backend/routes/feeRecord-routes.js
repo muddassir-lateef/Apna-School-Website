@@ -20,6 +20,10 @@ router.patch('/markFeePaid', FeeRecordController.markFeePaid)
     "rollNumber" : 3
 }
 */
+router.post('/generateFeeForAllStudents', FeeRecordController.generateFeeForAllStudents)
+/*
+No Body
+*/
 router.get('/getStudentFeeRecord', FeeRecordController.getStudentFeeRecord)
 /*
 {
@@ -56,6 +60,11 @@ router.post('/generateStudentFee', FeeRecordController.generateStudentFee)
     "feeYear" : 2,
     "rollNumber" : 3
 */
+router.delete('/deleteAllFeeRecord', FeeRecordController.deleteAllFeeRecords);
+/*
+NO BODY
+FOR CLEARING DATABASE
+*/
 router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeRecord)
 /*
 {
@@ -64,6 +73,6 @@ router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeReco
     "scholarshipAmount": 5
     "rollNumber": 66
 }
-
 */
+router.post('/generateFeeForListOfStudents', FeeRecordController.generateFeeForListOfStudents);
 module.exports = router;
