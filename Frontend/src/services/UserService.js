@@ -26,6 +26,14 @@ export async function addStudent(
   houseAddress,
   image
 ) {
+       const securityFee =  10;
+        const outStandingFees = 0;
+        const totalFee = 0;
+        const tuitionFee = 40;
+        const feeList =  null;
+        const scholarshipAmount = 5;
+        console.log(securityFee)
+
   let tempURL = URL + "student/addStudent";
   const response = await axios.post(tempURL, {
     rollNumber,
@@ -38,7 +46,13 @@ export async function addStudent(
     emailAddress,
     phoneNumber,
     houseAddress,
-    image
+    image,
+    securityFee,
+    outStandingFees,
+    totalFee,
+    tuitionFee,
+    feeList,
+    scholarshipAmount
   });
   if (response.status === 201) {
     return response;

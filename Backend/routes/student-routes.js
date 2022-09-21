@@ -18,6 +18,14 @@ router.post('/addStudent', StudentController.addStudent)
     "emailAddress" : "hotmail",
     "houseAddress" : "Street lmao",
     "phoneNumber" : "0300panji"
+
+    //FeeRecord Attributes
+      "securityFee" = : 0,
+      "outStandingFees" : 0,
+      "totalFee" : 0,
+      "tuitionFee" : 0,
+      "feeList" : 0,
+      "scholarshipAmount" : 0
 }
 
 */
@@ -38,7 +46,6 @@ router.patch('/:rollNumber', StudentController.updateStudent)
 
 //Get single student by rollNumber passed in the URl
 router.get('/:rollNumber' , StudentController.getStudentByRollNumber) 
-
 
 //get all Students
 router.get('/', StudentController.getAllStudents);
