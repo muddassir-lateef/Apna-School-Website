@@ -112,7 +112,7 @@ const deleteStudent = async(req,res,next) => {
     const rollNumber={rollNumber:req.params.rollNumber};
 
     Student.findOneAndDelete(rollNumber)
-    .then(() => res.json("Delete operation called successfuly!"))
+    .then(() => res.status(201).json("Delete operation called successfuly!"))
     .catch((err) => res.status(400).json("Error: " + err));
 } catch (err) {
   return next(new HttpError(err.message, 500));

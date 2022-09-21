@@ -106,6 +106,19 @@ export async function getAllClasses() {
     return -1;
   }
 }
+export async function deleteStudent(rollNumber) {
+  let tempURL = URL +'student/deleteStudent/' + rollNumber;
+  
+  console.log(tempURL)
+  const response = await axios.delete(tempURL)
+  if(response.status == 201) {
+    return response;
+  }
+  else if(response.status == 401){
+    return -1;
+  }
+
+}
 
 export async function getClassByClassYear(tempClassYear) {
   let tempURL = URL + 'class/getClass/' + tempClassYear
@@ -115,7 +128,7 @@ export async function getClassByClassYear(tempClassYear) {
   {
     return response;
   }
-  else if(response.status == 401)
+  else if(response.status != 201)
   {
     return -1;
   }
