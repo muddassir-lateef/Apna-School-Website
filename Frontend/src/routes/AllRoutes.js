@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import SearchStudent from "../pages/Students/SearchStudent";
 import AdminHome from "../pages/AdminHome/AdminHome";
 import SignIn from "../pages/SignIn/Signin";
@@ -9,6 +9,7 @@ import AddNewTeacher from "../pages/Teacher/AddNewTeacher";
 import AssignTeacher from '../pages/Teacher/AssignTeacher';
 import SearchClass from "../pages/Classes/SearchClass";
 import AddNewClass from "../pages/Classes/AddNewClass"
+import TeacherInfo from "../pages/Teacher/TeacherInfo";
 export const LoggedOutRoutes = () => {
   let routes;
 
@@ -32,6 +33,7 @@ export const LoggedInRoutes = () => {
         <Route path="/teacher/search" element={<SearchTeacher/>} />
         <Route path="/teacher/remove" element={<RemoveTeacher/>} />
         <Route path="/teacher/assign" element={<AssignTeacher/>} />
+        <Route path="/teacher/:username" element={<TeacherInfo/>} />
         <Route path="/admin/class/searchClass" element={<SearchClass/>} />
         <Route path="/admin/class/addClass" element={<AddNewClass/>} />
 
