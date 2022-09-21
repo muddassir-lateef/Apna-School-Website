@@ -4,8 +4,13 @@ const Schema = mongoose.Schema;
 
 const feeDetailsSchema = new Schema({
   //The month of the fee
+  feeYear: {
+    type : Number,
+    required : true
+  },
+
   feeMonth:{
-    type: String,
+    type: Number,
     required: true,
     //testing
   },

@@ -1,11 +1,15 @@
 let Student = require('../models/student.model');
 let FeeRecord = require('../models/feeRecord.model');
+let FeeList = require('../models/feeDetails.model');
 const HttpError = require('../models/http-error');
 let { cloudinary } = require("../utils/cloudinary");
+const FeeDetails = require('../models/feeDetails.model');
 
 const addStudent = async (req, res, next) => {
-  console.log("Hit")
+  console.log("In")
   try {
+
+    //Student Attributes
     const firstName = req.body.firstName;
     const Age = req.body.Age;
     const lastName = req.body.lastName;
@@ -17,23 +21,32 @@ const addStudent = async (req, res, next) => {
     const phoneNumber = req.body.phoneNumber;
     const emailAddress = req.body.emailAddress;
     const sectionId = req.body.sectionId ? req.body.sectionId : null;
-    const feeList = req.body.feeList ? req.body.feeList : null;
+
+    //Fee Record Attributes
+
+    const securityFee = req.body.securityFee? req.body.securityFee :0;
     const outStandingFees = 0;
-    const sampleAttribute = 0;
+    
+    const tuitionFee = req.body.tuitionFee? req.body.tuitionFee : 0;
+    
+    const feeList = req.body.feeList ? req.body.feeList : null;
+    const scholarshipAmount = req.body.scholarshipAmount;
+    let totalFee = securityFee + tuitionFee - scholarshipAmount;
+
+
     const image = req.body.image || "";
     var uploadResponse;
     if (image !== "") {
-      console.log("here")
+
       uploadResponse = await cloudinary.uploader.upload(image, {
-        upload_preset: 'Teachers',
+        upload_preset: 'Students',
       })
-      console.log("there");
     }
     else {
       uploadResponse = { public_id: '' };
     }
     const feeRecord = new FeeRecord({
-      feeList, outStandingFees, sampleAttribute
+      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee
     })
 
 
@@ -109,15 +122,39 @@ const updateStudent = async (req, res, next) => {
 
 const deleteStudent = async (req, res, next) => {
   try {
-    const rollNumber = { rollNumber: req.params.rollNumber };
+    const rollNumber = req.params.rollNumber;
+    var temp_student = await Student.findOne({ rollNumber });
+    const public_id = temp_student.image;
+    console.log("Public ID: " + public_id)
+    const deleteResponse = await cloudinary.uploader
+      .destroy(public_id)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    console.log("hit")
+    const tempFeeRecord = await FeeRecord.findById(temp_student.feeRecord).populate('feeList')
+    
+    const feeList = await FeeDetails.findById(tempFeeRecord.feeList);
+    if(feeList != null)
+    {
+    const deletefeecheck = await FeeDetails.findById(feeList._id)
+    }
+    const deletecheck = await FeeRecord.findByIdAndDelete(tempFeeRecord._id);
 
-    Student.findOneAndDelete(rollNumber)
-      .then(() => res.json("Delete operation called successfuly!"))
-      .catch((err) => res.status(400).json("Error: " + err));
+    if (temp_student !== null) {
+      Student.findByIdAndRemove(temp_student._id)
+        .then(() => res.status(201).json("Delete operation called successfuly!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    }
+    
+    else return res.status(404).json({ message: 'Student was not found\deleted' })
   } catch (err) {
     return next(new HttpError(err.message, 500));
   }
-}
+};
+
+
+
+
 
 exports.deleteStudent = deleteStudent;
 exports.getStudentByRollNumber = getStudentByRollNumber;
