@@ -100,7 +100,19 @@ const initial_menuItems = [
       icon: <CalendarMonthIcon />
     }
     ]
+  },
+  {
+    menuTitle: "Attendance",
+    visible: true,
+    enteries: [{
+      title: "Mark Student Attendance",
+      path: "/attendance/student",
+      icon: <Face6Icon />
+    },
+
+    ]
   }
+
 
 
 ]
