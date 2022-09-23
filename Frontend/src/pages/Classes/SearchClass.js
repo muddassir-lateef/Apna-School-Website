@@ -122,7 +122,7 @@ const ViewClassHandler = (classYear) => {
                 {"Year : " + " " + classList.classYear}
               </Typography>
               <Typography gutterBottom variant="h5" component="div">
-                {"Strength" + " " + classList.classStrength}
+                {"Strength : " + " " + classList.classStrength}
               </Typography>
             </CardContent>
             <CardActions>
