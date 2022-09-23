@@ -16,10 +16,32 @@ const feeRecordSchema = new Schema({
     required: true,
   },
   //Just a sample as of now, will change later
-  sampleAttribute: {
+
+  scholarshipAmount: {
+    type: Number,
+    required: true
+  },
+  totalFee: {
     type: Number,
     required: true,
-},
+
+  //tuition Fee
+  },
+  tuitionFee: {
+    type: Number,
+    required: true,
+
+  },
+  //Misc Fees
+  otherFee : {
+    type : Number,
+    required : true
+  },
+  //If any security
+  securityFee: {
+    type : Number,
+    required : true,
+  },
 }, {
   timestamps: true,
 });

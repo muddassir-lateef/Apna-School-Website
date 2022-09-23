@@ -5,12 +5,10 @@ import {
   Backdrop, Modal, Alert
        } from "@mui/material";
 import { getStudents, getAllStudents, deleteStudent } from "../../services/UserService";
-import { Image } from "cloudinary-react";
-
 import StudentSearchBox from "../../components/SearchBox";
+import { Image } from "cloudinary-react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import Snackbar from "@mui/material/Snackbar";
 const style = {
   position: "absolute",
   top: "50%",
@@ -95,7 +93,7 @@ const SearchStudent = () => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Student deleted Successfully!
+          Student Added Successfully!
         </Alert>
       );
   };
@@ -129,6 +127,7 @@ const SearchStudent = () => {
         console.log(response.data);
         setStudent(response.data);
         setStudentFlag(1);
+        setRefreshFlag(false);
       }
       else if (response.status === 401) {
         alert("Student not found");

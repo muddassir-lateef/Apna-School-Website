@@ -18,12 +18,12 @@ const initial_menuItems = [
     visible: true,
     enteries: [{
       title: "Search Students",
-      path: '/admin/students',
+      path: '/students/search',
       icon: <Face6Icon />
     },
     {
       title: "Add Student",
-      path: '/admin/students/addNew',
+      path: '/students/add',
       icon: <AddIcon />
     },
     {
@@ -86,12 +86,12 @@ const initial_menuItems = [
     visible: true,
     enteries: [{
       title: "Search Class",
-      path: '/admin/class/searchClass',
+      path: '/class/searchClass',
       icon: <Face6Icon />
     },
     {
       title: "Add Class",
-      path: '/admin/class/addClass',
+      path: '/class/addClass',
       icon: <AddIcon />
     },
     {
@@ -100,7 +100,19 @@ const initial_menuItems = [
       icon: <CalendarMonthIcon />
     }
     ]
+  },
+  {
+    menuTitle: "Attendance",
+    visible: true,
+    enteries: [{
+      title: "Mark Student Attendance",
+      path: "/attendance/student",
+      icon: <Face6Icon />
+    },
+
+    ]
   }
+
 
 
 ]
