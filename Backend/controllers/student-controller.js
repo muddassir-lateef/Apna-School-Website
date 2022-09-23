@@ -24,16 +24,18 @@ const addStudent = async (req, res, next) => {
 
     //Fee Record Attributes
 
-    const securityFee = req.body.securityFee? req.body.securityFee :0;
+    const securityFee = req.body.securityFee;
     const outStandingFees = 0;
-    
-    const tuitionFee = req.body.tuitionFee? req.body.tuitionFee : 0;
+    const otherFee = req.body.otherFee;
+    const tuitionFee = req.body.tuitionFee;
     
     const feeList = req.body.feeList ? req.body.feeList : null;
     const scholarshipAmount = req.body.scholarshipAmount;
-    let totalFee = securityFee + tuitionFee - scholarshipAmount;
+    let totalFee = 0;
+    totalFee = Number(securityFee) + Number(tuitionFee) + Number(otherFee);
+    console.log(totalFee)
 
-
+    console.log("hit")
     const image = req.body.image || "";
     var uploadResponse;
     if (image !== "") {
@@ -46,21 +48,21 @@ const addStudent = async (req, res, next) => {
       uploadResponse = { public_id: '' };
     }
     const feeRecord = new FeeRecord({
-      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee
+      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee, otherFee
     })
-
+    console.log(scholarshipAmount)
 
 
     feeRecord.save();
     console.log(guardianFirstName);
     var uploadResponse;
     if (image !== "") {
-      console.log("hit")
+      console.log("hityyy")
       uploadResponse = await cloudinary.uploader.upload(image, {
         upload_preset: 'Students',
 
       })
-      console.log("hit")
+      console.log("hitxx")
       console.log(uploadResponse);
     }
     else {
