@@ -32,7 +32,11 @@ const feeRecordSchema = new Schema({
     required: true,
 
   },
-
+  //Misc Fees
+  otherFee : {
+    type : Number,
+    required : true
+  },
   //If any security
   securityFee: {
     type : Number,

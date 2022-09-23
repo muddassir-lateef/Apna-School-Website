@@ -29,9 +29,6 @@ const MarkStudentAttendance = () => {
             }
         });
     }, []);
-    React.useEffect(() => {
-        debugger
-    }, [studentList]);
 
     function stringToColor(string) {
         let hash = 0;

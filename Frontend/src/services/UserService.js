@@ -24,15 +24,18 @@ export async function addStudent(
   emailAddress,
   phoneNumber,
   houseAddress,
-  image
+  image,
+  tuitionFee,
+  securityFee,
+  otherFee,
+  scholarshipAmount
 ) {
-       const securityFee =  10;
+   
+  
+
         const outStandingFees = 0;
-        const totalFee = 0;
-        const tuitionFee = 40;
+        let totalFee = tuitionFee + otherFee + securityFee;
         const feeList =  null;
-        const scholarshipAmount = 5;
-        console.log(securityFee)
 
   let tempURL = URL + "student/addStudent";
   const response = await axios.post(tempURL, {
@@ -52,7 +55,8 @@ export async function addStudent(
     totalFee,
     tuitionFee,
     feeList,
-    scholarshipAmount
+    scholarshipAmount,
+    otherFee
   });
   if (response.status === 201) {
     return response;
@@ -113,10 +117,10 @@ export async function getAllClasses() {
   let tempURL = URL +'class/getAllClasses'
   console.log(tempURL)
   const response = await axios.get(tempURL);
-  if(response.status == 201) {
+  if(response.status === 201) {
     return response;
   }
-  else if(response.status == 401) {
+  else if(response.status === 401) {
     return -1;
   }
 }
@@ -125,10 +129,10 @@ export async function deleteStudent(rollNumber) {
   
   console.log(tempURL)
   const response = await axios.delete(tempURL)
-  if(response.status == 201) {
+  if(response.status === 201) {
     return response;
   }
-  else if(response.status == 401){
+  else if(response.status === 401){
     return -1;
   }
 
@@ -138,11 +142,11 @@ export async function getClassByClassYear(tempClassYear) {
   let tempURL = URL + 'class/getClass/' + tempClassYear
   console.log(tempURL)
   const response = await axios.get(tempURL);
-  if(response.status == 201)
+  if(response.status === 201)
   {
     return response;
   }
-  else if(response.status != 201)
+  else if(response.status !== 201)
   {
     return -1;
   }

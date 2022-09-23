@@ -44,8 +44,11 @@ const feeDetailsSchema = new Schema({
   remainingFee: {
     type : Number,
     required : true,
+  },
+  otherFee: {
+    type : Number,
+    required : true,
   }
-
 
 }, {
   timestamps: true,
