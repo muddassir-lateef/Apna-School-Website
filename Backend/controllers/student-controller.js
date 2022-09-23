@@ -53,7 +53,13 @@ const addStudent = async (req, res, next) => {
     console.log(scholarshipAmount)
 
 
-    feeRecord.save();
+    feeRecord.save()
+    .then(() => res.status(201).json({ message: "Fee Record Added" }))
+      .catch((err) => res.status(401).json("Error: " + err));
+      if(res.status(401))
+      {
+        return
+      }
     console.log(guardianFirstName);
     var uploadResponse;
     if (image !== "") {

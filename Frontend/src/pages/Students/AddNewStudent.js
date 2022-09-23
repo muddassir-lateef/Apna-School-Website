@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Image } from "cloudinary-react";
 import { Typography, Card, Grid, Box, Button, CardContent, CardActions } from "@mui/material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -21,7 +22,7 @@ const AddNewTeacher = () => {
   const [previewSource, setPreviewSource] = useState("");
   const [pageFlag, setPageFlag] = useState(0)
   const [imageValue, setImageValue] = useState("")
-
+  const navigate = useNavigate();
   const [formState, InputHandler] = useForm(
     {
       rollNumber: {
@@ -88,6 +89,9 @@ const AddNewTeacher = () => {
     false
   );
 
+    const diffHandler = () => {
+      
+    }
   const StudentSubmitHandler = () => {
     const image = previewSource || '';
     console.log(previewSource)
@@ -110,11 +114,8 @@ const AddNewTeacher = () => {
     )
       .then((res) => {
         if (res.status === 201) {
-          console.log(res);
-          setSubmitStatus(1);
-          setImageValue(image)
-          setPageFlag(0)
-          setSnackOpen(true);
+          let url = `/students/search`;
+          navigate(url);
 
         } else {
           setSubmitStatus(-1);
@@ -243,7 +244,7 @@ const AddNewTeacher = () => {
               label="Last Name"
               variant="standard"
               onInput={InputHandler}
-              validators={[VALIDATOR_MINLENGTH(5)]}
+              validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Last name is a required field"
             />
             <Input
