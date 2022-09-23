@@ -33,16 +33,13 @@ router.get('/getStudentFeeRecord', FeeRecordController.getStudentFeeRecord)
 router.post('/addFeeDetailToStudentFeeRecord', FeeRecordController.addFeeDetailToStudentFeeRecord);
 /*
 {
-    //FEE DETAILS
-    "feeMonth": "A",
-    "totalFee" : 30,
+    "feeMonth": 1,
+    "feeYear" : 2,
     "tuitionFee": 1,
     "fineFee": 1,
     "securityFee": 1,
-    "paidFee": 1,
-    "remainingFee": 1,
-    //ROLL NUMBER OF STUDENT
-    "rollNumber" : 6000 OF STUDENT
+    "otherFee" : 20,
+    "rollNumber" : 4664
 }
 */
 

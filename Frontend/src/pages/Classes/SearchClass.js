@@ -3,14 +3,15 @@ import { useState, useEffect } from "react";
 import { Button, Box, Grid, Card, CardContent, CardActions, Typography } from "@mui/material";
 import { getStudents } from "../../services/UserService";
 import StudentSearchBox from "../../components/SearchBox";
+import { useNavigate } from "react-router-dom";
 import { getAllStudents, getAllClasses, getClassByClassYear } from "../../services/UserService";
-import { Image } from "cloudinary-react";
 const classOptions = [];
 
 const SearchStudent = () => {
   const [classYear, setClassYear] = useState("");
   const [classList, setClassList] = useState([]);
   const [classFlag, setClassFlag] = useState();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     getAllClasses().then((response) => {
@@ -74,7 +75,10 @@ const SearchStudent = () => {
     })
   }, []);
 
-
+const ViewClassHandler = (classYear) => {
+    let url = `/class/${classYear}`;
+    navigate(url);
+}
 
 
   const StudentDisplay = () => {
@@ -84,12 +88,7 @@ const SearchStudent = () => {
           classList.map((tempClasses) => (
             <Grid item sm={12} md={6} lg={4} key={classList.rollNumber}>
               <Card sx={{ maxWidth: 340 }}>
-                <Image
-                  cloudName="dqxdmayga"
-                  publicId={tempClasses.image}
-                  width={340}
-                  height={250}
-                />
+
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                 {"Year : " + " " + tempClasses.classYear}
@@ -99,7 +98,13 @@ const SearchStudent = () => {
               </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Edit</Button>
+                  <Button 
+                  value = {tempClasses.classYear}
+                  size="small" 
+                  onClick={e => ViewClassHandler(e.target.value)}>
+                  View
+                 </Button>
+
                   <Button size="small">Delete</Button>
                 </CardActions>
               </Card>
@@ -112,14 +117,7 @@ const SearchStudent = () => {
 
         <Grid item sm={12} md={6} lg={4} key={classList.rollNumber}>
           <Card sx={{ maxWidth: 340 }}>
-            <CardContent>
-              <Image
-                cloudName="dqxdmayga"
-                publicId={classList.image}
-                width={340}
-                height={250}
-              />
-        
+            <CardContent> 
               <Typography gutterBottom variant="h5" component="div">
                 {"Year : " + " " + classList.classYear}
               </Typography>
@@ -128,7 +126,7 @@ const SearchStudent = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">Edit</Button>
+              <Button size="small" >Edit</Button>
               <Button size="small">Delete</Button>
             </CardActions>
           </Card>

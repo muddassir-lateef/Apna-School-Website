@@ -9,6 +9,7 @@ import AddNewTeacher from "../pages/Teacher/AddNewTeacher";
 import AssignTeacher from '../pages/Teacher/AssignTeacher';
 import SearchClass from "../pages/Classes/SearchClass";
 import AddNewClass from "../pages/Classes/AddNewClass"
+import ClassInfo from "../pages/Classes/ClassInfo";
 import TeacherInfo from "../pages/Teacher/TeacherInfo";
 import MarkStudentAttendance from "../pages/Attendance/MarkStudentAttendance";
 export const LoggedOutRoutes = () => {
@@ -27,16 +28,17 @@ export const LoggedInRoutes = () => {
     let routes;
     routes = (
       <Routes>
-        <Route path="/admin/students" element={<SearchStudent />} />
-        <Route path="/admin/students/addNew" element={<AddNewStudent />} />
+        <Route path="/students/search" element={<SearchStudent />} />
+        <Route path="/students/add" element={<AddNewStudent />} />
         <Route path="/teacher/add" element={<AddNewTeacher />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/teacher/search" element={<SearchTeacher/>} />
         <Route path="/teacher/remove" element={<RemoveTeacher/>} />
         <Route path="/teacher/assign" element={<AssignTeacher/>} />
         <Route path="/teacher/:username" element={<TeacherInfo/>} />
-        <Route path="/admin/class/searchClass" element={<SearchClass/>} />
-        <Route path="/admin/class/addClass" element={<AddNewClass/>} />
+        <Route path="/class/:classYear" element={<ClassInfo/>} />
+        <Route path="/class/searchClass" element={<SearchClass/>} />
+        <Route path="/class/addClass" element={<AddNewClass/>} />
         <Route path="/attendance/student" element={<MarkStudentAttendance/>} />
 
       </Routes>
