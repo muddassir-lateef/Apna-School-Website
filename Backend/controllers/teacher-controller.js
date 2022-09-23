@@ -16,10 +16,41 @@ const getAllTeacher = async (req, res, next) => {
 
 const updateTeacher = async (req, res, next) => {
   try {
-    const username = { username: req.params.username };
-    const updates = req.body;
-    Teacher.findOneAndUpdate(username, updates)
-      .then(() => res.json("Update operation called successfuly!"))
+    const username = req.params.username;
+    var temp_teacher = await Teacher.findOne({ username });
+
+    const image = req.body.image || "";
+    var uploadResponse;
+    if (image !== "") {
+      uploadResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "Teachers",
+      });
+      console.log(uploadResponse);
+      //delete last image
+      console.log("Teacher: " + temp_teacher);
+      const public_id = temp_teacher.image;
+      console.log("Public ID: " + public_id);
+      const deleteResponse = await cloudinary.uploader
+        .destroy(public_id)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    } else {
+      uploadResponse = { public_id: "" };
+    }
+
+    const updates = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      username: req.body.username,
+      age: req.body.age
+    };
+
+    if (image !== "" && uploadResponse.public_id !== "") {
+      updates.image = uploadResponse.public_id;
+    }
+
+    Teacher.findOneAndUpdate({username}, updates)
+      .then(() => res.status(201).json("Update operation called successfuly!"))
       .catch((err) => res.status(400).json("Error: " + err));
   } catch (err) {
     return next(new HttpError(err.message, 500));
@@ -30,20 +61,22 @@ const deleteTeacher = async (req, res, next) => {
   try {
     const username = req.params.username;
     var temp_teacher = await Teacher.findOne({ username });
-    console.log("Teacher: " + temp_teacher)
+    console.log("Teacher: " + temp_teacher);
     const public_id = temp_teacher.image;
-    console.log("Public ID: " + public_id)
+    console.log("Public ID: " + public_id);
     const deleteResponse = await cloudinary.uploader
       .destroy(public_id)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
-    if (temp_teacher !== null){
-    Teacher.findByIdAndRemove(temp_teacher._id)
-      .then(() => res.status(202).json("Delete operation called successfuly!"))
-      .catch((err) => res.status(400).json("Error: " + err));
-    }
-    else return res.status(404).json({message: 'Teacher was not found\deleted'})
+    if (temp_teacher !== null) {
+      Teacher.findByIdAndRemove(temp_teacher._id)
+        .then(() =>
+          res.status(202).json("Delete operation called successfuly!")
+        )
+        .catch((err) => res.status(400).json("Error: " + err));
+    } else
+      return res.status(404).json({ message: "Teacher was not founddeleted" });
   } catch (err) {
     return next(new HttpError(err.message, 500));
   }
@@ -63,7 +96,7 @@ const getTeacherByUsername = async (req, res, next) => {
 const addTeacher = async (req, res, next) => {
   try {
     const firstName = req.body.firstName;
-    const age = req.body.Age;
+    const age = req.body.age;
     const lastName = req.body.lastName;
     const username = req.body.username;
     const image = req.body.image || "";

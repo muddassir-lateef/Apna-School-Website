@@ -82,6 +82,15 @@ export async function addNewTeacher(firstName, lastName, age, username, image) {
   }
 
 }
+
+export async function updateTeacher(oldUsername, firstName, lastName, age, username, image) {
+  let tempURL = URL + `teacher/${oldUsername}`;
+  const response = await axios.patch(tempURL, {
+    firstName, lastName, age, username, image
+  });
+  return response;
+
+}
 export async function getAllTeachers() {
   let tempURL = URL + 'teacher' // 'http://localhost:5000/student'
   console.log(tempURL);
@@ -138,4 +147,11 @@ export async function deleteTeacher(username){
   let tempURL = URL + `teacher/${username}`;
   const response = await axios.delete(tempURL);
   return response;
+}
+
+export async function getTeacher(username){
+  let tempURL = URL + `teacher/${username}`;
+  const response = await axios.get(tempURL);
+  return response;
+
 }

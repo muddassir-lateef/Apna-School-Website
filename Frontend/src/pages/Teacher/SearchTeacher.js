@@ -11,7 +11,7 @@ import {
   Typography,
   Box,
   Fade,
-  Backdrop,
+  Backdrop
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,7 +25,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 250,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  borderRadius: '2%',
   boxShadow: 24,
   p: 4,
 };
@@ -105,6 +105,12 @@ const SearchTeacher = () => {
     let url = `/teacher/${username}`;
     navigate(url);
   }
+
+  const handleTeacherUpdateClick = (username) => {
+    let url = `/teacher/edit/${username}`;
+    navigate(url);
+
+  }
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -133,20 +139,30 @@ const SearchTeacher = () => {
                 id="transition-modal-title"
                 variant="h6"
                 component="h2"
-                sx={{mb:2}}
+                sx={{ mb: 2 }}
               >
                 Are you sure you want to delete this teacher?
               </Typography>
-              <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Button
                   onClick={() => setModalOpen((prevState) => !prevState)}
                   variant="contained"
                   component="label"
-                  sx={{mr:3}}
+                  sx={{ mr: 3 }}
                 >
                   Go Back
                 </Button>
-                <Button onClick={handleDeleteTeacher} variant="outlined" color="error">
+                <Button
+                  onClick={handleDeleteTeacher}
+                  variant="outlined"
+                  color="error"
+                >
                   DELETE
                 </Button>
               </Box>
@@ -164,15 +180,17 @@ const SearchTeacher = () => {
           key={item.username}
           sx={{ display: "flex", justifyContent: "center" }}
         >
-          
           <Card sx={{ maxWidth: 320 }}>
-          <Button onClick={()=>handleTeacherCardClick(item.username)} style={{ padding: "0px" }}>
-            <Image
-              cloudName="dqxdmayga"
-              publicId={item.image}
-              width={320}
-              height={250}
-            />
+            <Button
+              onClick={() => handleTeacherCardClick(item.username)}
+              style={{ padding: "0px" }}
+            >
+              <Image
+                cloudName="dqxdmayga"
+                publicId={item.image}
+                width={320}
+                height={250}
+              />
             </Button>
 
             <CardContent>
@@ -180,18 +198,33 @@ const SearchTeacher = () => {
                 {item.firstName + " " + item.lastName}
               </Typography>
             </CardContent>
-            
+
             <CardActions>
-            <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
-              <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>}>Edit</Button>
-              <Button
-              sx={{width:'40%'}}
-                variant="outlined" color="error"
-                onClick={() => handleTeacherDelete(item.username)}
-                startIcon={<DeleteIcon />}
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
               >
-                Delete
-              </Button>
+                <Button
+                  sx={{ width: "40%" }}
+                  variant="contained"
+                  component="label"
+                  startIcon={<EditIcon />}
+                  onClick={() => handleTeacherUpdateClick(item.username)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  sx={{ width: "40%" }}
+                  variant="outlined"
+                  color="error"
+                  onClick={() => handleTeacherDelete(item.username)}
+                  startIcon={<DeleteIcon />}
+                >
+                  Delete
+                </Button>
               </Box>
             </CardActions>
           </Card>

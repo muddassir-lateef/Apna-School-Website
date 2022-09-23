@@ -60,6 +60,7 @@ const Input = (props) => {
       onBlur={touchHandler}
       error = {! inputState.isValid && inputState.isTouched ? true: false}
       helperText = {! inputState.isValid && inputState.isTouched ? props.errorText: ""}
+      value = {inputState.value}
     />
   );
 };

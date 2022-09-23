@@ -10,6 +10,7 @@ import AssignTeacher from '../pages/Teacher/AssignTeacher';
 import SearchClass from "../pages/Classes/SearchClass";
 import AddNewClass from "../pages/Classes/AddNewClass"
 import TeacherInfo from "../pages/Teacher/TeacherInfo";
+import EditTeacher from "../pages/Teacher/EditTeacher";
 export const LoggedOutRoutes = () => {
   let routes;
 
@@ -33,6 +34,7 @@ export const LoggedInRoutes = () => {
         <Route path="/teacher/search" element={<SearchTeacher/>} />
         <Route path="/teacher/remove" element={<RemoveTeacher/>} />
         <Route path="/teacher/assign" element={<AssignTeacher/>} />
+        <Route path="/teacher/edit/:username" element={<EditTeacher/>} />
         <Route path="/teacher/:username" element={<TeacherInfo/>} />
         <Route path="/admin/class/searchClass" element={<SearchClass/>} />
         <Route path="/admin/class/addClass" element={<AddNewClass/>} />
