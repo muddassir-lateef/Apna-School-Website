@@ -49,7 +49,7 @@ function App() {
           )}
         </Box>
       </Router>
-    </AuthContext.Provider>
+    </AuthContext.Provider> 
   );
 }
 
