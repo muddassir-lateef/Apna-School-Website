@@ -36,7 +36,7 @@ export async function addStudent(
         const outStandingFees = 0;
         let totalFee = tuitionFee + otherFee + securityFee;
         const feeList =  null;
-
+  console.log("hit")
   let tempURL = URL + "student/addStudent";
   const response = await axios.post(tempURL, {
     rollNumber,
@@ -114,12 +114,24 @@ export async function getAllTeachers() {
   console.log(tempURL);
   const response = await axios.get(tempURL);
   if(response.status === 201) {
+    console.log(response)
     return response;
   }
   else if(response.status === 401)
   {
     return -1
   }
+}
+
+export async function getAllSectionsInClass(classYear) {
+let tempURL = URL + `class/getAllSectionsInClass/${classYear}`
+console.log(tempURL)
+const response = await axios.get(tempURL);
+console.log("lol")
+
+if(response !== null)
+console.log("we good")
+return response;
 }
 
 export async function getAllClasses() {

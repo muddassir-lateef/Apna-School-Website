@@ -23,7 +23,32 @@ const AddNewTeacher = () => {
   const [pageFlag, setPageFlag] = useState(0)
   const [imageValue, setImageValue] = useState("")
   const navigate = useNavigate();
-  const [formState, InputHandler] = useForm(
+  const [formStateFee, InputHandlerFee] = useForm(
+    {
+    tuitionFee: {
+      type: Number,
+      value: 0,
+      isValid: false,
+    },
+    securityFee: {
+      type: Number,
+      value: 0,
+      isValid: false,
+    },
+    otherFee: {
+      type: Number,
+      value: 0,
+      isValid: false
+    },
+    scholarshipAmount: {
+      type: Number,
+      value: 0,
+      isValid: false,
+    },
+  }
+  )
+
+  const [formStateStudent, InputHandlerStudent] = useForm(
     {
       rollNumber: {
         value: 0,
@@ -64,27 +89,7 @@ const AddNewTeacher = () => {
       houseAddress: {
         value: "",
         isValid: false,
-      },
-      tuitionFee: {
-        type: Number,
-        value: 0,
-        isValid: false,
-      },
-      securityFee: {
-        type: Number,
-        value: 0,
-        isValid: false,
-      },
-      otherFee: {
-        type: Number,
-        value: 0,
-        isValid: false
-      },
-      scholarshipAmount: {
-        type: Number,
-        value: 0,
-        isValid: false,
-      },
+      }
     },
     false
   );
@@ -96,21 +101,21 @@ const AddNewTeacher = () => {
     const image = previewSource || '';
     console.log(previewSource)
     addStudent(
-      formState.inputs.rollNumber.value,
-      formState.inputs.age.value,
-      formState.inputs.firstName.value,
-      formState.inputs.lastName.value,
-      formState.inputs.guardianFirstName.value,
-      formState.inputs.guardianLastName.value,
-      formState.inputs.cnic.value,
-      formState.inputs.email.value,
-      formState.inputs.phoneNumber.value,
-      formState.inputs.houseAddress.value,
+      formStateStudent.inputs.rollNumber.value,
+      formStateStudent.inputs.age.value,
+      formStateStudent.inputs.firstName.value,
+      formStateStudent.inputs.lastName.value,
+      formStateStudent.inputs.guardianFirstName.value,
+      formStateStudent.inputs.guardianLastName.value,
+      formStateStudent.inputs.cnic.value,
+      formStateStudent.inputs.email.value,
+      formStateStudent.inputs.phoneNumber.value,
+      formStateStudent.inputs.houseAddress.value,
       image,
-      formState.inputs.tuitionFee.value,
-      formState.inputs.securityFee.value,
-      formState.inputs.otherFee.value,
-      formState.inputs.scholarshipAmount.value
+      formStateFee.inputs.tuitionFee.value,
+      formStateFee.inputs.securityFee.value,
+      formStateFee.inputs.otherFee.value,
+      formStateFee.inputs.scholarshipAmount.value
     )
       .then((res) => {
         if (res.status === 201) {
@@ -127,7 +132,8 @@ const AddNewTeacher = () => {
         setSubmitStatus(-1);
         setSnackOpen(true);
       });
-    console.log(formState.inputs);
+    console.log(formStateStudent.inputs)
+    console.log(formStateFee.inputs);
   };
 
   const StatusAlert = () => {
@@ -225,7 +231,7 @@ const AddNewTeacher = () => {
               label="Roll Number"
               variant="standard"
               value="HAHA"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Roll Number is a required field"
             />
@@ -234,7 +240,7 @@ const AddNewTeacher = () => {
               id="firstName"
               label="First Name"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="First name is a required field"
             />
@@ -243,7 +249,7 @@ const AddNewTeacher = () => {
               id="lastName"
               label="Last Name"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Last name is a required field"
             />
@@ -252,7 +258,7 @@ const AddNewTeacher = () => {
               id="age"
               label="Age"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MIN(18)]}
               errorText="Age must be over 18 years"
             />
@@ -261,7 +267,7 @@ const AddNewTeacher = () => {
               id="guardianFirstName"
               label="Guardians First Name"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Guardian First name is a required field"
             />
@@ -270,7 +276,7 @@ const AddNewTeacher = () => {
               id="guardianLastName"
               label="Guardian Last Name"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Guardian Last name is a required field"
             />
@@ -279,7 +285,7 @@ const AddNewTeacher = () => {
               id="cnic"
               label="NIC"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(13)]}
               errorText="CNIC must have 13 digits"
             />
@@ -288,7 +294,7 @@ const AddNewTeacher = () => {
               id="email"
               label="Email Address"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Email address is must"
             />
@@ -297,7 +303,7 @@ const AddNewTeacher = () => {
               id="phoneNumber"
               label="Phone Nmmber"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="Phone number is must"
             />
@@ -306,7 +312,7 @@ const AddNewTeacher = () => {
               id="houseAddress"
               label="House Address"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
               errorText="House Address is must"
             />
@@ -319,7 +325,7 @@ const AddNewTeacher = () => {
                 variant="contained"
                 endIcon={<ArrowForwardIcon />}
                 sx={{ mt: 2 }}
-
+                disabled={!formStateStudent.isValid}
               >
                 Next
               </Button>
@@ -373,7 +379,7 @@ const AddNewTeacher = () => {
               id="tuitionFee"
               label="Tuition Fee"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerFee}
               validators={[VALIDATOR_MIN(0)]}
               errorText="Tuition Fee is a required field (Can be 0)"
             />
@@ -382,7 +388,7 @@ const AddNewTeacher = () => {
               id="securityFee"
               label="Security Fee"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerFee}
               validators={[VALIDATOR_MIN(0)]}
               errorText="Security Fee is a required field (Can be 0)"
             />
@@ -391,7 +397,7 @@ const AddNewTeacher = () => {
               id="otherFee"
               label="Other Fees"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerFee}
               validators={[VALIDATOR_MIN(0)]}
               errorText="Other Fees is a required field (Can be 0)"
             />
@@ -400,7 +406,7 @@ const AddNewTeacher = () => {
               id="scholarshipAmount"
               label="Scholarship (If Any)"
               variant="standard"
-              onInput={InputHandler}
+              onInput={InputHandlerFee}
               validators={[VALIDATOR_MIN(0)]}
               errorText="Scholarship Amount is a required Field(Can be 0)"
             />
@@ -430,7 +436,7 @@ const AddNewTeacher = () => {
                 variant="contained"
                 endIcon={<ArrowForwardIcon />}
                 sx={{ mt: 2 }}
-                disabled={!formState.isValid}
+                disabled={!formStateFee.isValid}
               >
                 Next
               </Button>
@@ -453,50 +459,50 @@ const AddNewTeacher = () => {
   //FInal Verification Page
   else if (pageFlag === 2) {
     return (
-      <Grid item sm={12} md={6} lg={4} key={formState.inputs.rollNumber.value}>
+      <Grid item sm={12} md={6} lg={4} key={formStateStudent.inputs.rollNumber.value}>
         <Card sx={{ maxWidth: 500 }}>
           <CardContent>
           <Typography gutterBottom variant="h4" component="div">
               {'Student Personal Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Roll Number : ' + formState.inputs.rollNumber.value}
+              {'Roll Number : ' + formStateStudent.inputs.rollNumber.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Name : ' + formState.inputs.guardianFirstName.value + " " + formState.inputs.guardianLastName.value}
+              {'Name : ' + formStateStudent.inputs.guardianFirstName.value + " " + formStateStudent.inputs.guardianLastName.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Age : ' + formState.inputs.age.value}
+              {'Age : ' + formStateStudent.inputs.age.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'CNIC : ' + formState.inputs.cnic.value}
+              {'CNIC : ' + formStateStudent.inputs.cnic.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Guardian Name : ' + formState.inputs.guardianFirstName.value + " " + formState.inputs.guardianLastName.value}
+              {'Guardian Name : ' + formStateStudent.inputs.guardianFirstName.value + " " + formStateStudent.inputs.guardianLastName.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Phone Number : ' + formState.inputs.phoneNumber.value }
+              {'Phone Number : ' + formStateStudent.inputs.phoneNumber.value }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'House Address : ' + formState.inputs.houseAddress.value }
+              {'House Address : ' + formStateStudent.inputs.houseAddress.value }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Email Address : ' + formState.inputs.email.value }
+              {'Email Address : ' + formStateStudent.inputs.email.value }
             </Typography>
             <Typography gutterBottom variant="h4" component="div">
               {'Student Fee Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Security Fee: ' + formState.inputs.securityFee.value }
+              {'Security Fee: ' + formStateFee.inputs.securityFee.value }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'tuition Fee: ' + formState.inputs.tuitionFee.value }
+              {'tuition Fee: ' + formStateFee.inputs.tuitionFee.value }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Other Fees Fee: ' + formState.inputs.otherFee.value }
+              {'Other Fees Fee: ' + formStateFee.inputs.otherFee.value }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Scholarship Amount : ' + formState.inputs.scholarshipAmount.value }
+              {'Scholarship Amount : ' + formStateFee.inputs.scholarshipAmount.value }
             </Typography>
             <Grid container display="flex" justifyContent="space-between" >
               <Box

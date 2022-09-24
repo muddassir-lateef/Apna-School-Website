@@ -50,25 +50,23 @@ const addStudent = async (req, res, next) => {
     const feeRecord = new FeeRecord({
       feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee, otherFee
     })
-    console.log(scholarshipAmount)
+    console.log("Before adding fee")
 
-
-    feeRecord.save()
-    .then(() => res.status(201).json({ message: "Fee Record Added" }))
-      .catch((err) => res.status(401).json("Error: " + err));
-      if(res.status(401))
-      {
-        return
-      }
-    console.log(guardianFirstName);
+    let temp = await feeRecord.save()
+    if(temp == null)
+    {
+      console.log("Fee Not Saved")
+      res.status(401);
+      return;
+    }
+    console.log("Fee Saved")
+    
     var uploadResponse;
     if (image !== "") {
-      console.log("hityyy")
       uploadResponse = await cloudinary.uploader.upload(image, {
         upload_preset: 'Students',
 
       })
-      console.log("hitxx")
       console.log(uploadResponse);
     }
     else {

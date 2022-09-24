@@ -64,7 +64,11 @@ const addNewSectionToClass = async(req, res, next) => {
 
         const class_query = {classYear : req.body.classYear}
         const temp_class = await Class.findOne(class_query)
-        temp_class.noOfSections = temp_class.noOfSections + 1;
+        console.log(temp_class)
+     if(temp_class.noOfSections !== null)
+     {
+     temp_class.noOfSections = temp_class.noOfSections + 1;
+     }
 
         temp_class.sectionList = temp_class.sectionList || [];
         temp_class.sectionList.push(newSection._id);
@@ -84,11 +88,16 @@ const getAllClasses = async (req,res,next) => {
     };
 
 const getAllSectionsInClass = async(req ,res , next) => {
-    const class_query = {classYear : req.body.classYear};
-
-    const temp_class = await Class.findOne(class_query);
+    const class_query = {classYear:req.params.classYear}
+    console.log(class_query)
+    console.log("query passed")
+    const temp_class = await Class.findOne(class_query).populate('sectionList');
     temp_class.sectionList = temp_class.sectionList || [];
-    res.json(temp_class.sectionList);
+    console.log(temp_class.sectionList)
+    res.status(201).json(temp_class.sectionList);
+    console.log("the response")
+    console.log(res)
+    return
 };
 
 exports.getAllSectionsInClass = getAllSectionsInClass;

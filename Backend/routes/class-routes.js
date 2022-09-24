@@ -24,6 +24,6 @@ router.get('/getClass/:classYear' , classController.getClass);
 */
 router.get('/getAllClasses', classController.getAllClasses);
 
-router.get('/getAllSectionsInClass', classController.getAllSectionsInClass)
+router.get('/getAllSectionsInClass/:classYear', classController.getAllSectionsInClass)
 
 module.exports = router;
