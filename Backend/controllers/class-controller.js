@@ -35,8 +35,8 @@ const addClass = async(req, res, next) => {
 
         newClass
         .save()
-        .then(() => res.json({ message: "Class added!",Class: newClass }))
-        .catch((err) => res.status(400).json("Error: " + err));
+        .then(() => res.status(201).json({ message: "Class added!",Class: newClass }))
+        .catch((err) => res.status(401).json("Error: " + err));
 
     }catch(err){
         return next( new HttpError(err.message, 500));
@@ -89,14 +89,9 @@ const getAllClasses = async (req,res,next) => {
 
 const getAllSectionsInClass = async(req ,res , next) => {
     const class_query = {classYear:req.params.classYear}
-    console.log(class_query)
-    console.log("query passed")
     const temp_class = await Class.findOne(class_query).populate('sectionList');
     temp_class.sectionList = temp_class.sectionList || [];
-    console.log(temp_class.sectionList)
     res.status(201).json(temp_class.sectionList);
-    console.log("the response")
-    console.log(res)
     return
 };
 

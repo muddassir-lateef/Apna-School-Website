@@ -134,6 +134,21 @@ console.log("we good")
 return response;
 }
 
+export async function addClass(classYear) {
+  let tempURL = URL + 'class/addClass'
+  const response = await axios.post(tempURL, {
+    classYear
+  })
+  if(response.status === 201)
+  {
+    return response
+  }
+  else if (response.status === 401)
+  {
+    return response
+  }
+}
+
 export async function getAllClasses() {
   let tempURL = URL +'class/getAllClasses'
   console.log(tempURL)

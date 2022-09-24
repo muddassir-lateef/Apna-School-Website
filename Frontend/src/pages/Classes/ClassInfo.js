@@ -5,13 +5,14 @@ import { useParams } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
+import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
 import { useNavigate } from "react-router-dom";
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ListItemButton from '@mui/material/ListItemButton'
 import { Button, Box } from '@mui/material'
 import Typography from '@mui/material/Typography';
-import { getAllSectionsInClass } from "../../services/UserService";
+import { getAllSectionsInClass, addClass } from "../../services/UserService";
 export default function AlignItemsList() {
   const [section, setSection] = useState("")
   const [sectionFlag, setSectionFlag] = useState(false)
@@ -40,11 +41,11 @@ export default function AlignItemsList() {
     if(sectionFlag === true)
     return (
       section.map((secs) => (
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'skyblue' }}>
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: '#0000' }}>
         <ListItemButton alignItems="flex-start">
 
           <ListItemAvatar>
-            <Avatar alt="Remy Sharp" >
+            <Avatar sx={{ bgcolor: '#182747' }} >
             {secs.sectionName}
             </Avatar>
           </ListItemAvatar>
@@ -64,10 +65,11 @@ export default function AlignItemsList() {
             }
           />
         </ListItemButton>
-        <Divider variant="inset" component="li" />
+        <Divider />
       </List>
       ))
   );
+
   }
 
   return(
