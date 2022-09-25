@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getTeacher, updateTeacher } from "../../services/UserService";
 import { VALIDATOR_MIN, VALIDATOR_MINLENGTH } from "../../services/validators";
@@ -12,11 +12,13 @@ import { useForm } from "../../hooks/form-hook";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import InputLabel from "@mui/material/InputLabel";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const EditTeacher = () => {
   const [isLoading, setIsLoading] = useState(true);
   const prev_username = useParams().username;
-  const [teacher, setTeacher] = useState('');
+  const [teacher, setTeacher] = useState("");
+  const navigate = useNavigate();
   //run on page load
   useEffect(() => {
     getTeacher(prev_username)
@@ -56,34 +58,35 @@ const EditTeacher = () => {
     false
   );
 
-
-  useEffect(()=>{
-    console.log('useEffect hit: ', teacher)
-    setFormData({
-      firstName: {
-        value: teacher.firstName,
-        isValid: true
-      }, 
-      lastName: {
-        value: teacher.lastName,
-        isValid: true
-      }, 
-      age: {
-        value: teacher.age,
-        isValid: true
-      }, 
-      username: {
-        value: teacher.username,
-        isValid: true
-      }
-    }, true);
+  useEffect(() => {
+    console.log("useEffect hit: ", teacher);
+    setFormData(
+      {
+        firstName: {
+          value: teacher.firstName,
+          isValid: true,
+        },
+        lastName: {
+          value: teacher.lastName,
+          isValid: true,
+        },
+        age: {
+          value: teacher.age,
+          isValid: true,
+        },
+        username: {
+          value: teacher.username,
+          isValid: true,
+        },
+      },
+      true
+    );
     setIsLoading(false);
     //console.log("FormState: ", formState.inputs)
-
   }, [setFormData, teacher]);
 
   const onSubmitHandler = () => {
-    console.log(formState.inputs)
+    console.log(formState.inputs);
     teacherSubmitHandler();
   };
   const [snackOpen, setSnackOpen] = useState(false);
@@ -102,18 +105,18 @@ const EditTeacher = () => {
       .then((res) => {
         if (res.status === 201) {
           console.log(res);
-          console.log("were heree")
+          console.log("were heree");
           setSubmitStatus(1);
           setSnackOpen(true);
         } else {
           setSubmitStatus(-1);
-          console.log("we dont want to be heree")
+          console.log("we dont want to be heree");
           setSnackOpen(true);
         }
       })
       .catch((err) => {
         console.log(err);
-        console.log("we dont want to be heree part 2")
+        console.log("we dont want to be heree part 2");
         setSubmitStatus(-1);
         setSnackOpen(true);
       });
@@ -158,143 +161,160 @@ const EditTeacher = () => {
     };
   };
 
-  if (isLoading){
-    return(<Typography variant="h2">Loading...</Typography>);
+  const handleGoBackClick = (e) => {
+    e.preventDefault();
+    let url = "/teacher/search";
+    navigate(url);
+  };
+
+  if (isLoading) {
+    return <Typography variant="h2">Loading...</Typography>;
   }
 
-  if (typeof teacher === 'object')
-  return (
-    
-    <Grid justifyContent="center" display="flex" flex-direction="row">
-      <Card sx={{ width: "90%", maxWidth: "900px" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            p: 1,
-            m: 1,
-          }}
-        >
-          <Avatar sx={{ mr: 2 }}>
-            <PersonAddAlt1Icon />
-          </Avatar>
-          <Typography variant="h5">Update Teacher</Typography>
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            flexWrap: "wrap",
-            alignItems: "center",
-
-            p: 1,
-          }}
-        >
-          <Input
-            sx={{ pr: 2, pb: 3, flex: "100%" }}
-            id="firstName"
-            label="First Name"
-            variant="standard"
-            onInput={InputHandler}
-            validators={[VALIDATOR_MINLENGTH(1)]}
-            errorText="First name is a required field"
-            initialValue={teacher.firstName}
-            initialValid={formState.inputs.firstName.isValid}
-          />
-          <Input
-            sx={{ pr: 2, pb: 3, flex: "100%" }}
-            id="lastName"
-            label="Last Name"
-            variant="standard"
-            onInput={InputHandler}
-            validators={[VALIDATOR_MINLENGTH(1)]}
-            errorText="Last name is a required field"
-            initialValue={teacher.lastName}
-            initialValid={formState.inputs.lastName.isValid}
-          />
-          <Input
-            sx={{ pr: 2, pb: 3, flex: "100%" }}
-            id="age"
-            label="Age"
-            variant="standard"
-            onInput={InputHandler}
-            validators={[VALIDATOR_MIN(18)]}
-            errorText="Age must be over 18 years"
-            initialValue={teacher.age}
-            initialValid={formState.inputs.age.isValid}
-          />
-          <Input
-            sx={{ pr: 2, pb: 2, flex: "100%" }}
-            id="username"
-            label="Username"
-            variant="standard"
-            onInput={InputHandler}
-            validators={[VALIDATOR_MINLENGTH(5)]}
-            errorText="Username must be at least 5 characters"
-            initialValue={teacher.username}
-            initialValid={formState.inputs.username.isValid}
-          />
+  if (typeof teacher === "object")
+    return (
+      <Grid justifyContent="center" display="flex" flex-direction="row">
+        <Card sx={{ width: "90%", maxWidth: "900px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              p: 1,
+              m: 1,
+            }}
+          >
+            <Avatar sx={{ mr: 2 }}>
+              <PersonAddAlt1Icon />
+            </Avatar>
+            <Typography variant="h5">Update Teacher</Typography>
+          </Box>
 
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "space-evenly",
               flexWrap: "wrap",
               alignItems: "center",
-              width: "100%",
+
               p: 1,
             }}
           >
-            <InputLabel sx={{ p: "-1px", w: "100%" }}>
-              Teacher Profile Picture
-            </InputLabel>
-            <input
-              style={{
-                display: "inline-block",
-                padding: "6px 12px",
-                cursor: "pointer",
-              }}
-              id="imagefile"
-              type="file"
-              onChange={handleFileInputChange}
-              value={fileInputState}
+            <Input
+              sx={{ pr: 2, pb: 3, flex: "100%" }}
+              id="firstName"
+              label="First Name"
+              variant="standard"
+              onInput={InputHandler}
+              validators={[VALIDATOR_MINLENGTH(1)]}
+              errorText="First name is a required field"
+              initialValue={teacher.firstName}
+              initialValid={formState.inputs.firstName.isValid}
             />
-          </Box>
-          {previewSource && (
-            <img
-              src={previewSource}
-              alt="chosen"
-              style={{ height: "300px", class: "center", borderRadius: "50%" }}
+            <Input
+              sx={{ pr: 2, pb: 3, flex: "100%" }}
+              id="lastName"
+              label="Last Name"
+              variant="standard"
+              onInput={InputHandler}
+              validators={[VALIDATOR_MINLENGTH(1)]}
+              errorText="Last name is a required field"
+              initialValue={teacher.lastName}
+              initialValid={formState.inputs.lastName.isValid}
             />
-          )}
+            <Input
+              sx={{ pr: 2, pb: 3, flex: "100%" }}
+              id="age"
+              label="Age"
+              variant="standard"
+              onInput={InputHandler}
+              validators={[VALIDATOR_MIN(18)]}
+              errorText="Age must be over 18 years"
+              initialValue={teacher.age}
+              initialValid={formState.inputs.age.isValid}
+            />
+            <Input
+              sx={{ pr: 2, pb: 2, flex: "100%" }}
+              id="username"
+              label="Username"
+              variant="standard"
+              onInput={InputHandler}
+              validators={[VALIDATOR_MINLENGTH(5)]}
+              errorText="Username must be at least 5 characters"
+              initialValue={teacher.username}
+              initialValid={formState.inputs.username.isValid}
+            />
 
-          <Grid container display="flex" justifyContent="flex-end">
-            <Button
-              onClick={onSubmitHandler}
-              variant="contained"
-              endIcon={<SendIcon />}
-              sx={{ mt: 2 }}
-              disabled={!formState.isValid}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                alignItems: "center",
+                width: "100%",
+                p: 1,
+              }}
             >
-              Submit
-            </Button>
-          </Grid>
-        </Box>
-      </Card>
-      <Snackbar
-        open={snackOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      >
-        <div>
-          <StatusAlert />
-        </div>
-      </Snackbar>
-    </Grid>
-  );
+              <InputLabel sx={{ p: "-1px", w: "100%" }}>
+                Teacher Profile Picture
+              </InputLabel>
+              <input
+                style={{
+                  display: "inline-block",
+                  padding: "6px 12px",
+                  cursor: "pointer",
+                }}
+                id="imagefile"
+                type="file"
+                onChange={handleFileInputChange}
+                value={fileInputState}
+              />
+            </Box>
+            {previewSource && (
+              <img
+                src={previewSource}
+                alt="chosen"
+                style={{
+                  height: "300px",
+                  class: "center",
+                  borderRadius: "50%",
+                }}
+              />
+            )}
+
+            <Grid container display="flex" justifyContent="space-between">
+              <Button
+                variant="text"
+                startIcon={<ArrowBackIcon />}
+                onClick={handleGoBackClick}
+              >
+                Go Back
+              </Button>
+
+              <Button
+                onClick={onSubmitHandler}
+                variant="contained"
+                endIcon={<SendIcon />}
+                sx={{ mt: 2 }}
+                disabled={!formState.isValid}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Box>
+        </Card>
+        <Snackbar
+          open={snackOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackOpen(false)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
+          <div>
+            <StatusAlert />
+          </div>
+        </Snackbar>
+      </Grid>
+    );
 };
 
 export default EditTeacher;
