@@ -39,10 +39,11 @@ const addStudent = async (req, res, next) => {
     const image = req.body.image || "";
     var uploadResponse;
     if (image !== "") {
-
+      console.log("bef")
       uploadResponse = await cloudinary.uploader.upload(image, {
         upload_preset: 'Students',
       })
+      console.log("aft")
     }
     else {
       uploadResponse = { public_id: '' };
