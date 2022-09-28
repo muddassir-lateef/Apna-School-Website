@@ -14,7 +14,7 @@ const initial_menuItems = [
   {
     
     menuTitle: "All Students",
-    visible: true,
+    visible: false,
     enteries: [{
       title: "Search Students",
       path: '/students/search',
@@ -35,7 +35,7 @@ const initial_menuItems = [
 
   {
     menuTitle: "Teacher",
-    visible: true,
+    visible: false,
     enteries: [{
       title: "Search Teacher",
       path: '/teacher/search',
@@ -56,7 +56,7 @@ const initial_menuItems = [
 
   {
     menuTitle: "Exams",
-    visible: true,
+    visible: false,
     enteries: [{
       title: "All Exams",
       path: '/admin/students',
@@ -76,7 +76,7 @@ const initial_menuItems = [
   },
   {
     menuTitle: "Class",
-    visible: true,
+    visible: false,
     enteries: [{
       title: "Search Class",
       path: '/class/searchClass',
@@ -96,7 +96,7 @@ const initial_menuItems = [
   },
   {
     menuTitle: "Attendance",
-    visible: true,
+    visible: false,
     enteries: [{
       title: "Mark Student Attendance",
       path: "/attendance/student",
