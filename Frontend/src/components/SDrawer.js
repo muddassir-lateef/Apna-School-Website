@@ -4,7 +4,6 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import React, { useState } from "react";
 import ClassIcon from '@mui/icons-material/Class';
 import Face6Icon from '@mui/icons-material/Face6';
@@ -48,16 +47,10 @@ const initial_menuItems = [
       icon: <PersonAddIcon />
     },
     {
-      title: "Remove Teacher",
-      path: '/teacher/remove',
-      icon: <PersonRemoveIcon />
-    },
-    {
       title: "Assign Class",
       path: '/teacher/assign',
       icon: <ClassIcon />
     }
-
     ]
   },
 
