@@ -200,3 +200,23 @@ export async function getTeacher(username){
   return response;
 
 }
+
+export async function getAllStudentsInSection(classYear, sectionName) {
+  console.log("Year")
+  console.log(classYear)
+  console.log("Section")
+  console.log(sectionName)
+
+  let tempURL = URL + 'section/getAllStudentsInSection'
+  console.log(tempURL)
+  const response = await axios.get(tempURL,{classYear, sectionName});
+
+  if(response.status === 201)
+  {
+    return response;
+  }
+  else {
+    console.log("Failed")
+    return -1
+  }
+}

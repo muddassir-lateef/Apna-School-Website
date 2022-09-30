@@ -11,6 +11,7 @@ import AddNewClass from "../pages/Classes/AddNewClass"
 import ClassInfo from "../pages/Classes/ClassInfo";
 import TeacherInfo from "../pages/Teacher/TeacherInfo";
 import EditTeacher from "../pages/Teacher/EditTeacher";
+import SectionInfo from '../pages/Classes/SectionInfo'
 import MarkStudentAttendance from "../pages/Attendance/MarkStudentAttendance";
 export const LoggedOutRoutes = () => {
   let routes;
@@ -39,6 +40,7 @@ export const LoggedInRoutes = () => {
         <Route path="/class/:classYear" element={<ClassInfo/>} />
         <Route path="/class/searchClass" element={<SearchClass/>} />
         <Route path="/class/addClass" element={<AddNewClass/>} />
+        <Route path="/class/section" element = {<SectionInfo/>} />
         <Route path="/attendance/student" element={<MarkStudentAttendance/>} />
 
       </Routes>
