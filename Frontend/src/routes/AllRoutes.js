@@ -14,9 +14,11 @@ import EditTeacher from "../pages/Teacher/EditTeacher";
 import SectionInfo from '../pages/Classes/SectionInfo'
 import MarkStudentAttendance from "../pages/Attendance/MarkStudentAttendance";
 import StudentInfo from "../pages/Students/StudentInfo";
+import FeeRecordInfo from "../pages/Students/FeeRecordInfo";
+import StudentFeeRecord from "../pages/Students/StudentFeeRecord";
 export const LoggedOutRoutes = () => {
   let routes;
-
+  
   routes = (
     <Routes>
       <Route path="/" element={<SignIn />} />
@@ -44,8 +46,10 @@ export const LoggedInRoutes = () => {
         <Route path="/class/section" element = {<SectionInfo/>} />
         <Route path="/attendance/student" element={<MarkStudentAttendance/>} />
         <Route path="/students/view/:rollNumber" element={<StudentInfo/>} />
-
-      </Routes>
+        <Route path="/students/feerecord/info" element={<FeeRecordInfo/>} />
+        <Route path="/student/FeeRecord" element={<StudentFeeRecord/>} />
+        
+        </Routes>
     );
     return routes;
   };

@@ -27,7 +27,7 @@ router.post('/generateFeeForAllStudents', FeeRecordController.generateFeeForAllS
     "feeYear" : 4
 }
 */
-router.get('/getStudentFeeRecord', FeeRecordController.getStudentFeeRecord)
+router.get('/getStudentFeeRecord/:rollNumber', FeeRecordController.getStudentFeeRecord)
 /*
 {
     "rollNumber" : 66 
@@ -46,7 +46,7 @@ router.post('/addFeeDetailToStudentFeeRecord', FeeRecordController.addFeeDetailT
 }
 */
 
-router.get('/getAllFeeDetailsFromStudentFeeRecord', FeeRecordController.getAllFeeDetailsFromStudentFeeRecord);
+router.get('/getAllFeeDetailsFromStudentFeeRecord/:rollNumber', FeeRecordController.getAllFeeDetailsFromStudentFeeRecord);
 /*
 {
     "rollNumber" : 6000

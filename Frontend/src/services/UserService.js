@@ -180,10 +180,12 @@ export async function getClassByClassYear(tempClassYear) {
   const response = await axios.get(tempURL);
   if(response.status === 201)
   {
+    console.log("we good")
     return response;
   }
-  else if(response.status !== 201)
+  else 
   {
+    console.log("not good")
     return -1;
   }
 }
@@ -207,9 +209,12 @@ export async function getAllStudentsInSection(classYear, sectionName) {
   console.log("Section")
   console.log(sectionName)
 
+
   let tempURL = URL + 'section/getAllStudentsInSection'
   console.log(tempURL)
-  const response = await axios.get(tempURL,{"classYear" : 7,"sectionName" : "A"});
+  const response = await axios.get(tempURL,{"classYear" : 7,
+  "sectionName" : 'A'}
+  );
 
   if(response.status === 201)
   {
@@ -218,5 +223,39 @@ export async function getAllStudentsInSection(classYear, sectionName) {
   else {
     console.log("Failed")
     return -1
+  }
+}
+
+export async function getAllFeeDetailsFromStudentFeeRecord(rollNumber) {
+  console.log("here")
+  console.log(rollNumber)
+  let tempURL = URL + 'feeRecord/getAllFeeDetailsFromStudentFeeRecord/' + rollNumber
+  console.log(tempURL);
+  const response = await axios.get(tempURL);
+  console.log(response)
+  if(response.status === 201)
+  {
+    console.log("Success")
+    return response;
+  }
+  else 
+  {
+    console.log(response.data)
+    console.log("Failed")
+    return -1
+  }
+}
+
+export async function getStudentFeeRecord(rollNumber) {
+  console.log("In get Fee Record User Service")
+  let tempURL = URL +'feeRecord/getStudentFeeRecord/' + rollNumber;
+  const response = await axios.get(tempURL);
+  if(response.status === 201)
+  {
+    return response;
+  }
+  else
+  {
+    return -1;
   }
 }

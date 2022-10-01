@@ -34,6 +34,16 @@ const StudentInfo = () => {
     let url = '/students/search';
     navigate(url);
   }
+
+  const handleViewFeeRecord = (e, Name, Name2) => {
+    console.log(e)
+    console.log(Name)
+    console.log(Name2)
+    navigate("/student/FeeRecord", {
+        state: { param1: e, param2 : Name, param3 : Name2},
+      })
+    
+  }
   return (
     <>
       <Card>
@@ -67,6 +77,9 @@ const StudentInfo = () => {
           <Grid item xs={12} md={6}>
             <Box sx={{ m: 1 }}>
               <Paper elevation={0}>
+                  <Divider />
+                <Divider />
+                <Divider />
               <Grid container>     
                   <Grid item xs={6}>
                     <Typography sx={{ fontWeight: 600 }} variant="h7">
@@ -203,7 +216,10 @@ const StudentInfo = () => {
                 <Divider />
                 <Grid container>
                   <Grid item xs={0} variant = 'contained'>
-                    <Button> 
+                    <Button 
+                    variant = "contained"
+                    onClick={() => handleViewFeeRecord(student.rollNumber, student.firstName, student.lastName)}
+                    > 
                       View Fee Record:
                     </Button>
                   </Grid>
