@@ -13,6 +13,7 @@ import TeacherInfo from "../pages/Teacher/TeacherInfo";
 import EditTeacher from "../pages/Teacher/EditTeacher";
 import SectionInfo from '../pages/Classes/SectionInfo'
 import MarkStudentAttendance from "../pages/Attendance/MarkStudentAttendance";
+import StudentInfo from "../pages/Students/StudentInfo";
 export const LoggedOutRoutes = () => {
   let routes;
 
@@ -42,6 +43,7 @@ export const LoggedInRoutes = () => {
         <Route path="/class/addClass" element={<AddNewClass/>} />
         <Route path="/class/section" element = {<SectionInfo/>} />
         <Route path="/attendance/student" element={<MarkStudentAttendance/>} />
+        <Route path="/students/view/:rollNumber" element={<StudentInfo/>} />
 
       </Routes>
     );

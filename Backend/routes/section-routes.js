@@ -30,7 +30,7 @@ router.patch('/removeStudentFromSection', SectionController.removeStudentFromSec
 {
 "classYear" : 7,
 "sectionName" : "A",
-"rollNumber" : 5"
+"rollNumber" : 5
 }
 
 */

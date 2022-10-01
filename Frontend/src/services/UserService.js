@@ -209,7 +209,7 @@ export async function getAllStudentsInSection(classYear, sectionName) {
 
   let tempURL = URL + 'section/getAllStudentsInSection'
   console.log(tempURL)
-  const response = await axios.get(tempURL,{classYear, sectionName});
+  const response = await axios.get(tempURL,{"classYear" : 7,"sectionName" : "A"});
 
   if(response.status === 201)
   {

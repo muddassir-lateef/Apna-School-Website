@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   Button, Box, Grid, Card, CardContent, CardActions, Typography,Fade,
   Backdrop, Modal, Alert
@@ -30,6 +31,7 @@ const SearchStudent = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [refreshFlag, setRefreshFlag] = useState(false); 
   const [snackOpen, setSnackOpen] = React.useState(false);
+  const navigate = useNavigate();
 
 
   React.useEffect(() => {
@@ -84,6 +86,11 @@ const SearchStudent = () => {
     console.log(studentRollNumber)
     setModalOpen(true);
   }
+  const handleStudentCardClick = (rollNumber) => {
+    let url = `/students/view/${rollNumber}`;
+    navigate(url);
+  }
+
 
   const StatusAlert = () => {
     if (refreshFlag === true)
@@ -146,12 +153,14 @@ const SearchStudent = () => {
           student.map((stu) => (
             <Grid item sm={12} md={6} lg={4} key={stu.rollNumber}>
               <Card sx={{ maxWidth: 320 }}>
+              <Button onClick={()=>handleStudentCardClick(stu.rollNumber)} style={{ padding: "0px" }}>
                 <Image
                   cloudName="dqxdmayga"
                   publicId={stu.image}
                   width={320}
                   height={250}
                 />
+                </Button>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     {stu.rollNumber}
@@ -162,7 +171,7 @@ const SearchStudent = () => {
                 </CardContent>
                 <CardActions>
                 <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
-                <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>}>Edit</Button>
+                <Button sx={{width:'40%'}} variant="contained" component="label"  startIcon={<EditIcon/>}>Edit</Button>
                 <Button
               sx={{width:'40%'}}
                 variant="outlined" color="error"

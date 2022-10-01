@@ -21,6 +21,8 @@ const addStudent = async (req, res, next) => {
     const phoneNumber = req.body.phoneNumber;
     const emailAddress = req.body.emailAddress;
     const sectionId = req.body.sectionId ? req.body.sectionId : null;
+    const classYear = req.body.classYear? req.body.classYear : null;
+    const sectionName = req.body.sectionName ? req.body.sectionName : null;
 
     //Fee Record Attributes
 
@@ -49,7 +51,7 @@ const addStudent = async (req, res, next) => {
       uploadResponse = { public_id: '' };
     }
     const feeRecord = new FeeRecord({
-      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee, otherFee
+      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee, otherFee,
     })
     console.log("Before adding fee")
 
@@ -77,7 +79,7 @@ const addStudent = async (req, res, next) => {
     const newStudent = new Student({
 
       rollNumber, Age, firstName, lastName, guardianFirstName,
-      guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id,
+      guardianLastName, cnic, emailAddress, houseAddress, phoneNumber, sectionId, feeRecord, image: uploadResponse.public_id, classYear, sectionName
     });
 
 

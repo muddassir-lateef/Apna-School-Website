@@ -22,7 +22,10 @@ router.patch('/markFeePaid', FeeRecordController.markFeePaid)
 */
 router.post('/generateFeeForAllStudents', FeeRecordController.generateFeeForAllStudents)
 /*
-No Body
+{
+    "feeMonth" : 2,
+    "feeYear" : 4
+}
 */
 router.get('/getStudentFeeRecord', FeeRecordController.getStudentFeeRecord)
 /*
