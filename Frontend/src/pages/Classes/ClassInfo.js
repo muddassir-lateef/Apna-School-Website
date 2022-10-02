@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import { useParams } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ListItemText from '@mui/material/ListItemText';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -21,13 +22,16 @@ export default function AlignItemsList() {
   const [sectionYear, setSectionYear] = useState();
 
 
-  const ViewSectionHandler = (event, index) => {
+  const ViewSectionHandler = (event, index, strength) => {
     navigate("/class/section", {
-      state: { param1: index, param2: classYear },
+      state: { param1: index, param2: classYear , param3 : strength},
     });
 
   }
-
+  const handleGoBackClick = () => {
+    let url = '/class/searchClass';
+    navigate(url);
+  }
 
 
   useEffect(() => {
@@ -58,7 +62,7 @@ export default function AlignItemsList() {
             <ListItemButton alignItems="flex-start"
               value={classYear}
               size="small"
-              onClick={(event) => ViewSectionHandler(event, secs.sectionName)}
+              onClick={(event) => ViewSectionHandler(event, secs.sectionName, secs.strength)}
             >
 
               <ListItemAvatar>
@@ -92,6 +96,9 @@ export default function AlignItemsList() {
   return (
     <Box>
       <SectionDisplay />
+      <Button variant = "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>
+                    Back
+                  </Button>
     </Box>
   )
 

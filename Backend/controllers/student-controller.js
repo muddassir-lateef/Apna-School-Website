@@ -1,6 +1,8 @@
 let Student = require('../models/student.model');
 let FeeRecord = require('../models/feeRecord.model');
 let FeeList = require('../models/feeDetails.model');
+let Class = require('../models/class.model')
+let Section = require('../models/section.model');
 const HttpError = require('../models/http-error');
 let { cloudinary } = require("../utils/cloudinary");
 const FeeDetails = require('../models/feeDetails.model');
@@ -21,8 +23,8 @@ const addStudent = async (req, res, next) => {
     const phoneNumber = req.body.phoneNumber;
     const emailAddress = req.body.emailAddress;
     const sectionId = req.body.sectionId ? req.body.sectionId : null;
-    const classYear = req.body.classYear? req.body.classYear : null;
-    const sectionName = req.body.sectionName ? req.body.sectionName : null;
+    const classYear = req.body.classYear? req.body.classYear : 0;
+    const sectionName = req.body.sectionName ? req.body.sectionName : 'None';
 
     //Fee Record Attributes
 
@@ -133,6 +135,26 @@ const deleteStudent = async (req, res, next) => {
   try {
     const rollNumber = req.params.rollNumber;
     var temp_student = await Student.findOne({ rollNumber });
+    //Deleting the student from the class they blond to and updating the strength
+
+    const class_query = {classYear : temp_student.classYear}
+    const section_query = {sectionName : temp_student.sectionName}
+    console.log(class_query)
+    console.log(section_query)
+    const tempOldClass = await Class.findOne(class_query).populate('sectionList');
+    for (let i = 0; i < tempOldClass.sectionList.length; i++) {
+        if (tempOldClass.sectionList[i].sectionName === temp_student.sectionName) {
+            // console.log(tempOldClass.sectionList[i].sectionName)
+            console.log("in the zone")
+            const tempOldSection = await Section.findOne(section_query)  
+            tempOldSection.strength = tempOldSection.strength -1;
+            tempOldSection.save();           
+    
+            }
+        }
+
+
+
     const public_id = temp_student.image;
     console.log("Public ID: " + public_id)
     const deleteResponse = await cloudinary.uploader

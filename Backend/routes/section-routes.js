@@ -41,7 +41,7 @@ router.get('/getSectionById',SectionController.getSectionById);
 */
 router.get('/', SectionController.getAllSections);
 
-router.get('/getAllStudentsInSection', SectionController.getAllStudentsInSection);
+router.patch('/getAllStudentsInSection', SectionController.getAllStudentsInSection);
 /*
   "className" : "A"
   "classYear" : 7 
