@@ -11,7 +11,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ListItemButton from '@mui/material/ListItemButton'
-import { Button, Box } from '@mui/material'
+import { Button, Box, Grid } from '@mui/material'
 import Typography from '@mui/material/Typography';
 import { getAllSectionsInClass, addClass } from "../../services/UserService";
 export default function AlignItemsList() {
@@ -94,12 +94,14 @@ export default function AlignItemsList() {
   }
 
   return (
-    <Box>
+    <Grid>
       <SectionDisplay />
+      <Grid item xs={12} textAlign="right">
       <Button variant = "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>
                     Back
                   </Button>
-    </Box>
+                  </Grid>
+    </Grid>
   )
 
 }
