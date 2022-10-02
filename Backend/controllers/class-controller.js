@@ -2,6 +2,7 @@ const HttpError = require('../models/http-error');
 let Section = require('../models/section.model');
 let Student = require('../models/student.model');
 let Class = require('../models/class.model');
+let Teacher = require('../models/teacher.model');
 
 
 const getClass = async (req, res, next) => {
@@ -79,7 +80,7 @@ const addNewSectionToClass = async(req, res, next) => {
 
 const getAllClasses = async (req,res,next) => {
     try {
-        Class.find()
+        Class.find().populate('sectionList')
         .then((classes) => res.status(201).json(classes))
         .catch((err) => res.status(401).json("Error: " + err));
     } catch(err) {
@@ -95,9 +96,47 @@ const getAllSectionsInClass = async(req ,res , next) => {
     return
 };
 
+const assignTeacherToSection = async(req, res, next) => {
+    let success = -1;
+    const class_year = req.body.classYear;
+    const section = req.body.section;
+    const teacherUsername = req.body.username;
+    const temp_teacher = await Teacher.findOne({ username: teacherUsername });
+
+    const temp_class = await Class.findOne({classYear: class_year}).populate('sectionList');
+
+    if (temp_teacher !== null) {
+        if (temp_class.sectionList !== null) {
+            for (let i = 0; i < temp_class.sectionList.length; i++) {
+                if (temp_class.sectionList[i].sectionName === section) {
+                    temp_class.sectionList[i].sectionHead = temp_teacher._id;
+                    const temp_section = await Section.findOne({_id: temp_class.sectionList[i]._id})
+                    temp_section.sectionHead = temp_teacher._id;
+                    await temp_section.save();
+                    if (temp_teacher.sections.find(val => val == temp_class.sectionList[i]._id) === null)
+                        temp_teacher.sections.push(temp_class.sectionList[i]._id);
+                    success = 1;
+                }
+            }
+        }
+    }
+
+    if (success === 1){
+        await temp_teacher.save()
+        const err = await temp_class.save().catch(err => err)
+        .then(() => res.status(200).json({ message: "Teacher has been assigned to class", Class: temp_class }))
+        .catch((err) => res.status(400).json("Error: " + err));
+       
+    }
+    else{
+        res.status(400).json({message: "Teacher was NOT assigned"});
+    }
+
+}
+
 exports.getAllSectionsInClass = getAllSectionsInClass;
 exports.getAllClasses = getAllClasses;
 exports.addClass = addClass;
 exports.addNewSectionToClass = addNewSectionToClass;
 exports.getClass = getClass;
-
+exports.assignTeacherToSection = assignTeacherToSection;

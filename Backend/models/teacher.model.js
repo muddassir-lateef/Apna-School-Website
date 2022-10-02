@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 let SalaryRecord = require('../models/salaryRecord.model');
 const Schema = mongoose.Schema;
+let Section = require('../models/section.model');
 
 const teacherSchema = new Schema({
   
@@ -31,7 +32,14 @@ const teacherSchema = new Schema({
 
   salaryRecordId:{
     type:Schema.Types.ObjectId ,ref:"SalaryRecord",
-  }
+  },
+
+  sections: [
+    {
+      type:Schema.Types.ObjectId ,ref:"Section",
+    }
+  ]
+
 }, {
   timestamps: true,
 });

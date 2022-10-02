@@ -200,3 +200,17 @@ export async function getTeacher(username){
   return response;
 
 }
+
+export async function getAllSections() {
+  let tempURL = URL + 'class/getAllClasses';
+  const response = await axios.get(tempURL);
+  return response;
+}
+
+export async function assignTeacher(username, classYear, section){
+  let tempURL = URL + 'class/assignTeacher';
+  const response = await axios.patch(tempURL, {
+    username, classYear, section
+  });
+  return response;
+}
