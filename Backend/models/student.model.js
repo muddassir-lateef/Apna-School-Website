@@ -68,6 +68,12 @@ const studentSchema = new Schema({
     type: String,
     required : true,
   },
+  sectionName : {
+    type: String,
+  },
+  classYear : {
+    type: Number,
+  },
 
 }, {
   timestamps: true,

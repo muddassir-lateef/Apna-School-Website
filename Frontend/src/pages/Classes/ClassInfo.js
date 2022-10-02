@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ListItemButton from '@mui/material/ListItemButton'
@@ -16,10 +16,23 @@ import { getAllSectionsInClass, addClass } from "../../services/UserService";
 export default function AlignItemsList() {
   const [section, setSection] = useState("")
   const [sectionFlag, setSectionFlag] = useState(false)
-
+  const navigate = useNavigate();
   let classYear = useParams().classYear;
-  console.log(classYear);
+  const [sectionYear, setSectionYear] = useState();
 
+
+  const ViewSectionHandler = (event, index) => {
+    navigate("/class/section", {
+      state: { param1: index, param2: classYear },
+    });
+
+  }
+
+
+
+  useEffect(() => {
+    setSectionYear(classYear)
+  }, [sectionYear]);
 
   useEffect(() => {
     getAllSectionsInClass(classYear).then((response) => {
@@ -38,44 +51,48 @@ export default function AlignItemsList() {
     })
   }, []);
   const SectionDisplay = () => {
-    if(sectionFlag === true)
-    return (
-      section.map((secs) => (
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: '#0000' }}>
-        <ListItemButton alignItems="flex-start">
+    if (sectionFlag === true)
+      return (
+        section.map((secs) => (
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: '#0000' }}>
+            <ListItemButton alignItems="flex-start"
+              value={classYear}
+              size="small"
+              onClick={(event) => ViewSectionHandler(event, secs.sectionName)}
+            >
 
-          <ListItemAvatar>
-            <Avatar sx={{ bgcolor: '#182747' }} >
-            {secs.sectionName}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary= "Section Head"
-            secondary={
-              <React.Fragment>
-                <Typography
-                  sx={{ display: 'inline' }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
-                >
-                  Strength : {secs.strength}
-                </Typography>
-              </React.Fragment>
-            }
-          />
-        </ListItemButton>
-        <Divider />
-      </List>
-      ))
-  );
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: '#182747' }} >
+                  {secs.sectionName}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Section Head"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      Strength : {secs.strength}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItemButton>
+            <Divider />
+          </List>
+        ))
+      );
 
   }
 
-  return(
+  return (
     <Box>
-    <SectionDisplay/>
+      <SectionDisplay />
     </Box>
   )
- 
+
 }

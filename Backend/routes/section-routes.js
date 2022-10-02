@@ -7,11 +7,33 @@ const SectionController = require('../controllers/section-controller');
 
 router.patch('/addStudentToSection', SectionController.addStudentToSection);
 /*
+  "classYear" : 7
   "sectionName" : "A",
-  "rollNumber" : 6000
+  "rollNumber" : 1
+*/
+
+router.patch('/changeStudentSection', SectionController.changeStudentSection)
+/*
+{
+  "oldClass" : 7,
+  "newClass" : 7,
+  "oldSection" : "A",
+  "newSection" : "B",
+  "rollNumber" : 5
+}
+
 */
 
 
+router.patch('/removeStudentFromSection', SectionController.removeStudentFromSection)
+/*
+{
+"classYear" : 7,
+"sectionName" : "A",
+"rollNumber" : 5
+}
+
+*/
 router.get('/getSectionById',SectionController.getSectionById);
 /*
   STUDENTS ROLL NUMBER
@@ -22,6 +44,6 @@ router.get('/', SectionController.getAllSections);
 router.get('/getAllStudentsInSection', SectionController.getAllStudentsInSection);
 /*
   "className" : "A"
-  "classYear" : 7 (HAS TO BE IMPLEMENTED)
+  "classYear" : 7 
 */
 module.exports = router;

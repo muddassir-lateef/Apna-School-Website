@@ -40,14 +40,18 @@ const addFeeDetailToStudentFeeRecord = async (req, res, next) => {
 
 
 const getAllFeeDetailsFromStudentFeeRecord = async (req, res, next) => {
-    const student_query = { rollNumber: req.body.rollNumber };
-    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
-
-    res.status(201).json(tempFeeRecord.feeList);
-    return;
-
-}
+    try {
+        const student_query = { rollNumber: req.params.rollNumber  };
+        const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
+        console.log("here")
+        FeeRecord.findById(tempStudent.feeRecord)
+          .populate("feeList")
+          .then((fee) => res.status(201).json(fee.feeList))
+          .catch((err) => res.status(401).json("Error: " + err));
+      } catch (err) {
+        return next(new HttpError(err.message, 500));
+      }
+    };
 
 const payFee = async (req, res, next) => {
 
@@ -113,9 +117,9 @@ const markFeePaid = async (req, res, next) => {
 }
 
 const getStudentFeeRecord = async (req, res, next) => {
-    const student_query = { rollNumber: req.body.rollNumber };
+    const student_query = { rollNumber: req.params.rollNumber };
     const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
+    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord);
 
     res.status(201).json(tempFeeRecord);
     return;
