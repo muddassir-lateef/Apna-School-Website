@@ -50,8 +50,9 @@ const newClass= new Class({
 
 
 const addNewSectionToClass = async(req, res, next) => {
-
+        console.log("here")
         const sectionName = req.body.sectionName;
+        const classYear = req.body.classYear;
         const strength = req.body.strength? req.body.strength: 0;
         //Lectures belonging to that section
         const lectures = req.body.lectures? req.body.lectures: null;
@@ -62,7 +63,7 @@ const addNewSectionToClass = async(req, res, next) => {
 
         const newSection= new Section({
 
-           sectionName, strength, lectures, studentIdList, sectionHead
+           sectionName, strength, lectures, studentIdList, sectionHead, classYear
 
                                     });
 
@@ -141,7 +142,46 @@ const getAllSectionsInClass = async(req ,res , next) => {
     return
 };
 
-exports.assignTeacherToSection = assignTeacherToSection
+const deleteClass = async(req,res,next) => {
+    const class_query = { classYear: req.body.classYear };
+    console.log(class_query)
+    const tempClass = await Class.findOne(class_query).populate('sectionList');
+
+    if(tempClass.sectionList === null)
+    {
+        console.log("yeah xd")
+        const classDelete = await Class.findByIdAndDelete(tempClass._id)
+        res.status(201).json(1)
+        return;
+    }
+    console.log("before loop")
+    for (let i = 0; i < tempClass.sectionList.length; i++) {
+            console.log("Section matched")
+            const tempSection = await Section.findById(tempClass.sectionList[i]._id).populate('studentIdList');
+            if(tempSection.studentIdList !== null)
+            {
+            for (let j = 0; j < tempSection.studentIdList.length; j++) {
+                const tempStudent = await Student.findById(tempSection.studentIdList[j]._id);
+                tempStudent.classYear = 0;
+                tempStudent.sectionName = 'None';
+                tempStudent.save();
+            }
+        }
+    }
+    const delCheck = await Section.deleteMany({classYear : req.body.classYear})
+    const delCheck2 = await Class.findByIdAndDelete(tempClass._id)
+    res.status(201).json(1)
+    
+}
+
+
+const deleteSection = async(req,res,next) => {
+
+}
+
+exports.deleteSection = deleteSection;
+exports.deleteClass = deleteClass;
+exports.assignTeacherToSection = assignTeacherToSection;
 exports.getAllSectionsInClass = getAllSectionsInClass;
 exports.getAllClasses = getAllClasses;
 exports.addClass = addClass;

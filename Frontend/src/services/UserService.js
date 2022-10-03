@@ -330,6 +330,16 @@ export async function changeStudentSection(classYear, sectionName, rollNumber) {
 }
 
 export async function deleteClass(classYear) {
+  let tempURL = URL + 'class/deleteClass';
+  console.log("route")
   console.log(classYear)
-  return 1
+  const response = await axios.patch(tempURL, {classYear})
+  if(response.status === 201)
+  {
+    return response
+  }
+  else
+  {
+    return 1;
+  } 
 }

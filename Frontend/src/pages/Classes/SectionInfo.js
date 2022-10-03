@@ -20,6 +20,7 @@ import {
   Backdrop
 } from '@mui/material'
 import Typography from '@mui/material/Typography';
+import { Cloudinary } from "@cloudinary/url-gen";
 
 export default function AlignItemsList() {
   const [teacherOptions, setTeacherOptions] = useState([]);
@@ -65,16 +66,34 @@ export default function AlignItemsList() {
     //console.log(addStudentRollNumber)
   }, [username])
 
+  function stringToColor(string) {
+    let hash = 0;
+    let i;
 
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+        hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = '#';
+
+    for (i = 0; i < 3; i += 1) {
+        const value = (hash >> (i * 8)) & 0xff;
+        color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
+    return color;
+}
   const StudentDisplay = () => {
     return (
 
       studentList && studentList.map((value) => (
         <Grid item xs={12} key={value.rollNunber}>
           <Grid container spacing={2} >
-            <Grid item >
-              <Avatar alt={value.firstName} sx={{ width: 60, height: 60 }} />
-            </Grid>
+          <Grid item >
+                            <Avatar alt={value.firstName} src={imgToUrl(value.image)} sx={{ bgcolor: stringToColor(value), width: 60, height: 60 }} />
+                        </Grid>
 
             <Grid item xs={9} sm={4} >
               <Card sx={{ padding: 1, height: 45, display: "flex", alignItems: "center", textAlign: 'center' }}>
@@ -129,7 +148,16 @@ export default function AlignItemsList() {
       }
     })
   }
-
+  const cld = new Cloudinary({
+    cloud: {
+        cloudName: 'dqxdmayga'
+    }
+});
+  const imgToUrl = (publicId) => {
+    const myImage = cld.image(publicId);
+    const myUrl = myImage.toURL();
+    return myUrl
+}
 
   const textChange = (value) => {
     setUsername(value);
@@ -213,7 +241,7 @@ export default function AlignItemsList() {
     return (
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={12} textAlign="right">
-          <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={ViewSectionHandler} >Go Back</Button>
+          <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={ViewSectionHandler} >Go Back</Button>
         </Grid>
       </Grid>
     )

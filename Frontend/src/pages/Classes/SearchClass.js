@@ -21,7 +21,7 @@ import { deepOrange, deepPurple, blue } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchBox from "../../components/SearchBox";
 import Paper from '@mui/material/Paper';
-import { getAllTeachers, deleteTeacher, getAllClasses} from "../../services/UserService";
+import { getAllTeachers, deleteTeacher, getAllClasses, deleteClass} from "../../services/UserService";
 import { Image } from "cloudinary-react";
 const style = {
   position: "absolute",
@@ -47,47 +47,19 @@ const SearchTeacher = () => {
   const [delFlag, setDelFlag] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
+    console.log("hook")
     getAllClasses().then((response) => {
       if (response.status === 201) {
         console.log(response.data);
         setTeachersList(response.data);
-        setTeachersMasterList(response.data);
-        if (response.data.length !== teacherOptions.length) {
-          var temp_list = [];
-          for (let i = 0; i < response.data.length; i++) {
-            let tempObj = { label: String(response.data[i].classYear) };
-            if (
-              teacherOptions.find(
-                (teacher) => teacher.label === tempObj.label
-              ) === undefined
-            )
-              temp_list.push(tempObj);
-          }
-          setTeacherOptions(temp_list);
-        }
       } else if (response.status === 401) {
         alert("Class not found");
         console.log(response.data);
       }
     });// eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [modalOpen]);
 
-  const textChange = (value) => {
-    setUserFlag(true)
-    setUsername(value);
-    //console.log("here: " + value);
-    if (typeof value === 'string') {
-      console.log("here")
-      const filteredArray = teachersMasterList.filter((teacher) => {
-        console.log(teacher.classYear)
-        console.log("iter")
-        return teacher.classYear.includes(value);
-      });
-      console.log("here")
-      setTeachersList(filteredArray);
-    }
-    if (value.length === 0) setTeachersList(teachersMasterList);
-  };
+
 
   const handleTeacherDelete = (teacherId) => {
     setDelClass(teacherId)
@@ -106,8 +78,13 @@ const SearchTeacher = () => {
   }
 
   const onDeleteClass = () => {
-    console.log(delClass)
-  }
+    const check =  deleteClass(delClass);
+    deleteClass(delClass).then((response) => {
+      if (response.status === 201) {
+        setModalOpen((isOpen) => !isOpen);
+      }
+        })
+}
 
   return (
     <Grid container spacing={3}>
@@ -186,9 +163,7 @@ const SearchTeacher = () => {
         <Divider sx={{ mt: 2 }} />
       </Grid>
       ))}
-                <Grid item xs={12} textAlign="right">
-                    <Button variant="outlined" startIcon={<ArrowBackIcon />}> Go Back </Button>
-                </Grid>
+                
     </Grid>
     
   );
