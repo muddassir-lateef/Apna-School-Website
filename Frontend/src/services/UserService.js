@@ -212,8 +212,8 @@ export async function getAllStudentsInSection(classYear, sectionName) {
 
   let tempURL = URL + 'section/getAllStudentsInSection'
   console.log(tempURL)
-  const response = await axios.get(tempURL,{"classYear" : 7,
-  "sectionName" : 'A'}
+  const response = await axios.patch(tempURL,{classYear,
+  sectionName}
   );
 
   if(response.status === 201)
@@ -272,4 +272,18 @@ export async function assignTeacher(username, classYear, section){
     username, classYear, section
   });
   return response;
+}
+
+export async function removeStudentFromSection(classYear, sectionName, rollNumber) {
+  let tempURL = URL + 'section/removeStudentFromSection';
+  console.log("Values")
+  console.log(rollNumber)
+  console.log(sectionName)
+  const response = await axios.patch(tempURL,{ rollNumber, classYear,  sectionName})
+  if(response.status === 201)
+  {
+    return 1
+  }
+  else
+  return -1;
 }

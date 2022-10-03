@@ -48,17 +48,20 @@ const changeStudentSection = async (req, res, next) => {
 
     const student_query = { rollNumber: req.body.rollNumber }
     const tempStudent = await Student.findOne(student_query);
+
     //Check for same new and old values
-    if (tempStudent.classYear === req.body.classYear) {
-        if (tempStudent.sectionName === req.body.sectionName) {
-            res.status(201).json(tempStudent)
-            console.log("Student already in this class")
-            return
+    
+        if (tempStudent.classYear === req.body.classYear) {
+            if (tempStudent.sectionName === req.body.sectionName) {
+                res.status(201).json(tempStudent)
+                console.log("Student already in this class")
+                return
+            }
         }
-    }
+
     //Check for null values
-    if (tempStudent.classYear !== null) {
-        if (tempStudent.sectionName !== null) {
+    if (tempStudent.classYear !== 0) {
+        if (tempStudent.sectionName !== 'None') {
             console.log("in")
             const old_class_query = { classYear: tempStudent.classYear };
             const old_section_query = { secionname: tempStudent.sectionName };
@@ -162,6 +165,10 @@ const getAllStudentsInSection = async (req, res, next) => {
 
 
 const removeStudentFromSection = async (req, res, next) => {
+    console.log("values")
+    console.log(req.body.rollNumber)
+    console.log(req.body.sectionName)
+    console.log(req.body.classYear)
     const student_query = { rollNumber: req.body.rollNumber };
     const class_query = { classYear: req.body.classYear };
     const section_query = { sectionName: req.body.sectionName };
@@ -181,10 +188,13 @@ const removeStudentFromSection = async (req, res, next) => {
                     console.log("popped from")
                     console.log(tempOldSection.studentIdList)
                     tempOldSection.strength = tempOldSection.strength - 1;
+                    tempStudent.classYear = 0;
+                    tempStudent.sectionName = 'None';
+                    tempStudent.save();
                     tempOldSection
-                        .save()
-                    res.status(201);
+                        .save() .then(res.status(201).json(tempStudent))
                     return;
+                    
                 }
             }
         }
