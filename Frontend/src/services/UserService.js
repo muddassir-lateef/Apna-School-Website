@@ -287,7 +287,7 @@ export async function assignTeacher(username, classYear, section){
   return response;
 }
 
-export async function unAssignTeacher(username, classYear, section){
+export async function unAssignTeacher(username, classYear, section) {
   let tempURL = URL + `teacher/unassign/${username}`;
   const response = await axios.patch(tempURL, {
     classYear, section

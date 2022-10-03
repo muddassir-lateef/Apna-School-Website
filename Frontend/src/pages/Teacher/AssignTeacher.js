@@ -178,7 +178,7 @@ const AssignTeacher = () => {
         assignTeacher(username, classYear, section).then(res=>console.log(res.data))
         setModalOpen(false);
     }
-
+// comment for dummy commit
     const UnAssignClassHandler = () => {
         setModal2Open(false);
         console.log("Un Assign", selectedClassDrop, " to ", selectedTeacher)
