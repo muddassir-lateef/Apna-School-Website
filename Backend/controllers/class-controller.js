@@ -53,10 +53,10 @@ const addNewSectionToClass = async(req, res, next) => {
         const studentIdList = req.body.studentIdList? req.body.studentIdList: null;
         //Section head, also knows as Class Teacher informally
         const sectionHead = req.body.sectionHead? req.body.sectionHead: null;
-
+        const classYear = req.body.classYear? req.body.classYear :null;
         const newSection= new Section({
 
-           sectionName, strength, lectures, studentIdList, sectionHead
+           sectionName, strength, lectures, studentIdList, sectionHead, classYear
 
                                     });
 
