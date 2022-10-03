@@ -1,6 +1,7 @@
 let Login = require("../models/login.model");
 let Teacher = require("../models/teacher.model");
 let { cloudinary } = require("../utils/cloudinary");
+let Section = require('../models/section.model')
 
 const HttpError = require("../models/http-error");
 
@@ -85,7 +86,7 @@ const deleteTeacher = async (req, res, next) => {
 const getTeacherByUsername = async (req, res, next) => {
   try {
     const username = req.params.username;
-    Teacher.findOne({ username: username })
+    Teacher.findOne({ username: username }).populate()
       .then((teachers) => res.status(201).json(teachers))
       .catch((err) => res.status(400).json("Error: " + err));
   } catch (err) {
@@ -93,16 +94,6 @@ const getTeacherByUsername = async (req, res, next) => {
   }
 };
 
-const getTeacherSections = async(req, res, next) => {
-  try {
-    const username = req.params.username;
-    const temp_teacher = await Teacher.findOne({ username: username }).populate();
-
-  } catch (err) {
-    return next(new HttpError(err.message, 500));
-  }
-
-}
 
 const addTeacher = async (req, res, next) => {
   try {
@@ -138,8 +129,45 @@ const addTeacher = async (req, res, next) => {
     return next(new HttpError(err.message, 500));
   }
 };
+
+const unAssignSection = async(req, res, next) => {
+  const classYear = req.body.classYear;
+  const section = req.body.section;
+  const username = req.params.username; 
+
+  const temp_teacher = await Teacher.findOne({ username: username });
+  if (temp_teacher!==null && Array.isArray(temp_teacher.sections) && temp_teacher.sections.length > 0){
+    console.log("Here 1")
+    for (let i=0; i< temp_teacher.sections.length; i++){
+      console.log("Here 2")
+      const temp_sec = await Section.findById(temp_teacher.sections[i])
+      console.log(temp_sec)
+      if (temp_sec.classYear == classYear && temp_sec.sectionName == section){
+        console.log("Here 3")
+        const filtered_sections = temp_teacher.sections.filter(item => item != temp_teacher.sections[i])
+        temp_teacher.sections = filtered_sections;
+        console.log("Filtered: ", filtered_sections)
+        console.log("C1: ", String(temp_sec.sectionHead))
+        console.log("C2: ", String(temp_teacher._id))
+        if (String(temp_sec.sectionHead) == String(temp_teacher._id)){
+          console.log("Here 4")
+          temp_sec.sectionHead = null
+          var result = await temp_sec.save();
+          result = await temp_teacher.save();
+          return res.status(201).json({message:"Section un assigned successfully, and sectionHead removed", Teacher: temp_teacher})
+        }
+        result = await temp_teacher.save();
+        return res.status(201).json({message:"Section un assigned successfully", Teacher: temp_teacher})
+      }
+    }
+    return res.status(400).json({message:"Section was not un assigned"})
+  }
+  res.status(401).json({message:"Teacher does not have any assigned sections"})
+}
+
 exports.getAllTeacher = getAllTeacher;
 exports.updateTeacher = updateTeacher;
 exports.deleteTeacher = deleteTeacher;
 exports.getTeacherByUsername = getTeacherByUsername;
 exports.addTeacher = addTeacher;
+exports.unAssignSection = unAssignSection;

@@ -204,9 +204,22 @@ const removeStudentFromSection = async (req, res, next) => {
 }
 
 
+const getOneSection = async (req, res, next) => {
+    try {
+        const section_query = { _id: req.params.id };
+        Section.findOne(section_query)
+            .then((section) => res.status(201).json(section))
+            .catch((err) => res.status(401).json("Error: " + err));
+    }
+    catch (err) {
+        return next(new HttpError(err.message, 401));
+    }
+};
+
 exports.removeStudentFromSection = removeStudentFromSection
 exports.changeStudentSection = changeStudentSection;
 exports.getAllStudentsInSection = getAllStudentsInSection;
 exports.getSectionById = getSectionById;
 exports.addStudentToSection = addStudentToSection;
 exports.getAllSections = getAllSections;
+exports.getOneSection = getOneSection
