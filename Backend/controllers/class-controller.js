@@ -113,10 +113,12 @@ const assignTeacherToSection = async(req, res, next) => {
                     const temp_section = await Section.findOne({_id: temp_class.sectionList[i]._id})
                     temp_section.sectionHead = temp_teacher._id;
                     await temp_section.save();
-                    if (temp_teacher.sections.find(val => val == temp_class.sectionList[i]._id) === null)
+                    if (temp_teacher.sections.find(val => val === temp_class.sectionList[i]._id) === undefined)
                         temp_teacher.sections.push(temp_class.sectionList[i]._id);
                     success = 1;
                 }
+
+                
             }
         }
     }

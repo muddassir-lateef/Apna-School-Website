@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Grid, Card, Typography, Avatar, Button, Divider, Modal, Backdrop, Fade, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Grid, Card, Typography, Avatar, IconButton,  Button, Divider, Modal, Backdrop, Fade, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { getAllTeachers, getAllSections, assignTeacher } from "../../services/UserService";
 import { Cloudinary } from "@cloudinary/url-gen";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 const style = {
     position: "absolute",
@@ -22,7 +23,7 @@ const getClassAndSections = (classList) => {
     for (let i = 0; i < classList.length; i++) {
         if (classList[i].sectionList !== null) {
             for (let j = 0; j < classList[i].sectionList.length; j++) {
-                const class_str = String(classList[i].classYear) + String(classList[i].sectionList[j].sectionName);
+                const class_str = String(classList[i].classYear) + " " + String(classList[i].sectionList[j].sectionName);
                 retList.push(class_str)
             }
         }
@@ -66,9 +67,6 @@ const AssignTeacher = () => {
     const closeModal = () => {
         setSelectedClass("");
         setModalOpen(false);
-        console.log(splitLettersAndNumbers("7B"));
-        console.log(splitLettersAndNumbers("10D"));
-        console.log(splitLettersAndNumbers("i190749"));
     };
 
     useEffect(() => {
@@ -146,8 +144,9 @@ const AssignTeacher = () => {
     const AssignClassHandler = () => {
         console.log("Assign", selectedClass, " to ", selectedTeacher)
         const username = selectedTeacher;
-        const classYear = selectedClass[0];
-        const section = selectedClass[1];
+        const tokens = selectedClass.split(" ");
+        const classYear = tokens[0];
+        const section = tokens[1];
         assignTeacher(username, classYear, section).then(res=>console.log(res.data))
         setModalOpen(false);
     }
@@ -250,7 +249,9 @@ const AssignTeacher = () => {
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={2} lg={3}>
-                            <Button onClick={() => { openModal(value.username) }} variant='outlined' sx={{ height: '100%', width: '100%' }}>Select</Button>
+                            <IconButton onClick={() => { openModal(value.username) }} sx={{ height: '100%', width: '100%' }} aria-label="delete" size="small">
+                                <GroupAddIcon fontSize="small" />
+                            </IconButton>
                         </Grid>
 
                     </Grid>
