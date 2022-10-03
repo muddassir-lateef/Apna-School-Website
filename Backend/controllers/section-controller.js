@@ -53,7 +53,7 @@ const changeStudentSection = async (req, res, next) => {
     
         if (tempStudent.classYear === req.body.classYear) {
             if (tempStudent.sectionName === req.body.sectionName) {
-                res.status(201).json(tempStudent)
+                res.status(401).json(tempStudent)
                 console.log("Student already in this class")
                 return
             }

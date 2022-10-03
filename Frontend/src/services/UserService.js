@@ -134,17 +134,25 @@ console.log("we good")
 return response;
 }
 
-export async function addClass(classYear) {
+export async function addClass(classYear1) {
   let tempURL = URL + 'class/addClass'
+  console.log("here")
+  let classYear = Number(classYear1)
+  console.log("there")
+  //console.log(classYear)
   const response = await axios.post(tempURL, {
     classYear
   })
+ 
+    console.log("hit")
   if(response.status === 201)
   {
+    console.log("here")
     return response
   }
   else if (response.status === 401)
   {
+    console.log("not working")
     return response
   }
 }
@@ -286,4 +294,24 @@ export async function removeStudentFromSection(classYear, sectionName, rollNumbe
   }
   else
   return -1;
+}
+
+export async function changeStudentSection(classYear, sectionName, rollNumber) {
+  let tempURL = URL +'section/changeStudentSection';
+  console.log("In the service")
+  console.log(rollNumber)
+  console.log(classYear)
+  console.log(sectionName)
+  const response = await axios.patch(tempURL, {classYear, sectionName, rollNumber})
+  if(response.status === 201)
+  {
+    return response;
+  }
+  else
+  {
+    return -1
+  }
+  return 1
+  return -1
+  
 }

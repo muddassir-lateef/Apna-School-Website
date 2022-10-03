@@ -8,11 +8,12 @@ import Avatar from '@mui/material/Avatar';
 import { Image } from "cloudinary-react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ListItemButton from '@mui/material/ListItemButton'
+import SearchBox from "../../components/SearchBox";
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import { useNavigate, useLocation } from "react-router-dom";
-import { getAllStudentsInSection, deleteStudent, removeStudentFromSection } from "../../services/UserService";
+import { getAllStudentsInSection, deleteStudent, removeStudentFromSection, getAllStudents, changeStudentSection } from "../../services/UserService";
 import Paper from '@mui/material/Paper';
 import {
   Button, Grid, Card, Modal, Fade, Box,
@@ -21,38 +22,54 @@ import {
 import Typography from '@mui/material/Typography';
 
 export default function AlignItemsList() {
+  const [teacherOptions, setTeacherOptions] = useState([]);
+  const [username, setUsername] = useState(0);
   const [tempSection, setTempSection] = useState()
   const [tempClass, setTempClass] = useState();
   const [sectionFlag, setSectionFlag] = useState(false)
   const [studentList, setStudentList] = useState([]);
+  const [teachersList, setTeachersList] = useState([]);
+  const [teachersMasterList, setTeachersMasterList] = useState([]);
   const [tempStudent, setTempStudent] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [studentViewList, setStudentViewList] = useState([])
+  const [studentMasterList, setStudentMasterList] = useState([])
+  const [addStudentRollNumber, setAddStudentRollNumber] = useState([])
+  const [refreshFlag, setRefreshFlag] = useState(false)
   const location = useLocation();
+  const [count, setCount] = useState(0);
   const classYear = Number(location.state.param2);
   const sectionName = location.state.param1;
   const str = location.state.param3
   const navigate = useNavigate();
-  const [refreshFlag, setRefreshFlag] = useState(false)
-  const [textChange,setTextChange] =  useState();
   useEffect(() => {
     getAllStudentsInSection(classYear, sectionName).then((response) => {
       if (response.status === 201) {
         console.log(response.data);
-        console.log("Students Found Lol")
+        console.log("Students Found")
         setStudentList(response.data);
       }
       else if (response.status === -1) {
-        alert("Sections not Found");
+        alert("Students not Found");
         console.log(response.data);
       }
     })
   }, [refreshFlag]);
 
+  useEffect(() => {
+    console.log("Assigning roll Number on text Change")
+
+    setAddStudentRollNumber(username)
+    console.log(username)
+    //console.log(addStudentRollNumber)
+  }, [username])
+
+
   const StudentDisplay = () => {
     return (
 
-      studentList.map((value) => (
+      studentList && studentList.map((value) => (
         <Grid item xs={12} key={value.rollNunber}>
           <Grid container spacing={2} >
             <Grid item >
@@ -87,14 +104,45 @@ export default function AlignItemsList() {
   }
   const handleDeleteStudent = (studentRollNumber) => {
     setTempStudent(studentRollNumber)
-    console.log(studentRollNumber)
+    //console.log(studentRollNumber)
     setModalOpen(true);
   }
-  const handleAddStudent = (studentRollNumber) => {
-    setTempStudent(studentRollNumber)
-    console.log(studentRollNumber)
-    setAddModalOpen(true);
+  const handleAddStudent = () => {
+
+    changeStudentSection(classYear, sectionName, Number(addStudentRollNumber)).then((response) => {
+      if (response.status === 201) {
+        console.log("hit")
+        setAddModalOpen((isOpen) => !isOpen);
+        if (refreshFlag == true) {
+          setRefreshFlag(false)
+          setRefreshFlag(true)
+        }
+        else if (refreshFlag === false) {
+          setRefreshFlag(true)
+        }
+      else {
+        setRefreshFlag(false);
+      }
+    }
+      else if (response.status === -1) {
+        console.log("Noe")
+      }
+    })
   }
+
+
+  const textChange = (value) => {
+    setUsername(value);
+    //console.log(Number(username));
+    //console.log("here: " + value);
+    if (typeof value === Number) {
+      const filteredArray = teachersMasterList.filter((teacher) => {
+        return teacher.username.includes(value);
+      });
+      setTeachersList(filteredArray);
+    }
+
+  };
 
   const handleModalDeleteClick = () => {
     console.log("here")
@@ -133,7 +181,34 @@ export default function AlignItemsList() {
   };
   const handleAddModalClose = () => {
     setAddModalOpen((isOpen) => !isOpen);
+
   };
+
+  useEffect(() => {
+    getAllStudents().then((response) => {
+      if (response.status === 201) {
+        console.log(response.data);
+        setTeachersList(response.data);
+        setTeachersMasterList(response.data);
+        if (response.data.length !== teacherOptions.length) {
+          var temp_list = [];
+          for (let i = 0; i < response.data.length; i++) {
+            let tempObj = { label: String(response.data[i].rollNumber) };
+            if (
+              teacherOptions.find(
+                (teacher) => teacher.label === tempObj.label
+              ) === undefined
+            )
+              temp_list.push(tempObj);
+          }
+          setTeacherOptions(temp_list);
+        }
+      } else if (response.status === 401) {
+        alert("Teacher not found");
+        console.log(response.data);
+      }
+    });// eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addModalOpen]);
   const BackButtonDisplay = () => {
     return (
       <Grid container spacing={2} sx={{ mt: 1 }}>
@@ -144,6 +219,7 @@ export default function AlignItemsList() {
     )
 
   }
+
 
 
 
@@ -199,8 +275,13 @@ export default function AlignItemsList() {
         >
           <Fade in={addModalOpen}>
             <Box sx={style}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-              
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <SearchBox
+                  onChange={textChange} // filtering the new array
+                  inputValue={username} //rollNumber
+                  options={teacherOptions} //options
+                  label="Student RollNumber"
+                />
               </Box>
               <Typography
                 id="transition-modal-title"

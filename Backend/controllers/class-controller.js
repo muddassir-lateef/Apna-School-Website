@@ -20,8 +20,14 @@ const getClass = async (req, res, next) => {
 
 
 const addClass = async(req, res, next) => {
-    try{
+        console.log("in")
         const classYear = req.body.classYear;
+        const class_query = {classYear : req.body.classYear}
+        const tempClass =  await Class.findOne(class_query);
+        console.log(tempClass.classYear)
+        console.log(classYear)
+        
+        return 1;
         const classStrength = req.body.classtrength? req.body.classStrength : 0;
         const noOfSections = req.body.noOfSections? req.body.noOfSections : 0;
         //Lectures belonging to that section
@@ -31,17 +37,14 @@ const addClass = async(req, res, next) => {
 
            classYear, classStrength, noOfSections, sectionList
 
-                                    });
+                                    })
 
-
+        console.log("save")
         newClass
         .save()
         .then(() => res.status(201).json({ message: "Class added!",Class: newClass }))
-        .catch((err) => res.status(401).json("Error: " + err));
+        .catch((err) => res.status(401).json("Error Hit: " + err));
 
-    }catch(err){
-        return next( new HttpError(err.message, 500));
-    }
 };
 const addNewSectionToClass = async(req, res, next) => {
 
