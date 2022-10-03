@@ -139,18 +139,19 @@ export async function addClass(classYear1) {
   console.log("here")
   let classYear = Number(classYear1)
   console.log("there")
-  //console.log(classYear)
+  console.log(classYear)
   const response = await axios.post(tempURL, {
     classYear
   })
  
-    console.log("hit")
+    console.log("hitafter")
+    console.log(response)
   if(response.status === 201)
   {
     console.log("here")
     return response
   }
-  else if (response.status === 401)
+  else if (response.data === 1)
   {
     console.log("not working")
     return response
@@ -311,7 +312,11 @@ export async function changeStudentSection(classYear, sectionName, rollNumber) {
   {
     return -1
   }
-  return 1
-  return -1
   
+  
+}
+
+export async function deleteClass(classYear) {
+  console.log(classYear)
+  return 1
 }

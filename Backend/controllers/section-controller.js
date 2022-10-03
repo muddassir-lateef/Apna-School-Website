@@ -118,7 +118,7 @@ const changeStudentSection = async (req, res, next) => {
 const getAllSections = async (req, res, next) => {
     try {
         Section.find()
-            .populate('lectures', 'studentIdList')
+            .populate('lectures', 'studentIdList', 'sectionHead')
             .then((sections) => res.status(201).json(sections))
             .catch((err) => res.status(400).json("Error: " + err));
     } catch (err) {

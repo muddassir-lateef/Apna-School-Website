@@ -71,7 +71,7 @@ export default function AlignItemsList() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Section Head"
+                primary= {secs.sectionHead}
                 secondary={
                   <React.Fragment>
                     <Typography
