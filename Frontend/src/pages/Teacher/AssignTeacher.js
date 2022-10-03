@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Grid, Card, Typography, Avatar, IconButton,  Button, Divider, Modal, Backdrop, Fade, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { getAllTeachers, getAllSections, assignTeacher } from "../../services/UserService";
+import { getAllTeachers, getAllSections, assignTeacher, getTeacher, getSectionById, unAssignTeacher } from "../../services/UserService";
 import { Cloudinary } from "@cloudinary/url-gen";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
@@ -34,21 +34,7 @@ const getClassAndSections = (classList) => {
     }
     return retList;
 }
-function splitLettersAndNumbers(string) {
-    var numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    var letters;
-  
-    for (var i = 0; i < string.length; i++) {
-      if (numbers.indexOf(string[i]) > -1) {
-        letters = string.substring(0, i);
-        numbers = string.substring(i);
-        return [letters, numbers];
-      }
-    }
-  
-    // in the chance that you don't find any numbers just return the initial string or array of the string of letters
-    return [string];
-  }
+
 
 
 
@@ -61,7 +47,9 @@ const AssignTeacher = () => {
     const [teacherSections, setTeacherSections] = useState([]);
     // eslint-disable-next-line
     const [allSections, setAllSections] = useState([]);
+    const [teacherSectionOptions, setTeacherSectionOptions] = useState([]);
     const [formattedSections, setFormattedSections] = useState([]);
+    const [selectedClassDrop, setSelectedClassDrop] = useState("");
     const navigate = useNavigate();
     const openModal = (username) => {
         setSelectedTeacher(username);
@@ -71,13 +59,38 @@ const AssignTeacher = () => {
         setModalOpen(false);
     };
 
-    const openModal2 = (username) => {
+    const openModal2 = async(username) => {
         setSelectedTeacher(username);
+        const teacher = await getTeacher(username);
+        console.log(teacher.data.sections)
+
+        if (Array.isArray(teacher.data.sections) && teacher.data.sections.length > 0){
+            const temp_sections = [];
+            for (let i=0; i< teacher.data.sections.length; i++){
+               // console.log("HELLo")
+                const temp_sec = await getSectionById(teacher.data.sections[i]);
+                console.log("HERE:", temp_sec.data)
+                temp_sections.push(temp_sec.data)
+            }
+            setTeacherSections(temp_sections);
+        }
         setModal2Open(true);
     };
     const closeModal2 = () => {
         setModal2Open(false);
+        setTeacherSectionOptions([]);
     };
+
+    useEffect(()=>{
+        const temp_options = [];
+        for (let i=0; i<teacherSections.length; i++){
+            const temp_str = teacherSections[i].classYear + " " + teacherSections[i].sectionName;
+            temp_options.push(temp_str)
+        }
+        setTeacherSectionOptions(temp_options);
+        console.log("Teacher Section Options: ", temp_options)
+
+    }, [teacherSections])
 
     useEffect(() => {
         getAllTeachers().then((response) => {
@@ -151,6 +164,11 @@ const AssignTeacher = () => {
         console.log(event.target.value)
       };
 
+    const handleUnAssignClassChange = (event) => {
+        setSelectedClassDrop(event.target.value);
+        console.log(event.target.value)
+      };
+
     const AssignClassHandler = () => {
         console.log("Assign", selectedClass, " to ", selectedTeacher)
         const username = selectedTeacher;
@@ -159,6 +177,23 @@ const AssignTeacher = () => {
         const section = tokens[1];
         assignTeacher(username, classYear, section).then(res=>console.log(res.data))
         setModalOpen(false);
+    }
+// comment for dummy commit
+    const UnAssignClassHandler = () => {
+        setModal2Open(false);
+        console.log("Un Assign", selectedClassDrop, " to ", selectedTeacher)
+        const tokens = selectedClassDrop.split(" ");
+        const classYear = tokens[0];
+        const section = tokens[1];
+        //console.log("Drop class", classYear, " section: ", section)
+        const response = unAssignTeacher(selectedTeacher, classYear, section);
+        if (response.status === 201){
+            console.log("Teacher un-assigned successfully")
+        }
+        else{
+            console.log("Teacher was NOT un-assigned successfully")
+        }
+
     }
 
 
@@ -200,6 +235,7 @@ const AssignTeacher = () => {
                                         value={selectedClass}
                                         label="Class"
                                         onChange={handleClassChange}
+                                        defaultValue=""
                                     >
                                         {formattedSections.map((item)=>(
                                             <MenuItem value={item}>{item}</MenuItem>
@@ -271,13 +307,14 @@ const AssignTeacher = () => {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        value={selectedClass}
+                                        value={selectedClassDrop}
                                         label="Class"
-                                        onChange={handleClassChange}
+                                        onChange={handleUnAssignClassChange}
+                                        defaultValue=""
                                     >
-                                        {formattedSections.map((item)=>(
+                                        {teacherSectionOptions.length>0 ? teacherSectionOptions.map((item)=>(
                                             <MenuItem value={item}>{item}</MenuItem>
-                                        ))}
+                                        )): <MenuItem color="error" value={""}>{"No sections found"}</MenuItem>}
                                     </Select>
                                 </FormControl>
                                 </Grid>
@@ -301,11 +338,12 @@ const AssignTeacher = () => {
                                     Go Back
                                 </Button>
                                 <Button
-                                    onClick={AssignClassHandler}
+                                    onClick={UnAssignClassHandler}
                                     variant="outlined"
-                                    color="success"
+                                    color="error"
+                                    disabled = {teacherSectionOptions.length===0}
                                 >
-                                    ASSIGN
+                                    UN ASSIGN
                                 </Button>
                                 
                             </Box>

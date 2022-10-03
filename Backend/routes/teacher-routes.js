@@ -12,6 +12,9 @@ router.post('/addNew', teacherController.addTeacher)
 //get a list of all teachers
 router.get('/', teacherController.getAllTeacher)
 
+router.patch('/unassign/:username', teacherController.unAssignSection)
+
+
 //update a teacher by username
 router.patch('/:username', teacherController.updateTeacher)
 /*

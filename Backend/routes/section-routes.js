@@ -39,6 +39,8 @@ router.get('/getSectionById',SectionController.getSectionById);
   STUDENTS ROLL NUMBER
   "rollNumber" : 6000
 */
+router.get('/:id',SectionController.getOneSection);
+
 router.get('/', SectionController.getAllSections);
 
 router.patch('/getAllStudentsInSection', SectionController.getAllStudentsInSection);

@@ -209,7 +209,6 @@ export async function getTeacher(username){
   let tempURL = URL + `teacher/${username}`;
   const response = await axios.get(tempURL);
   return response;
-
 }
 
 export async function getAllStudentsInSection(classYear, sectionName) {
@@ -275,10 +274,24 @@ export async function getAllSections() {
   return response;
 }
 
+export async function getSectionById(id){
+  let tempURL = URL + `section/${id}`
+  const response = await axios.get(tempURL);
+  return response;
+}
+
 export async function assignTeacher(username, classYear, section){
   let tempURL = URL + 'class/assignTeacher';
   const response = await axios.patch(tempURL, {
     username, classYear, section
+  });
+  return response;
+}
+
+export async function unAssignTeacher(username, classYear, section) {
+  let tempURL = URL + `teacher/unassign/${username}`;
+  const response = await axios.patch(tempURL, {
+    classYear, section
   });
   return response;
 }
