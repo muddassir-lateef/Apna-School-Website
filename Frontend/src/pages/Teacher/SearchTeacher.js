@@ -64,6 +64,8 @@ const SearchTeacher = () => {
     });// eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  
+
   const textChange = (value) => {
     setUsername(value);
     //console.log("here: " + value);

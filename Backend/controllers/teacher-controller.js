@@ -93,6 +93,17 @@ const getTeacherByUsername = async (req, res, next) => {
   }
 };
 
+const getTeacherSections = async(req, res, next) => {
+  try {
+    const username = req.params.username;
+    const temp_teacher = await Teacher.findOne({ username: username }).populate();
+
+  } catch (err) {
+    return next(new HttpError(err.message, 500));
+  }
+
+}
+
 const addTeacher = async (req, res, next) => {
   try {
     const firstName = req.body.firstName;

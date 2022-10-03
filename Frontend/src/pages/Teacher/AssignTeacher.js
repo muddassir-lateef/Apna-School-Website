@@ -6,6 +6,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 const style = {
     position: "absolute",
@@ -54,8 +55,10 @@ function splitLettersAndNumbers(string) {
 const AssignTeacher = () => {
     let [teacherList, setTeacherList] = useState([])
     const [modalOpen, setModalOpen] = useState(false);
+    const [modal2Open, setModal2Open] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState("");
     const [selectedClass, setSelectedClass] = useState("");
+    const [teacherSections, setTeacherSections] = useState([]);
     // eslint-disable-next-line
     const [allSections, setAllSections] = useState([]);
     const [formattedSections, setFormattedSections] = useState([]);
@@ -65,8 +68,15 @@ const AssignTeacher = () => {
         setModalOpen(true);
     };
     const closeModal = () => {
-        setSelectedClass("");
         setModalOpen(false);
+    };
+
+    const openModal2 = (username) => {
+        setSelectedTeacher(username);
+        setModal2Open(true);
+    };
+    const closeModal2 = () => {
+        setModal2Open(false);
     };
 
     useEffect(() => {
@@ -151,6 +161,7 @@ const AssignTeacher = () => {
         setModalOpen(false);
     }
 
+
     return (
 
         <Grid container spacing={3}>
@@ -230,6 +241,80 @@ const AssignTeacher = () => {
                     </Fade>
                 </Modal>
 
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={modal2Open}
+                    onClose={closeModal2}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={modal2Open}>
+                        <Box sx={style}>
+                            <Grid container>
+                                <Grid item>
+                            <Typography
+                                id="transition-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={{ mb: 2 }}
+                            >
+                                Select Class to Un-Assign
+                            </Typography>
+                            </Grid>
+
+                            <Grid item xs={12}><FormControl fullWidth sx={{mb:2}}>
+                                    <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={selectedClass}
+                                        label="Class"
+                                        onChange={handleClassChange}
+                                    >
+                                        {formattedSections.map((item)=>(
+                                            <MenuItem value={item}>{item}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                </Grid>
+
+                            <Grid item xs={12}>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                                
+                            >
+                                
+                                <Button
+                                    onClick={closeModal2}
+                                    variant="contained"
+                                    component="label"
+                                    sx={{ mr: 3 }}
+                                >
+                                    Go Back
+                                </Button>
+                                <Button
+                                    onClick={AssignClassHandler}
+                                    variant="outlined"
+                                    color="success"
+                                >
+                                    ASSIGN
+                                </Button>
+                                
+                            </Box>
+                            </Grid>
+                            </Grid>
+                        </Box>
+                    </Fade>
+                </Modal>
+
             </Grid>
             {teacherList.map((value) => (
                 <Grid item xs={12} key={value.username}>
@@ -249,8 +334,11 @@ const AssignTeacher = () => {
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={2} lg={3}>
-                            <IconButton onClick={() => { openModal(value.username) }} sx={{ height: '100%', width: '100%' }} aria-label="delete" size="small">
+                            <IconButton onClick={() => { openModal(value.username) }} sx={{ height: '100%', width: '50%' }} aria-label="delete" size="small">
                                 <GroupAddIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton onClick={() => { openModal2(value.username) }} sx={{ height: '100%', width: '50%' }} aria-label="delete" size="small">
+                                <GroupRemoveIcon fontSize="small"/>
                             </IconButton>
                         </Grid>
 
