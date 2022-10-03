@@ -26,6 +26,12 @@ const sectionSchema = new Schema({
       ref:'Lecture',
     }
   ],
+  classYear : {
+    
+      type :Number,
+      required : true
+    
+  },
   //List of IDs refering to Students belonging to the section
   studentIdList : [
     {
