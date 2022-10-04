@@ -124,6 +124,8 @@ export async function getAllTeachers() {
 }
 
 export async function getAllSectionsInClass(classYear) {
+  console.log("here in user service")
+  console.log(classYear)
 let tempURL = URL + `class/getAllSectionsInClass/${classYear}`
 console.log(tempURL)
 const response = await axios.get(tempURL);
@@ -343,3 +345,4 @@ export async function deleteClass(classYear) {
     return 1;
   } 
 }
+
