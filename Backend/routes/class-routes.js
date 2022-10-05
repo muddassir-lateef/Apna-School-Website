@@ -25,7 +25,7 @@ router.patch('/deleteClass', classController.deleteClass)
 }
 */
 
-router.delete('/deleteSection', classController.deleteSection)
+router.patch('/deleteSection', classController.deleteSection)
 /*
 {
  "classYear" : 7,

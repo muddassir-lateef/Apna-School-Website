@@ -52,6 +52,12 @@ const newClass= new Class({
 const addNewSectionToClass = async(req, res, next) => {
         console.log("here")
         const sectionName = req.body.sectionName;
+        console.log(sectionName)
+        if(sectionName === null)
+        {
+            res.status(201).json(1)
+            return
+        }
         const classYear = req.body.classYear;
         const strength = req.body.strength? req.body.strength: 0;
         //Lectures belonging to that section
@@ -71,7 +77,7 @@ const addNewSectionToClass = async(req, res, next) => {
                 if(temp_class.sectionList[i].sectionName === sectionName)
                 {
                     console.log("Section already exists")
-                    res.status(400).json(1)
+                    res.status(201).json(1)
                     return
                 }
             }
@@ -97,7 +103,7 @@ const addNewSectionToClass = async(req, res, next) => {
         temp_class.sectionList.push(newSection._id);
         temp_class.save()
       .then(() => res.status(201).json({ message: "New Section has been added to class", Class: temp_class }))
-      .catch((err) => res.status(400).json("Error: " + err));
+      .catch((err) => res.status(401).json("Error: " + err));
 };
 
 const assignTeacherToSection = async(req, res, next) => {
@@ -152,6 +158,11 @@ const getAllClasses = async (req,res,next) => {
 const getAllSectionsInClass = async(req ,res , next) => {
     const class_query = {classYear:req.params.classYear}
     const temp_class = await Class.findOne(class_query).populate('sectionList');
+    if(temp_class === null)
+    {
+        res.status(401).json(class_query)
+        return
+    }
     temp_class.sectionList = temp_class.sectionList || [];
     res.status(201).json(temp_class.sectionList);
     return
@@ -191,27 +202,36 @@ const deleteClass = async(req,res,next) => {
 
 
 const deleteSection = async(req,res,next) => {
-//     const class_query = { classYear: req.body.classYear };
-//     console.log(class_query)
-//     const tempClass = await Class.findOne(class_query).populate('sectionList');
-
-//     console.log("before loop")
-//     for (let i = 0; i < tempClass.sectionList.length; i++) {
-//             console.log("Section matched")
-//             const tempSection = await Section.findById(tempClass.sectionList[i]._id).populate('studentIdList');
-//             if(tempSection.studentIdList !== null)
-//             {
-//             for (let j = 0; j < tempSection.studentIdList.length; j++) {
-//                 const tempStudent = await Student.findById(tempSection.studentIdList[j]._id);
-//                 tempStudent.classYear = 0;
-//                 tempStudent.sectionName = 'None';
-//                 tempStudent.save();
-//             }
-//         }
-//     }
-//     const delCheck = await Section.deleteMany({classYear : req.body.classYear})
-//     const delCheck2 = await Class.findByIdAndDelete(tempClass._id)
-//     res.status(201).json(1)
+   const section_query = { classYear : req.body.classYear}
+   const section_query2 = {sectionName : req.body.sectionName}
+   console.log(section_query)
+   console.log(section_query2)
+   const tempSection = await Section.findOne({"sectionName" : req.body.sectionName, "classYear" : req.body.classYear}).populate('studentIdList')
+   if(tempSection.studentIdList === null)
+   {
+    console.log("Students dont exist")
+    const delCheck1 = await Section.findByIdAndDelete(tempSection._id)
+    const tempClass = await Class.findOne(section_query)
+    tempClass.noOfSections = tempClass.noOfSections -1;
+    tempClass.save();
+    console.log("here")
+    res.status(201).json(3)
+    return
+   }
+   for(let i = 0 ; i < tempSection.studentIdList.length; i++)
+   {
+        const tempStudent = await Student.findById(tempSection.studentIdList[i]._id);
+        tempStudent.classYear = 0;
+        tempStudent.sectionName = 'None';
+        tempStudent.save();
+    
+   }
+   const delCheck2 = await Section.findByIdAndDelete(tempSection._id)
+   const tempClass = await Class.findOne(section_query)
+    tempClass.noOfSections = tempClass.noOfSections -1;
+    tempClass.save();
+   res.status(201).json(3)
+   return
 }
 
 exports.deleteSection = deleteSection;

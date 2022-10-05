@@ -124,12 +124,12 @@ export async function getAllTeachers() {
 }
 
 export async function getAllSectionsInClass(classYear) {
-  console.log("here in user service")
+  console.log("Getting all")
   console.log(classYear)
 let tempURL = URL + `class/getAllSectionsInClass/${classYear}`
 console.log(tempURL)
 const response = await axios.get(tempURL);
-console.log("lol")
+
 
 if(response !== null)
 console.log("we good")
@@ -191,7 +191,6 @@ export async function getClassByClassYear(tempClassYear) {
   const response = await axios.get(tempURL);
   if(response.status === 201)
   {
-    console.log("we good")
     return response;
   }
   else 
@@ -346,20 +345,42 @@ export async function deleteClass(classYear) {
   } 
 }
 
-export async function addNewSectionToClass(classYear1, sectionName) {
+export async function addNewSectionToClass(classYear1, sectionName1) {
   let tempURL = URL + 'class/addNewSectionToClass'
   console.log("here are the details")
   let classYear = Number(classYear1)
   console.log(classYear)
-  console.log(sectionName)
+  
+  let sectionName = sectionName1.toUpperCase();
   const response = await axios.post(tempURL, {classYear, sectionName})
   console.log("After req")
-  if(response.status === 201)
+  if(response.data === 1)
+  {
+    console.log("not working")
+    return response;
+  }
+  else if(response.status === 201)
   {
     return response;
   }
+ 
+}
+
+export async function deleteSection(classYear1, sectionName) {
+  let tempURL = URL +'class/deleteSection'
+  const classYear = Number(classYear1)
+  console.log(classYear)
+  console.log(sectionName)
+  const response = await axios.patch(tempURL, {classYear, sectionName})
+  if(response.status === 201)
+  {
+    console.log("success")
+    return 1
+  }
   else
   {
-    return -1;
+    console.log("fail")
+    return -1
   }
+
 }

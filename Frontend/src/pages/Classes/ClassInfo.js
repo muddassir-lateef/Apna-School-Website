@@ -23,7 +23,7 @@ import { deepOrange, deepPurple, blue } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchBox from "../../components/SearchBox";
 import Paper from '@mui/material/Paper';
-import { getAllTeachers, addNewSectionToClass, getAllClasses, deleteClass, getAllSectionsInClass} from "../../services/UserService";
+import { getAllTeachers, addNewSectionToClass, getAllClasses, deleteClass, getAllSectionsInClass, deleteSection} from "../../services/UserService";
 import { Image } from "cloudinary-react";
 const style = {
   position: "absolute",
@@ -45,8 +45,11 @@ const SearchTeacher = () => {
   const [selectedTeacher, setSelectedTeacher] = useState(0);
   const [delClass, setDelClass] = useState(0);
   const [delFlag, setDelFlag] = useState(false);
+  const [delSection, setDelSection] = useState("")
   const [addSectionName, setAddSectionName] = useState("")
   const [refreshflag, setRefreshFlag] = useState(false)
+  const [error, setError] = useState(false)
+  const [helperText, setHelperText] = useState("")
   const navigate = useNavigate();
   useEffect(() => {
     console.log("Displaying all the Sections Again")
@@ -60,24 +63,13 @@ const SearchTeacher = () => {
         console.log(response.data);
       }
     });// eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalOpen]);
+  }, [refreshflag]);
 
-useEffect (() => {
-  console.log("Refreshing after adding section")
-  getAllSectionsInClass(classYear).then((response) => {
-    if (response.status === 201) {
-      console.log(response.data);
-      setTeachersList(response.data);
-    } else if (response.status === 401) {
-      alert("Class not found");
-      console.log(response.data);
-    }
-}, [refreshflag])
-})
 
-  const handleTeacherDelete = (teacherId) => {
-    setDelClass(teacherId)
-    setSelectedTeacher(teacherId)
+
+  const handleTeacherDelete = (sectionName1) => {
+    setDelSection(sectionName1)
+    console.log(sectionName1)
     setModalOpen(true);
   };
 
@@ -93,12 +85,10 @@ useEffect (() => {
   }
 
   const onDeleteClass = () => {
-    const check =  deleteClass(delClass);
-    deleteClass(delClass).then((response) => {
-      if (response.status === 201) {
-        setModalOpen((isOpen) => !isOpen);
-      }
-        })
+    const response = deleteSection(classYear, delSection);
+    setRefreshFlag((isOpen) => !isOpen);
+    setModalOpen(false)
+
 }
 
   const onBackDisplay = () => {
@@ -110,20 +100,31 @@ useEffect (() => {
     console.log("here")
     setAddSectionName(event.target.value)
     console.log(event.target.value)
+    setError(false)
+    setHelperText("")
   }
 
   const addSectionHandler = () => {
+    console.log("Adding section")
     console.log(addSectionName)
+    if(addSectionName === "")
+    {
+      return
+    }
     addNewSectionToClass(classYear, addSectionName).then((response) => {
-      if(response.stauts === 201)
+     
+      if(response.data === 1)
       {
-        setRefreshFlag(true)
-        console.log("Section added succesfully")
-      }
-      if(response === -1)
-      {
+        setError(true)
+        setHelperText("Invalid Section Name")
         setRefreshFlag(true)
         console.log("Section not added")
+      }
+      if(response.status === 201)
+      {
+        
+        setRefreshFlag(true)
+        console.log("Section added succesfully")
       }
       setRefreshFlag(false)
   })
@@ -137,7 +138,7 @@ useEffect (() => {
         <Paper>
 
         <Typography variant = "h3">
-            All Sections
+            All Sections in Class {classYear}
           </Typography>
           </Paper>
       </Grid>
@@ -183,7 +184,9 @@ useEffect (() => {
          
           <Grid item xs={12} sm={2} lg={3}>
           <Paper>
-          <TextField   sx={{ height: '100%', width: '100%' }}id="filled-basic" variant="outlined" label = "Section Name" 
+          <TextField  error = {error === true}
+          id="filled-error-helper-text"
+           helperText= {helperText}  sx={{ height: '100%', width: '100%' }} variant="outlined" label = "Section Name" 
            value={addSectionName}
            onChange = {onTextField}
           > 
@@ -223,7 +226,7 @@ useEffect (() => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={2} lg={3}>
-            <Button  variant='outlined' sx={{ height: '100%', width: '100%' }} onClick={() => handleTeacherDelete(item.classYear)}>Remove</Button>
+            <Button  variant='outlined' sx={{ height: '100%', width: '100%' }} onClick={() => handleTeacherDelete(item.sectionName)}>Remove</Button>
           </Grid>
           <Grid item xs={12} sm={2} lg={3}>
             <Button  variant='outlined' sx={{ height: '100%', width: '100%' }}  onClick={() => onViewClick(item.sectionName)}>View</Button>
