@@ -2,7 +2,6 @@ const HttpError = require('../models/http-error');
 let Section = require('../models/section.model');
 let Student = require('../models/student.model');
 let Class = require('../models/class.model');
-let Teacher = require('../models/teacher.model');
 
 
 const getClass = async (req, res, next) => {
@@ -20,35 +19,40 @@ const getClass = async (req, res, next) => {
 
 
 const addClass = async(req, res, next) => {
-        console.log("in")
-        const classYear = req.body.classYear;
-        const class_query = {classYear : req.body.classYear}
-        const tempClass =  await Class.findOne(class_query);
-        console.log(tempClass.classYear)
-        console.log(classYear)
-        
-        return 1;
-        const classStrength = req.body.classtrength? req.body.classStrength : 0;
-        const noOfSections = req.body.noOfSections? req.body.noOfSections : 0;
-        //Lectures belonging to that section
-        const sectionList = req.body.sectionList? req.body.sectionList: null;
+    const class_query = {classYear : req.body.classYear}
+    const tempClass = await Class.findOne(class_query)
+    if(tempClass !== null)
+    {
+    if(tempClass.classYear === req.body.classYear)
+    {
+        console.log("in the check")
+        res.status(200).json(1)
+        return
+    }
+}
+const classYear = req.body.classYear;
+const classStrength = req.body.classtrength? req.body.classStrength : 0;
+const noOfSections = req.body.noOfSections? req.body.noOfSections : 0;
+//Lectures belonging to that section
+const sectionList = req.body.sectionList? req.body.sectionList: null
+const newClass= new Class({
 
-        const newClass= new Class({
+    classYear, classStrength, noOfSections, sectionList
 
-           classYear, classStrength, noOfSections, sectionList
+                             });
 
-                                    })
 
-        console.log("save")
-        newClass
-        .save()
-        .then(() => res.status(201).json({ message: "Class added!",Class: newClass }))
-        .catch((err) => res.status(401).json("Error Hit: " + err));
-
+ newClass
+ .save()
+ .then(() => res.status(201).json({ message: "Class added!",Class: newClass }))
+ .catch((err) => res.status(401).json("Error: " + err));
 };
-const addNewSectionToClass = async(req, res, next) => {
 
+
+const addNewSectionToClass = async(req, res, next) => {
+        console.log("here")
         const sectionName = req.body.sectionName;
+        const classYear = req.body.classYear;
         const strength = req.body.strength? req.body.strength: 0;
         //Lectures belonging to that section
         const lectures = req.body.lectures? req.body.lectures: null;
@@ -56,7 +60,7 @@ const addNewSectionToClass = async(req, res, next) => {
         const studentIdList = req.body.studentIdList? req.body.studentIdList: null;
         //Section head, also knows as Class Teacher informally
         const sectionHead = req.body.sectionHead? req.body.sectionHead: null;
-        const classYear = req.body.classYear? req.body.classYear :null;
+
         const newSection= new Section({
 
            sectionName, strength, lectures, studentIdList, sectionHead, classYear
@@ -79,24 +83,6 @@ const addNewSectionToClass = async(req, res, next) => {
         temp_class.save()
       .then(() => res.json({ message: "New Section has been added to class", Class: temp_class }))
       .catch((err) => res.status(400).json("Error: " + err));
-};
-
-const getAllClasses = async (req,res,next) => {
-    try {
-        Class.find().populate('sectionList')
-        .then((classes) => res.status(201).json(classes))
-        .catch((err) => res.status(401).json("Error: " + err));
-    } catch(err) {
-        return next (new HttpError(err.message,500));
-    }
-    };
-
-const getAllSectionsInClass = async(req ,res , next) => {
-    const class_query = {classYear:req.params.classYear}
-    const temp_class = await Class.findOne(class_query).populate('sectionList');
-    temp_class.sectionList = temp_class.sectionList || [];
-    res.status(201).json(temp_class.sectionList);
-    return
 };
 
 const assignTeacherToSection = async(req, res, next) => {
@@ -138,10 +124,67 @@ const assignTeacherToSection = async(req, res, next) => {
     }
 
 }
+const getAllClasses = async (req,res,next) => {
+    try {
+        Class.find()
+        .then((classes) => res.status(201).json(classes))
+        .catch((err) => res.status(401).json("Error: " + err));
+    } catch(err) {
+        return next (new HttpError(err.message,500));
+    }
+    };
 
+const getAllSectionsInClass = async(req ,res , next) => {
+    const class_query = {classYear:req.params.classYear}
+    const temp_class = await Class.findOne(class_query).populate('sectionList');
+    temp_class.sectionList = temp_class.sectionList || [];
+    res.status(201).json(temp_class.sectionList);
+    return
+};
+
+const deleteClass = async(req,res,next) => {
+    const class_query = { classYear: req.body.classYear };
+    console.log(class_query)
+    const tempClass = await Class.findOne(class_query).populate('sectionList');
+
+    if(tempClass.sectionList === null)
+    {
+        console.log("yeah xd")
+        const classDelete = await Class.findByIdAndDelete(tempClass._id)
+        res.status(201).json(1)
+        return;
+    }
+    console.log("before loop")
+    for (let i = 0; i < tempClass.sectionList.length; i++) {
+            console.log("Section matched")
+            const tempSection = await Section.findById(tempClass.sectionList[i]._id).populate('studentIdList');
+            if(tempSection.studentIdList !== null)
+            {
+            for (let j = 0; j < tempSection.studentIdList.length; j++) {
+                const tempStudent = await Student.findById(tempSection.studentIdList[j]._id);
+                tempStudent.classYear = 0;
+                tempStudent.sectionName = 'None';
+                tempStudent.save();
+            }
+        }
+    }
+    const delCheck = await Section.deleteMany({classYear : req.body.classYear})
+    const delCheck2 = await Class.findByIdAndDelete(tempClass._id)
+    res.status(201).json(1)
+    
+}
+
+
+const deleteSection = async(req,res,next) => {
+
+}
+
+exports.deleteSection = deleteSection;
+exports.deleteClass = deleteClass;
+exports.assignTeacherToSection = assignTeacherToSection;
 exports.getAllSectionsInClass = getAllSectionsInClass;
 exports.getAllClasses = getAllClasses;
 exports.addClass = addClass;
 exports.addNewSectionToClass = addNewSectionToClass;
 exports.getClass = getClass;
-exports.assignTeacherToSection = assignTeacherToSection;
+

@@ -18,6 +18,21 @@ router.post('/addNewSectionToClass', classController.addNewSectionToClass)
     "classYear" : 7
 */
 
+router.patch('/deleteClass', classController.deleteClass)
+/*
+{
+   "classYear" : 7
+}
+*/
+
+router.delete('/deleteSection', classController.deleteSection)
+/*
+{
+ "classYear" : 7,
+    "sectionName" : "A"
+}
+*/
+
 router.get('/getClass/:classYear' , classController.getClass);
 /*
 

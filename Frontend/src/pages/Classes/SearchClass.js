@@ -1,163 +1,173 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Button, Box, Grid, Card, CardContent, CardActions, Typography } from "@mui/material";
-import { getStudents } from "../../services/UserService";
-import StudentSearchBox from "../../components/SearchBox";
 import { useNavigate } from "react-router-dom";
-import { getAllStudents, getAllClasses, getClassByClassYear } from "../../services/UserService";
-const classOptions = [];
+import {
+  Button,
+  Grid,
+  Modal,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+  Box,
+  Fade,
+  Backdrop,
+} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Avatar from '@mui/material/Avatar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Divider from '@mui/material/Divider';
+import { deepOrange, deepPurple, blue } from '@mui/material/colors';
+import EditIcon from '@mui/icons-material/Edit';
+import SearchBox from "../../components/SearchBox";
+import Paper from '@mui/material/Paper';
+import { getAllTeachers, deleteTeacher, getAllClasses, deleteClass} from "../../services/UserService";
+import { Image } from "cloudinary-react";
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 250,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
-const SearchStudent = () => {
-  const [classYear, setClassYear] = useState("");
-  const [classList, setClassList] = useState([]);
-  const [classFlag, setClassFlag] = useState();
+const SearchTeacher = () => {
+  const [teacherOptions, setTeacherOptions] = useState([]);
+  const [username, setUsername] = useState('');
+  const [teachersList, setTeachersList] = useState([]);
+  const [teachersMasterList, setTeachersMasterList] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [userFlag , setUserFlag] = useState(false)
+  const [selectedTeacher, setSelectedTeacher] = useState(0);
+  const [delClass, setDelClass] = useState(0);
+  const [delFlag, setDelFlag] = useState(false);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log("hook")
     getAllClasses().then((response) => {
       if (response.status === 201) {
         console.log(response.data);
-        if (response.data.length !== classOptions.length) {
-          for (let i = 0; i < response.data.length; i++) {
-            let tempObj = { label: String(response.data[i].classYear) };
-            if (classOptions.find(stu => stu.label === tempObj.label) === undefined)
-              classOptions.push(tempObj)
-          }
-        }
+        setTeachersList(response.data);
       } else if (response.status === 401) {
-        alert("Student not found");
-        console.log(response.data);
-      }
-    },);
-  });
-
-  const textChange = (value) => {
-    setClassYear(value);
-    console.log(classYear);
-    setClassFlag(-1)
-
-  };
-
-  const buttonClick = (event) => {
-    event.preventDefault();
-    let URL = classYear;
-    console.log("THE URL")
-    console.log(URL)
-
-    getClassByClassYear(URL).then((response) => {
-      if (response.status === 201) {
-        console.log(response.data);
-        setClassList(response.data);
-        setClassFlag(1);
-      }
-      else if (response.status === 401) {
         alert("Class not found");
         console.log(response.data);
-        setClassFlag(-1);
       }
-    });
+    });// eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalOpen]);
+
+
+
+  const handleTeacherDelete = (teacherId) => {
+    setDelClass(teacherId)
+    setSelectedTeacher(teacherId)
+    setModalOpen(true);
   };
 
-  useEffect(() => {
-    let URL = "class/" + classYear;
+  
+  const handleModalClose = () => {
+    setModalOpen((isOpen) => !isOpen);
+  };
 
-    getAllClasses().then((response) => {
-      if (response.status === 201) {
-        console.log(response.data);
-        setClassList(response.data);
-        setClassFlag(1);
-      }
-      else if (response.status === 401) {
-        alert("Student not found");
-        console.log(response.data);
-        setClassFlag(-1);
-      }
-    })
-  }, []);
-
-const ViewClassHandler = (classYear) => {
-    let url = `/class/${classYear}`;
+  const onViewClick = (classYear) => {
+    let url  = `/class/${classYear}`
     navigate(url);
-}
-
-
-  const StudentDisplay = () => {
-    if (classFlag == 1 && classYear == 0)
-      return (
-
-          classList.map((tempClasses) => (
-            <Grid item sm={12} md={6} lg={4} key={classList.rollNumber}>
-              <Card sx={{ maxWidth: 340 }}>
-
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                {"Year : " + " " + tempClasses.classYear}
-              </Typography>
-              <Typography gutterBottom variant="h5" component="div">
-                {"Strength" + " " + tempClasses.classStrength}
-              </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button 
-                  value = {tempClasses.classYear}
-                  size="small" 
-                  onClick={e => ViewClassHandler(e.target.value)}>
-                  View
-                 </Button>
-
-                  <Button size="small">Delete</Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))
-      );
-
-    if (classFlag == 1 && classYear > 0)
-      return (
-
-        <Grid item sm={12} md={6} lg={4} key={classList.rollNumber}>
-          <Card sx={{ maxWidth: 340 }}>
-            <CardContent> 
-              <Typography gutterBottom variant="h5" component="div">
-                {"Year : " + " " + classList.classYear}
-              </Typography>
-              <Typography gutterBottom variant="h5" component="div">
-                {"Strength : " + " " + classList.classStrength}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" >Edit</Button>
-              <Button size="small">Delete</Button>
-            </CardActions>
-          </Card>
-        </Grid>
-      );
-
-
   }
 
-  return (
+  const onDeleteClass = () => {
+    const check =  deleteClass(delClass);
+    deleteClass(delClass).then((response) => {
+      if (response.status === 201) {
+        setModalOpen((isOpen) => !isOpen);
+      }
+        })
+}
 
+  return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <StudentSearchBox onChange={textChange} inputValue={classYear} options={classOptions} />
+        <Paper>
+
+        <Typography variant = "h3">
+            All Classes
+          </Typography>
+          </Paper>
+      </Grid>
+      <Grid item xs={11}>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={modalOpen}
+          onClose={handleModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={modalOpen}>
+            <Box sx={style}>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{mb:2}}
+              >
+                Are you sure you want to delete this class and all of its sections?
+              </Typography>
+              <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  onClick={() => setModalOpen((prevState) => !prevState)}
+                  variant="contained"
+                  component="label"
+                  sx={{mr:3}}
+                >
+                  Go Back
+                </Button>
+                <Button  variant="outlined" color="error" onClick = {onDeleteClass}>
+                  DELETE
+                </Button>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
       </Grid>
 
+      {teachersList.map((item) => (
+        <Grid item xs={12} key={item.classYear}>
+        <Grid container spacing={2} >
+          <Grid item >
+            <Avatar
+              sx={{ bgcolor: '#182747' }}
+            >
+              {item.classYear} </Avatar>
 
+          </Grid>
 
-      <Grid item sm={12}>
-        <Button variant="contained" onClick={buttonClick} sx={{ mt: 2, width: '100%' }}>
-          Search
-        </Button>
+          <Grid item xs={9} sm={4} >
+            <Card sx={{ padding: 1, height: 45, display: "flex", alignItems: "center", textAlign: 'center' }}>
+              <Typography width='100%'> Sections : {item.noOfSections}</Typography>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={2} lg={3}>
+            <Button  variant='outlined' sx={{ height: '100%', width: '100%' }} onClick={() => handleTeacherDelete(item.classYear)}>Remove</Button>
+          </Grid>
+          <Grid item xs={12} sm={2} lg={3}>
+            <Button  variant='outlined' sx={{ height: '100%', width: '100%' }}  onClick={() => onViewClick(item.classYear)}>View</Button>
+          </Grid>
+        </Grid>
+        
+        <Divider sx={{ mt: 2 }} />
       </Grid>
-
-      <StudentDisplay></StudentDisplay>
-
+      ))}
+                
     </Grid>
-
-
-
+    
   );
 };
 
-export default SearchStudent;
+export default SearchTeacher;
+

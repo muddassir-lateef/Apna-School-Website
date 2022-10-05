@@ -124,6 +124,8 @@ export async function getAllTeachers() {
 }
 
 export async function getAllSectionsInClass(classYear) {
+  console.log("here in user service")
+  console.log(classYear)
 let tempURL = URL + `class/getAllSectionsInClass/${classYear}`
 console.log(tempURL)
 const response = await axios.get(tempURL);
@@ -139,18 +141,19 @@ export async function addClass(classYear1) {
   console.log("here")
   let classYear = Number(classYear1)
   console.log("there")
-  //console.log(classYear)
+  console.log(classYear)
   const response = await axios.post(tempURL, {
     classYear
   })
  
-    console.log("hit")
+    console.log("hitafter")
+    console.log(response)
   if(response.status === 201)
   {
     console.log("here")
     return response
   }
-  else if (response.status === 401)
+  else if (response.data === 1)
   {
     console.log("not working")
     return response
@@ -324,7 +327,22 @@ export async function changeStudentSection(classYear, sectionName, rollNumber) {
   {
     return -1
   }
-  return 1
-  return -1
+  
   
 }
+
+export async function deleteClass(classYear) {
+  let tempURL = URL + 'class/deleteClass';
+  console.log("route")
+  console.log(classYear)
+  const response = await axios.patch(tempURL, {classYear})
+  if(response.status === 201)
+  {
+    return response
+  }
+  else
+  {
+    return 1;
+  } 
+}
+

@@ -13,13 +13,14 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import { useNavigate, useLocation } from "react-router-dom";
-import { getAllStudentsInSection, deleteStudent, removeStudentFromSection, getAllStudents, changeStudentSection } from "../../services/UserService";
+import { getAllStudentsInSection, deleteStudent, removeStudentFromSection, getAllStudents, changeStudentSection, getAl } from "../../services/UserService";
 import Paper from '@mui/material/Paper';
 import {
   Button, Grid, Card, Modal, Fade, Box,
   Backdrop
 } from '@mui/material'
 import Typography from '@mui/material/Typography';
+import { Cloudinary } from "@cloudinary/url-gen";
 
 export default function AlignItemsList() {
   const [teacherOptions, setTeacherOptions] = useState([]);
@@ -41,8 +42,9 @@ export default function AlignItemsList() {
   const [count, setCount] = useState(0);
   const classYear = Number(location.state.param2);
   const sectionName = location.state.param1;
-  const str = location.state.param3
+
   const navigate = useNavigate();
+  
   useEffect(() => {
     getAllStudentsInSection(classYear, sectionName).then((response) => {
       if (response.status === 201) {
@@ -55,7 +57,7 @@ export default function AlignItemsList() {
         console.log(response.data);
       }
     })
-  }, [refreshFlag]);
+  }, [addModalOpen, modalOpen]);
 
   useEffect(() => {
     console.log("Assigning roll Number on text Change")
@@ -65,16 +67,34 @@ export default function AlignItemsList() {
     //console.log(addStudentRollNumber)
   }, [username])
 
+  function stringToColor(string) {
+    let hash = 0;
+    let i;
 
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+        hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = '#';
+
+    for (i = 0; i < 3; i += 1) {
+        const value = (hash >> (i * 8)) & 0xff;
+        color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
+    return color;
+}
   const StudentDisplay = () => {
     return (
 
       studentList && studentList.map((value) => (
         <Grid item xs={12} key={value.rollNunber}>
           <Grid container spacing={2} >
-            <Grid item >
-              <Avatar alt={value.firstName} sx={{ width: 60, height: 60 }} />
-            </Grid>
+          <Grid item >
+                            <Avatar alt={value.firstName} src={imgToUrl(value.image)} sx={{ bgcolor: stringToColor(value), width: 60, height: 60 }} />
+                        </Grid>
 
             <Grid item xs={9} sm={4} >
               <Card sx={{ padding: 1, height: 45, display: "flex", alignItems: "center", textAlign: 'center' }}>
@@ -98,10 +118,11 @@ export default function AlignItemsList() {
   }
 
   const ViewSectionHandler = () => {
-    let url = `/class/${classYear}`;
+    let url  = `/class/${classYear}`
     navigate(url);
 
   }
+
   const handleDeleteStudent = (studentRollNumber) => {
     setTempStudent(studentRollNumber)
     //console.log(studentRollNumber)
@@ -129,7 +150,16 @@ export default function AlignItemsList() {
       }
     })
   }
-
+  const cld = new Cloudinary({
+    cloud: {
+        cloudName: 'dqxdmayga'
+    }
+});
+  const imgToUrl = (publicId) => {
+    const myImage = cld.image(publicId);
+    const myUrl = myImage.toURL();
+    return myUrl
+}
 
   const textChange = (value) => {
     setUsername(value);
@@ -213,7 +243,7 @@ export default function AlignItemsList() {
     return (
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={12} textAlign="right">
-          <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={ViewSectionHandler} >Go Back</Button>
+          <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={ViewSectionHandler} >Back</Button>
         </Grid>
       </Grid>
     )
@@ -233,9 +263,7 @@ export default function AlignItemsList() {
             </Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="h4" sx={{ textAlign: 'center' }}>
-              Strength : {str}
-            </Typography>
+
           </Grid>
 
           <Grid item xs={8} textAlight="center">
