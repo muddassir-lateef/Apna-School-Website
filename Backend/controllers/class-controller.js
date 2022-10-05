@@ -60,6 +60,22 @@ const addNewSectionToClass = async(req, res, next) => {
         const studentIdList = req.body.studentIdList? req.body.studentIdList: null;
         //Section head, also knows as Class Teacher informally
         const sectionHead = req.body.sectionHead? req.body.sectionHead: null;
+        //Finding the class and checking for duplicate section
+        const class_query = {classYear : req.body.classYear}
+        const temp_class = await Class.findOne(class_query).populate('sectionList');
+        if(temp_class.sectionList !== null)
+        {
+            console.log("Null check passed")
+            for(let i=0;i<temp_class.sectionList.length; i++)
+            {
+                if(temp_class.sectionList[i].sectionName === sectionName)
+                {
+                    console.log("Section already exists")
+                    res.status(400).json(1)
+                    return
+                }
+            }
+        }
 
         const newSection= new Section({
 
@@ -70,8 +86,7 @@ const addNewSectionToClass = async(req, res, next) => {
 
         newSection.save();
 
-        const class_query = {classYear : req.body.classYear}
-        const temp_class = await Class.findOne(class_query)
+      
         console.log(temp_class)
      if(temp_class.noOfSections !== null)
      {
@@ -81,7 +96,7 @@ const addNewSectionToClass = async(req, res, next) => {
         temp_class.sectionList = temp_class.sectionList || [];
         temp_class.sectionList.push(newSection._id);
         temp_class.save()
-      .then(() => res.json({ message: "New Section has been added to class", Class: temp_class }))
+      .then(() => res.status(201).json({ message: "New Section has been added to class", Class: temp_class }))
       .catch((err) => res.status(400).json("Error: " + err));
 };
 
@@ -176,7 +191,27 @@ const deleteClass = async(req,res,next) => {
 
 
 const deleteSection = async(req,res,next) => {
+//     const class_query = { classYear: req.body.classYear };
+//     console.log(class_query)
+//     const tempClass = await Class.findOne(class_query).populate('sectionList');
 
+//     console.log("before loop")
+//     for (let i = 0; i < tempClass.sectionList.length; i++) {
+//             console.log("Section matched")
+//             const tempSection = await Section.findById(tempClass.sectionList[i]._id).populate('studentIdList');
+//             if(tempSection.studentIdList !== null)
+//             {
+//             for (let j = 0; j < tempSection.studentIdList.length; j++) {
+//                 const tempStudent = await Student.findById(tempSection.studentIdList[j]._id);
+//                 tempStudent.classYear = 0;
+//                 tempStudent.sectionName = 'None';
+//                 tempStudent.save();
+//             }
+//         }
+//     }
+//     const delCheck = await Section.deleteMany({classYear : req.body.classYear})
+//     const delCheck2 = await Class.findByIdAndDelete(tempClass._id)
+//     res.status(201).json(1)
 }
 
 exports.deleteSection = deleteSection;

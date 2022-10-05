@@ -14,6 +14,7 @@ import {
   Backdrop,
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -22,7 +23,7 @@ import { deepOrange, deepPurple, blue } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchBox from "../../components/SearchBox";
 import Paper from '@mui/material/Paper';
-import { getAllTeachers, deleteTeacher, getAllClasses, deleteClass, getAllSectionsInClass} from "../../services/UserService";
+import { getAllTeachers, addNewSectionToClass, getAllClasses, deleteClass, getAllSectionsInClass} from "../../services/UserService";
 import { Image } from "cloudinary-react";
 const style = {
   position: "absolute",
@@ -37,19 +38,18 @@ const style = {
 };
 
 const SearchTeacher = () => {
-  const [teacherOptions, setTeacherOptions] = useState([]);
-  const [username, setUsername] = useState('');
+
   const [teachersList, setTeachersList] = useState([]);
-  const [teachersMasterList, setTeachersMasterList] = useState([]);
   const classYear = useParams().classYear
   const [modalOpen, setModalOpen] = useState(false);
-  const [userFlag , setUserFlag] = useState(false)
   const [selectedTeacher, setSelectedTeacher] = useState(0);
   const [delClass, setDelClass] = useState(0);
   const [delFlag, setDelFlag] = useState(false);
+  const [addSectionName, setAddSectionName] = useState("")
+  const [refreshflag, setRefreshFlag] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("Displaying all the classes")
+    console.log("Displaying all the Sections Again")
     console.log(classYear)
     getAllSectionsInClass(classYear).then((response) => {
       if (response.status === 201) {
@@ -62,7 +62,18 @@ const SearchTeacher = () => {
     });// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
 
-
+useEffect (() => {
+  console.log("Refreshing after adding section")
+  getAllSectionsInClass(classYear).then((response) => {
+    if (response.status === 201) {
+      console.log(response.data);
+      setTeachersList(response.data);
+    } else if (response.status === 401) {
+      alert("Class not found");
+      console.log(response.data);
+    }
+}, [refreshflag])
+})
 
   const handleTeacherDelete = (teacherId) => {
     setDelClass(teacherId)
@@ -95,7 +106,30 @@ const SearchTeacher = () => {
     let url = "/class/searchClass";
     navigate(url);
   }
+  const onTextField = (event) => {
+    console.log("here")
+    setAddSectionName(event.target.value)
+    console.log(event.target.value)
+  }
 
+  const addSectionHandler = () => {
+    console.log(addSectionName)
+    addNewSectionToClass(classYear, addSectionName).then((response) => {
+      if(response.stauts === 201)
+      {
+        setRefreshFlag(true)
+        console.log("Section added succesfully")
+      }
+      if(response === -1)
+      {
+        setRefreshFlag(true)
+        console.log("Section not added")
+      }
+      setRefreshFlag(false)
+  })
+  
+  setRefreshFlag((isOpen) => !isOpen);
+}
 
   return (
     <Grid container spacing={2}>
@@ -149,12 +183,20 @@ const SearchTeacher = () => {
          
           <Grid item xs={12} sm={2} lg={3}>
           <Paper>
-          <TextField   sx={{ height: '100%', width: '100%' }}id="filled-basic" variant="outlined" label = "Section Name" > </TextField>
+          <TextField   sx={{ height: '100%', width: '100%' }}id="filled-basic" variant="outlined" label = "Section Name" 
+           value={addSectionName}
+           onChange = {onTextField}
+          > 
+         
+          </TextField>
+
           </Paper>
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
             
-          <Button  sx={{ height: '100%', width: '100%' }} variant="outlined">
+          <Button  sx={{ height: '100%', width: '100%' }} variant="outlined"
+          onClick = {addSectionHandler}
+          >
             Add Section
           </Button>
           </Grid>

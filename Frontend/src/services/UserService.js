@@ -325,7 +325,7 @@ export async function changeStudentSection(classYear, sectionName, rollNumber) {
   }
   else
   {
-    return -1
+    return response
   }
   
   
@@ -346,3 +346,20 @@ export async function deleteClass(classYear) {
   } 
 }
 
+export async function addNewSectionToClass(classYear1, sectionName) {
+  let tempURL = URL + 'class/addNewSectionToClass'
+  console.log("here are the details")
+  let classYear = Number(classYear1)
+  console.log(classYear)
+  console.log(sectionName)
+  const response = await axios.post(tempURL, {classYear, sectionName})
+  console.log("After req")
+  if(response.status === 201)
+  {
+    return response;
+  }
+  else
+  {
+    return -1;
+  }
+}
