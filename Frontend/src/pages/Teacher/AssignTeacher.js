@@ -387,7 +387,7 @@ const AssignTeacher = () => {
             ))}
             <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid item xs={12} textAlign="right">
-                    <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>Go Back</Button>
+                    <Button variant= "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>Go Back</Button>
                 </Grid>
             </Grid>
         </Grid>
