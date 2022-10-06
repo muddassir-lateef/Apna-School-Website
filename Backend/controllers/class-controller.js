@@ -2,6 +2,7 @@ const HttpError = require('../models/http-error');
 let Section = require('../models/section.model');
 let Student = require('../models/student.model');
 let Class = require('../models/class.model');
+let Teacher = require('../models/teacher.model')
 
 
 const getClass = async (req, res, next) => {

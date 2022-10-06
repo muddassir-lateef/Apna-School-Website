@@ -83,9 +83,13 @@ const AssignTeacher = () => {
 
     useEffect(()=>{
         const temp_options = [];
-        for (let i=0; i<teacherSections.length; i++){
-            const temp_str = teacherSections[i].classYear + " " + teacherSections[i].sectionName;
-            temp_options.push(temp_str)
+        if(Array.isArray(teacherSections) && teacherSections.length > 0 && teacherSections !== null){
+            for (let i=0; i<teacherSections.length; i++){
+                console.log("Hello: ", teacherSections[i])
+                const temp_str = teacherSections[i].classYear + " " + teacherSections[i].sectionName;
+                temp_options.push(temp_str)
+                
+            }
         }
         setTeacherSectionOptions(temp_options);
         console.log("Teacher Section Options: ", temp_options)
