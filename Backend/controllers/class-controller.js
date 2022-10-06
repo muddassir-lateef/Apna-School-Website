@@ -148,7 +148,7 @@ const assignTeacherToSection = async(req, res, next) => {
 }
 const getAllClasses = async (req,res,next) => {
     try {
-        Class.find()
+        Class.find().populate('sectionList')
         .then((classes) => res.status(201).json(classes))
         .catch((err) => res.status(401).json("Error: " + err));
     } catch(err) {

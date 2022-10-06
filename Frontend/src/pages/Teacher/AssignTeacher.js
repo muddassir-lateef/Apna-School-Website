@@ -20,6 +20,7 @@ const style = {
     p: 4,
 };
 const getClassAndSections = (classList) => {
+    console.log("CLASSLIST: ", classList)
     const retList = []
     for (let i = 0; i < classList.length; i++) {
         if (classList[i].sectionList !== null) {
