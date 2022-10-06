@@ -86,11 +86,6 @@ const initial_menuItems = [
       title: "Add Class",
       path: '/class/addClass',
       icon: <AddIcon />
-    },
-    {
-      title: "Delete Class",
-      path: '/admin/calendar',
-      icon: <CalendarMonthIcon />
     }
     ]
   },

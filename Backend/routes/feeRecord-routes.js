@@ -74,5 +74,6 @@ router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeReco
     "rollNumber": 66
 }
 */
+
 router.post('/generateFeeForListOfStudents', FeeRecordController.generateFeeForListOfStudents);
 module.exports = router;
