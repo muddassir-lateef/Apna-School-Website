@@ -121,10 +121,51 @@ const getStudentByRollNumber = async (req, res, next) => {
 
 const updateStudent = async (req, res, next) => {
   try {
-    const rollNumber = { rollNumber: req.params.rollNumber };
-    const updates = req.body;
-    Student.findOneAndUpdate(rollNumber, updates)
-      .then(() => res.json("Update operation called successfuly!"))
+    console.log("in backend")
+    const rollNumber = req.body.rollNumber;
+    console.log(rollNumber)
+    var temp_Student = await Student.findOne({ rollNumber : rollNumber });
+    console.log("student found")
+    console.log(temp_Student)
+
+    const image = req.body.image || "";
+    var uploadResponse;
+    if (image !== "") {
+      uploadResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "Students",
+      });
+      console.log(uploadResponse);
+      //delete last image
+      console.log("Teacher: " + temp_Student);
+      const public_id = temp_Student.image;
+      console.log("Public ID: " + public_id);
+      const deleteResponse = await cloudinary.uploader
+        .destroy(public_id)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    } else {
+      uploadResponse = { public_id: "" };
+    }
+
+    const updates = {
+      rollNumber : req.body.rollNumber,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      Age : req.body.Age,
+      guardianFirstName : req.body.guardianFirstName,
+      guardianLastName : req.body.guardianLastName,
+      cnic : req.body.cnic,
+      phoneNumber : req.body.phoneNumber,
+      houseAddress : req.body.houseAddress,
+      emailAddress : req.body.emailAddress
+    };
+
+    if (image !== "" && uploadResponse.public_id !== "") {
+      updates.image = uploadResponse.public_id;
+    }
+
+    Student.findOneAndUpdate({rollNumber}, updates)
+      .then(() => res.status(201).json("Update operation called successfuly!"))
       .catch((err) => res.status(400).json("Error: " + err));
   } catch (err) {
     return next(new HttpError(err.message, 500));

@@ -109,6 +109,17 @@ export async function updateTeacher(oldUsername, firstName, lastName, age, usern
   return response;
 
 }
+
+export async function updateStudent(rollNumber, firstName, lastName, Age1, cnic, guardianFirstName, guardianLastName, houseAddress, phoneNumber, emailAddress, image) {
+  let tempURL = URL + 'student/update';
+  console.log("In service")
+  let Age = Number(Age1)
+  console.log(Age)
+  const response = await axios.patch(tempURL, {
+    rollNumber, firstName, lastName, Age, cnic, guardianFirstName, guardianLastName, houseAddress, phoneNumber, emailAddress, image
+  });
+  return response;
+}
 export async function getAllTeachers() {
   let tempURL = URL + 'teacher' // 'http://localhost:5000/student'
   console.log(tempURL);

@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import { useNavigate, useLocation } from "react-router-dom";
-import { getAllStudentsInSection, deleteStudent, removeStudentFromSection, getAllStudents, changeStudentSection, getAl } from "../../services/UserService";
+import { getAllStudentsInSection, deleteStudent, removeStudentFromSection, getAllStudents, changeStudentSection,  } from "../../services/UserService";
 import Paper from '@mui/material/Paper';
 import {
   Button, Grid, Card, Modal, Fade, Box,

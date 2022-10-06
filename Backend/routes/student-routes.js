@@ -30,7 +30,7 @@ router.post('/addStudent', StudentController.addStudent)
 
 */
 //Update student by roll numbber, have to verify whether if RollNumber is to be passed in URl or Body only
-router.patch('/:rollNumber', StudentController.updateStudent)
+router.patch('/update', StudentController.updateStudent)
 /*
     "rollNumber": "Salar",
     "Age": 12,

@@ -110,6 +110,15 @@ const SearchStudent = () => {
     let url = `/students/view/${rollNumber}`;
     navigate(url);
   }
+
+  const editStudent = (rollNumber) => {
+    console.log(rollNumber)
+    console.log("in edit")
+    navigate("/students/edit", {
+      state: { param1: rollNumber },
+    })
+  }
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -117,7 +126,7 @@ const SearchStudent = () => {
           onChange={textChange}
           inputValue={username}
           options={teacherOptions}
-          label="Teacher Username"
+          label="Student Roll Number"
         />
       </Grid>
       <Grid item xs={11}>
@@ -191,7 +200,7 @@ const SearchStudent = () => {
             
             <CardActions>
             <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
-              <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>}>Edit</Button>
+              <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>} onClick ={() => editStudent(item.rollNumber)}>Edit</Button>
               <Button
               sx={{width:'40%'}}
                 variant="outlined" color="error"
