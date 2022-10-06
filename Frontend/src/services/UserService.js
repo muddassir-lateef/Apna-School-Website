@@ -227,6 +227,8 @@ export async function getAllStudentsInSection(classYear, sectionName) {
 
   if(response.status === 201)
   {
+    console.log("success")
+    console.log(response.data)
     return response;
   }
   else {

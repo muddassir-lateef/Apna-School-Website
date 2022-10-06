@@ -142,16 +142,23 @@ const deleteStudent = async (req, res, next) => {
     console.log(class_query)
     console.log(section_query)
     const tempOldClass = await Class.findOne(class_query).populate('sectionList');
-    for (let i = 0; i < tempOldClass.sectionList.length; i++) {
-        if (tempOldClass.sectionList[i].sectionName === temp_student.sectionName) {
-            // console.log(tempOldClass.sectionList[i].sectionName)
-            console.log("in the zone")
-            const tempOldSection = await Section.findOne(section_query)  
-            tempOldSection.strength = tempOldSection.strength -1;
-            tempOldSection.save();           
-    
-            }
-        }
+    if(tempOldClass !== null)
+    {
+      if(tempOldClass.sectionList !== null)
+      {
+        for (let i = 0; i < tempOldClass.sectionList.length; i++) {
+          if (tempOldClass.sectionList[i].sectionName === temp_student.sectionName) {
+              // console.log(tempOldClass.sectionList[i].sectionName)
+              console.log("in the zone")
+              const tempOldSection = await Section.findOne(section_query)  
+              tempOldSection.strength = tempOldSection.strength -1;
+              tempOldSection.save();           
+      
+              }
+          }
+      }
+    }
+   
 
 
 

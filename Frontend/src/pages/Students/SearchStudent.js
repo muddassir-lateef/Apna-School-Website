@@ -1,15 +1,23 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Button, Box, Grid, Card, CardContent, CardActions, Typography,Fade,
-  Backdrop, Modal, Alert
-       } from "@mui/material";
-import { getStudents, getAllStudents, deleteStudent } from "../../services/UserService";
-import StudentSearchBox from "../../components/SearchBox";
-import { Image } from "cloudinary-react";
+import {
+  Button,
+  Grid,
+  Modal,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+  Box,
+  Fade,
+  Backdrop,
+} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import SearchBox from "../../components/SearchBox";
+import { getAllTeachers, deleteTeacher, getAllStudents, deleteStudent } from "../../services/UserService";
+import { Image } from "cloudinary-react";
 const style = {
   position: "absolute",
   top: "50%",
@@ -21,224 +29,97 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const studentOptions = [];
 
 const SearchStudent = () => {
-  const [rollNo, setrollNo] = useState("");
-  const [student, setStudent] = useState([]);
-  const [studentFlag, setStudentFlag] = useState();
-  const [tempStudent, setTempStudent] = useState();
+  const [teacherOptions, setTeacherOptions] = useState([]);
+  const [username, setUsername] = useState(0);
+  const [teachersList, setTeachersList] = useState([]);
+  const [teachersMasterList, setTeachersMasterList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [refreshFlag, setRefreshFlag] = useState(false); 
-  const [snackOpen, setSnackOpen] = React.useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState('');
   const navigate = useNavigate();
-
-
-  React.useEffect(() => {
+  useEffect(() => {
     getAllStudents().then((response) => {
+      console.log("in")
       if (response.status === 201) {
         console.log(response.data);
-        if (response.data.length !== studentOptions.length) {
+        setTeachersList(response.data);
+        setTeachersMasterList(response.data);
+        if (response.data.length !== teacherOptions.length) {
+          var temp_list = [];
           for (let i = 0; i < response.data.length; i++) {
             let tempObj = { label: String(response.data[i].rollNumber) };
-            if (studentOptions.find(stu => stu.label === tempObj.label) === undefined)
-              studentOptions.push(tempObj)
+            if (
+              teacherOptions.find(
+                (teacher) => teacher.label === tempObj.label
+              ) === undefined
+            )
+              temp_list.push(tempObj);
           }
+          setTeacherOptions(temp_list);
         }
       } else if (response.status === 401) {
-        alert("Student not found");
+        alert("Teacher not found");
         console.log(response.data);
       }
-    },);
-  });
+    });// eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalOpen]);
 
   const textChange = (value) => {
-    setrollNo(value);
-    console.log(rollNo);
-    setStudentFlag(-1)
-
+    console.log(value)
+    
+    let value1 = Number(value)
+    console.log("in text change")
+    setUsername(value);
+    console.log(value1)
+    //console.log(Number(username));
+    //console.log("here: " + value);
+    if (value1 !== 0) {
+      const filteredArray = teachersMasterList.filter((teacher) => {
+        let tempRoll = String(teacher.rollNumber)
+        return tempRoll.includes(value1);
+      });
+      setTeachersList(filteredArray);
+    }
+    else if(value1 === 0)
+    {
+      setTeachersList(teachersMasterList)
+    }
   };
+
+  const handleTeacherDelete = (rollNumber) => {
+    setSelectedTeacher(rollNumber)
+    console.log(rollNumber);
+    setModalOpen(true);
+  };
+
+  const handleDeleteTeacher = () => {
+    console.log(selectedTeacher);
+    deleteStudent(selectedTeacher).then((response) => {
+      if(response.status === 201) {
+        setModalOpen(false);
+    }})
+  };
+
 
   const handleModalClose = () => {
     setModalOpen((isOpen) => !isOpen);
   };
 
-  const buttonClick = (event) => {
-    event.preventDefault();
-    let URL = "student/" + rollNo;
-
-    getStudents(URL).then((response) => {
-      if (response.status === 201) {
-        console.log(response.data);
-        setStudent(response.data);
-        setStudentFlag(1);
-      }
-      else if (response.status === 401) {
-        alert("Student not found");
-        console.log(response.data);
-        setStudentFlag(-1);
-      }
-    });
-  };
-
-  const handleDeleteStudent = (studentRollNumber) => {
-    setTempStudent(studentRollNumber);
-    console.log(studentRollNumber)
-    setModalOpen(true);
-  }
-  const handleStudentCardClick = (rollNumber) => {
+  const handleTeacherCardClick = (rollNumber) => {
     let url = `/students/view/${rollNumber}`;
     navigate(url);
   }
-
-
-  const StatusAlert = () => {
-    if (refreshFlag === true)
-      return (
-        <Alert
-          onClose={() => setSnackOpen(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Student Added Successfully!
-        </Alert>
-      );
-  };
-
-  const DeleteStudent = () => {
-    console.log(tempStudent);
-    deleteStudent(tempStudent).then((response) => {
-      if(response.status === 201) {
-        setModalOpen(false);
-        if(refreshFlag == true)
-        {
-          setRefreshFlag(false)
-          setRefreshFlag(true)
-        }
-        else if(refreshFlag == false)
-        {
-          setRefreshFlag(true)
-        }
-      }
-      else {
-        setRefreshFlag(false);
-      }
-    })
-  }
-
-  useEffect(() => {
-    let URL = "student/" + rollNo;
-
-    getStudents(URL).then((response) => {
-      if (response.status === 201) {
-        console.log(response.data);
-        setStudent(response.data);
-        setStudentFlag(1);
-        setRefreshFlag(false);
-      }
-      else if (response.status === 401) {
-        alert("Student not found");
-        console.log(response.data);
-        setStudentFlag(-1);
-      }
-    })
-  }, [refreshFlag]);
-
-
-
-
-  const StudentDisplay = () => {
-    if (studentFlag == 1 && rollNo == 0)
-      return (
-          student.map((stu) => (
-            <Grid item sm={12} md={6} lg={4} key={stu.rollNumber}>
-              <Card sx={{ maxWidth: 320 }}>
-              <Button onClick={()=>handleStudentCardClick(stu.rollNumber)} style={{ padding: "0px" }}>
-                <Image
-                  cloudName="dqxdmayga"
-                  publicId={stu.image}
-                  width={320}
-                  height={250}
-                />
-                </Button>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {stu.rollNumber}
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {stu.firstName + " " + stu.lastName}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
-                <Button sx={{width:'40%'}} variant="contained" component="label"  startIcon={<EditIcon/>}>Edit</Button>
-                <Button
-              sx={{width:'40%'}}
-                variant="outlined" color="error"
-                onClick={() => handleDeleteStudent(stu.rollNumber)}
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button>
-              </Box>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))
-      );
-
-    if (studentFlag == 1 && rollNo > 0)
-      return (
-
-        <Grid item sm={12} md={6} lg={4} key={student.rollNumber}>
-          <Card sx={{ maxWidth: 320 }}>
-            <CardContent>
-              <Image
-                cloudName="dqxdmayga"
-                publicId={student.image}
-                width={320}
-                height={250}
-              />
-              <Typography gutterBottom variant="h5" component="div">
-                {student.rollNumber}
-              </Typography>
-              <Typography gutterBottom variant="h5" component="div">
-                {student.firstName + " " + student.lastName}
-              </Typography>
-            </CardContent>
-            <CardActions>
-            <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
-            <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>}>Edit</Button>
-            <Button
-              sx={{width:'40%'}}
-                variant="outlined" color="error"
-                onClick={() => handleDeleteStudent(student.rollNumber)}
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button>
-              </Box>
-            </CardActions>
-          </Card>
-        </Grid>
-      );
-
-
-  }
-
   return (
-
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <StudentSearchBox onChange={textChange} inputValue={rollNo} options={studentOptions} />
+        <SearchBox
+          onChange={textChange}
+          inputValue={username}
+          options={teacherOptions}
+          label="Teacher Username"
+        />
       </Grid>
-
-      <Grid item sm={12}>
-        <Button variant="contained" onClick={buttonClick} sx={{ mt: 2, width: '100%' }}>
-          Search
-        </Button>
-      </Grid>
-
       <Grid item xs={11}>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -257,20 +138,20 @@ const SearchStudent = () => {
                 id="transition-modal-title"
                 variant="h6"
                 component="h2"
-                sx={{ mb: 2 }}
+                sx={{mb:2}}
               >
-                Are you sure you want to delete this Student?
+                Are you sure you want to delete this teacher?
               </Typography>
-              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
                 <Button
                   onClick={() => setModalOpen((prevState) => !prevState)}
                   variant="contained"
                   component="label"
-                  sx={{ mr: 3 }}
+                  sx={{mr:3}}
                 >
                   Go Back
                 </Button>
-                <Button onClick={DeleteStudent} variant="outlined" color="error">
+                <Button onClick={handleDeleteTeacher} variant="outlined" color="error">
                   DELETE
                 </Button>
               </Box>
@@ -279,15 +160,54 @@ const SearchStudent = () => {
         </Modal>
       </Grid>
 
+      {teachersList.map((item) => (
+        <Grid
+          item
+          sm={12}
+          md={6}
+          lg={4}
+          key={item.rollNumber}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
+          
+          <Card sx={{ maxWidth: 320 }}>
+          <Button onClick={()=>handleTeacherCardClick(item.rollNumber)} style={{ padding: "0px" }}>
+            <Image
+              cloudName="dqxdmayga"
+              publicId={item.image}
+              width={320}
+              height={250}
+            />
+            </Button>
 
-      <StudentDisplay></StudentDisplay>
-      <StatusAlert/>
-
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {item.firstName + " " + item.lastName}
+              </Typography>
+              <Typography gutterBottom variant="h5" component="div">
+                {item.rollNumber}
+              </Typography>
+            </CardContent>
+            
+            <CardActions>
+            <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
+              <Button sx={{width:'40%'}} variant="contained" component="label" startIcon={<EditIcon/>}>Edit</Button>
+              <Button
+              sx={{width:'40%'}}
+                variant="outlined" color="error"
+                onClick={() => handleTeacherDelete(item.rollNumber)}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+              </Box>
+            </CardActions>
+          </Card>
+        </Grid>
+      ))}
     </Grid>
-
-
-
   );
 };
 
 export default SearchStudent;
+

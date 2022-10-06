@@ -58,14 +58,19 @@ const changeStudentSection = async (req, res, next) => {
                 return
             }
         }
-
+        console.log(req.body.classYear)
+        console.log(req.body.sectionName)
     //Check for null values
+    console.log(tempStudent.classYear)
     if (tempStudent.classYear !== 0) {
         if (tempStudent.sectionName !== 'None') {
             console.log("in")
             const old_class_query = { classYear: tempStudent.classYear };
             const old_section_query = { secionname: tempStudent.sectionName };
+            console.log(old_class_query)
+            console.log(old_section_query)
             const tempOldClass = await Class.findOne(old_class_query).populate('sectionList');
+            console.log(tempOldClass)
             console.log("before loop")
             for (let i = 0; i < tempOldClass.sectionList.length; i++) {
                 console.log(i)
@@ -141,18 +146,22 @@ const getSectionById = async (req, res, next) => {
 const getAllStudentsInSection = async (req, res, next) => {
     const class_query = { sectionName: req.body.sectionName }
     console.log(class_query)
-    console.log("Result check")
+    console.log("Starting")
     const temp_class = await Class.findOne(class_query).populate('sectionList');
     if (temp_class === null) {
         res.status(401)
         return;
     }
-    console.log(temp_class)
     temp_class.sectionList = temp_class.sectionList || [];
     for (let i = 0; i < temp_class.sectionList.length; i++) {
         if (temp_class.sectionList[i].sectionName === req.body.sectionName) {
             console.log("found")
             const temp_section = await Section.findById(temp_class.sectionList[i]._id).populate('studentIdList')
+            console.log("after displaying")
+            console.log(temp_section)
+            console.log("after displaying")
+            console.log(temp_section.studentIdList)
+            console.log("after displaying")
             res.status(201).json(temp_section.studentIdList);
             return
         }

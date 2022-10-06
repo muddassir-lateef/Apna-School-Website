@@ -51,6 +51,7 @@ export default function AlignItemsList() {
         console.log(response.data);
         console.log("Students Found")
         setStudentList(response.data);
+        console.log("after setting")
       }
       else if (response.status === -1) {
         alert("Students not Found");

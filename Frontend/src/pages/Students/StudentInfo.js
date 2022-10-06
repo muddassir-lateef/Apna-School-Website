@@ -48,7 +48,7 @@ const StudentInfo = () => {
     <>
       <Card>
         <Grid container xs={12} style={{ padding: "0px", display: "flex" }}>
-          <Grid
+        <Grid
             item
             xs={12}
             md={6}
@@ -57,7 +57,7 @@ const StudentInfo = () => {
             <Image
               cloudName="dqxdmayga"
               publicId={student.image}
-              width={140}
+              width={340}
               height={350}
             />
           </Grid>
