@@ -19,7 +19,6 @@ const examSchema = new Schema({
 
   totalMarks:{
     type: Number,
-    required: true,
   },
 
   venue: {

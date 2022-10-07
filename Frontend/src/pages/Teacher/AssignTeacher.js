@@ -71,6 +71,7 @@ const AssignTeacher = () => {
                // console.log("HELLo")
                 const temp_sec = await getSectionById(teacher.data.sections[i]);
                 console.log("HERE:", temp_sec.data)
+                if (temp_sec.data !== null)
                 temp_sections.push(temp_sec.data)
             }
             setTeacherSections(temp_sections);

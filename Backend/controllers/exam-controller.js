@@ -62,7 +62,7 @@ const addMarks = async(req, res, next) => {
     }
 
     const mark = new Marks({obtainedMarks, studentId});
-    mark.save();
+    await mark.save();
     exam.marks.push(mark._id);
     exam
       .save()

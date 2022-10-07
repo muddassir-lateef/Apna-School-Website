@@ -216,6 +216,26 @@ const deleteSection = async(req,res,next) => {
     tempClass.noOfSections = tempClass.noOfSections -1;
     tempClass.save();
     console.log("here")
+
+    const teachers = await Teacher.find();
+    if (teachers !== null && Array.isArray(teachers) && teachers.length > 0 ){
+       // console.log("here 1")
+        for (var i=0; i<teachers.length; i++){
+            if (teachers[i].sections !== null && Array.isArray(teachers[i].sections) && teachers[i].sections.length>0){
+           //     console.log("here 2")
+                for (var j=0; j<teachers[i].sections.length; j++){
+              //      console.log("here 3")
+                    if (String(teachers[i].sections[j]) == String(tempSection._id) ){
+                //        console.log("here 4")
+                        const temp_list = teachers[i].sections.filter(item=>String(item) != String(tempSection._id));
+                 //       console.log("TEMP_list: ", temp_list)
+                        teachers[i].sections = temp_list
+                        await teachers[i].save();
+                    }
+                }
+            }
+        }
+    }
     res.status(201).json(3)
     return
    }
