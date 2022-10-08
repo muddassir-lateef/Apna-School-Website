@@ -14,7 +14,6 @@ export async function login(username, password) {
   }
 }
 export async function addStudent(
-  rollNumber,
   Age,
   firstName,
   lastName,
@@ -39,7 +38,6 @@ export async function addStudent(
   console.log("hit")
   let tempURL = URL + "student/addStudent";
   const response = await axios.post(tempURL, {
-    rollNumber,
     Age,
     firstName,
     lastName,
