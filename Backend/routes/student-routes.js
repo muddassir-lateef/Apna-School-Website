@@ -53,6 +53,7 @@ router.get('/', StudentController.getAllStudents);
 
 router.delete('/deleteStudent/:rollNumber', StudentController.deleteStudent);
 
+router.post('/test', StudentController.dateTest)
 
 
 

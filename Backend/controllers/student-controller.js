@@ -15,7 +15,6 @@ const addStudent = async (req, res, next) => {
     const firstName = req.body.firstName;
     const Age = req.body.Age;
     const lastName = req.body.lastName;
-    const rollNumber = req.body.rollNumber;
     const guardianFirstName = req.body.guardianFirstName;
     const guardianLastName = req.body.guardianLastName;
     const cnic = req.body.cnic;
@@ -52,12 +51,54 @@ const addStudent = async (req, res, next) => {
     else {
       uploadResponse = { public_id: '' };
     }
+    console.log(totalFee)
+    console.log(tuitionFee)
     const feeRecord = new FeeRecord({
       feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee, otherFee,
     })
     console.log("Before adding fee")
+    console.log(feeRecord)
 
-    let temp = await feeRecord.save()
+    const temp = feeRecord.save()
+    console.log("fee added")
+    console.log(feeRecord._id)
+    console.log("fee added")
+    //--//
+    const tempFeeRecord = await FeeRecord.findOne();
+    var d = new Date(tempFeeRecord.createdAt)
+    var year = d.getFullYear();
+     var strYear = String(year)
+     let tempYear = "";
+     for(let i=0;i<4;i++)
+     {
+       if(i > 1)
+         {
+       tempYear = tempYear + strYear[i];
+     }
+   }
+   let finalYear = Number(tempYear)
+   const studentsList = await Student.find();
+   
+   let rollFinalYear = finalYear * 10000;
+   console.log("The Year")
+   console.log(rollFinalYear)
+   let highestRollNumber = rollFinalYear;
+   for(let j = 0; j < studentsList.length; j++)
+   {
+   if(studentsList[j].rollNumber > highestRollNumber)
+   {
+     highestRollNumber = studentsList[j].rollNumber;
+   }
+   }
+   console.log("The highest rollNumber")
+   console.log(highestRollNumber)
+   
+   
+   console.log("Getting new highest rollNumber")
+   rollFinalYear = highestRollNumber + 1;
+   const rollNumber = rollFinalYear
+   console.log(rollNumber)
+  //--//
     if(temp == null)
     {
       console.log("Fee Not Saved")
@@ -77,7 +118,6 @@ const addStudent = async (req, res, next) => {
     else {
       uploadResponse = { public_id: '' };
     }
-
     const newStudent = new Student({
 
       rollNumber, Age, firstName, lastName, guardianFirstName,
@@ -231,10 +271,44 @@ const deleteStudent = async (req, res, next) => {
   }
 };
 
+const dateTest = async (req,res,next) => {
+  const tempFeeRecord = await FeeRecord.findOne();
+ var d = new Date(tempFeeRecord.createdAt)
+ var year = d.getFullYear();
+  var strYear = String(year)
+  let tempYear = "";
+  for(let i=0;i<4;i++)
+  {
+    if(i > 1)
+      {
+    tempYear = tempYear + strYear[i];
+  }
+}
+let finalYear = Number(tempYear)
+const studentsList = await Student.find();
+
+let rollFinalYear = finalYear * 100000;
+console.log("The Year")
+console.log(rollFinalYear)
+let highestRollNumber = rollFinalYear;
+for(let j = 0; j < studentsList.length; j++)
+{
+if(studentsList[j].rollNumber > highestRollNumber)
+{
+  highestRollNumber = studentsList[j].rollNumber;
+}
+}
+console.log("The highest rollNumber")
+console.log(highestRollNumber)
 
 
+console.log("Getting new highest rollNumber")
+rollFinalYear = highestRollNumber + 1;
+  res.status(201).json(rollFinalYear)
+}
 
 
+exports.dateTest = dateTest;
 exports.deleteStudent = deleteStudent;
 exports.getStudentByRollNumber = getStudentByRollNumber;
 exports.updateStudent = updateStudent;
