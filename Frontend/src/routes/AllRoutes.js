@@ -17,6 +17,7 @@ import StudentInfo from "../pages/Students/StudentInfo";
 import FeeRecordInfo from "../pages/Students/FeeRecordInfo";
 import StudentFeeRecord from "../pages/Students/StudentFeeRecord";
 import EditStudent from "../pages/Students/EditStudent";
+import AddNewExam from "../pages/Exams/AddNewExam";
 export const LoggedOutRoutes = () => {
   let routes;
   
@@ -49,7 +50,8 @@ export const LoggedInRoutes = () => {
         <Route path="/students/view/:rollNumber" element={<StudentInfo/>} />
         <Route path="/students/feerecord/info" element={<FeeRecordInfo/>} />
         <Route path="/student/FeeRecord" element={<StudentFeeRecord/>} />
-        <Route path="/students/edit" element ={<EditStudent/>} />      
+        <Route path="/students/edit" element ={<EditStudent/>} />  
+        <Route path="/exams/add" element ={<AddNewExam/>} />       
         </Routes>
     );
     return routes;

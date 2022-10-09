@@ -397,3 +397,11 @@ export async function deleteSection(classYear1, sectionName) {
   }
 
 }
+
+export async function addNewExam(subject, venue, totalMarks, date, classId) {
+  let tempURL = URL + "exam/addNew";
+  const response = await axios.post(tempURL, {
+    subject, venue, totalMarks, date, classId
+  });
+  return response;
+}

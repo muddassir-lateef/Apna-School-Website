@@ -1,17 +1,23 @@
 const HttpError = require ('../models/http-error');
 const Exam = require('../models/exam.model');
 const Marks = require('../models/marks.model');
+const Class = require('../models/class.model')
+
 
 const createExam = async(req, res, next) => {
-    const date = req.body.date;
-    const subject = req.body.subject;
-    const totalMarks = req.body.totalMarks;
-    const venue = req.body.venue;
+    const date = new Date(req.body.date);
+    const subject = req.body.subject || "";
+    const totalMarks = req.body.totalMarks || 0;
+    const venue = req.body.venue || "";
 
-    exam = new Exam ({date, subject, totalMarks, venue});
+    ///var temp_class = await Class.findOne({_id : req.body.classId});
+    //if (temp_class === null) temp_class = {_id: ""};
+    const classId = req.body.classId.trim() || "";
+
+    const exam = new Exam ({date, subject, totalMarks, venue, classId});
     exam
       .save()
-      .then(() => res.json({ message: "Exam added!", Exam: exam }))
+      .then(() => res.status(201).json({ message: "Exam added!", Exam: exam }))
       .catch((err) => res.status(400).json("Error: " + err));
     
 }

@@ -9,6 +9,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import Face6Icon from '@mui/icons-material/Face6';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AddIcon from '@mui/icons-material/Add';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 const drawerWidth = 240;
 const initial_menuItems = [
   {
@@ -59,18 +60,13 @@ const initial_menuItems = [
     visible: false,
     enteries: [{
       title: "All Exams",
-      path: '/admin/students',
-      icon: <Face6Icon />
+      path: '/exams/search',
+      icon: <TextSnippetIcon />
     },
     {
       title: "New Exam",
-      path: '/admin/teachers',
+      path: '/exams/add',
       icon: <AddIcon />
-    },
-    {
-      title: "Calendar",
-      path: '/admin/calendar',
-      icon: <CalendarMonthIcon />
     }
     ]
   },
