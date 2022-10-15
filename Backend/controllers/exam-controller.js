@@ -103,6 +103,16 @@ const updateMarks = async(req, res, next) => {
     
 }
 
+const dropExam = async(req, res, next) => {
+  const examId = req.params.examId;
+  Exam.findByIdAndRemove(examId)
+  .then(() =>
+    res.status(202).json("Exam Deleted successfuly!")
+  )
+  .catch((err) => res.status(400).json("Error: " + err));
+
+}
+exports.dropExam = dropExam;
 exports.createExam = createExam;
 exports.getAllExams = getAllExams;
 exports.updateExam = updateExam;

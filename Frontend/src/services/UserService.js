@@ -403,3 +403,15 @@ export async function addNewExam(subject, venue, totalMarks, date, classId) {
   });
   return response;
 }
+
+export async function getAllExams () {
+  let tempURL = URL + 'exam' 
+  const response = await axios.get(tempURL);
+  return response;
+}
+
+export async function deleteExam (examId) {
+  let tempURL = URL + `exam/${examId}`;
+  const response = await axios.delete(tempURL);
+  return response;
+}
