@@ -86,6 +86,21 @@ const initial_menuItems = [
     ]
   },
   {
+    menuTitle: "Fee",
+    visible: false,
+    enteries: [{
+      title: "All Fees",
+      path: '/Fee/ViewFees',
+      icon: <Face6Icon />
+    },
+    {
+      title: "New Fees",
+      path: '/Fee/AddNewFees',
+      icon: <AddIcon />
+    }
+    ]
+  },
+  {
     menuTitle: "Attendance",
     visible: false,
     enteries: [{
