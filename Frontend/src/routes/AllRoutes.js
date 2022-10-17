@@ -19,6 +19,7 @@ import StudentFeeRecord from "../pages/Students/StudentFeeRecord";
 import EditStudent from "../pages/Students/EditStudent";
 import AddNewExam from "../pages/Exams/AddNewExam";
 import AllExams from "../pages/Exams/AllExams";
+import ExamInfo from "../pages/Exams/ExamInfo";
 export const LoggedOutRoutes = () => {
   let routes;
   
@@ -53,7 +54,8 @@ export const LoggedInRoutes = () => {
         <Route path="/student/FeeRecord" element={<StudentFeeRecord/>} />
         <Route path="/students/edit" element ={<EditStudent/>} />  
         <Route path="/exams/add" element ={<AddNewExam/>} />     
-        <Route path="/exams/search" element ={<AllExams/>} />  
+        <Route path="/exams/search" element ={<AllExams/>} /> 
+        <Route path="/exams/:examId" element ={<ExamInfo/>} />   
         </Routes>
     );
     return routes;

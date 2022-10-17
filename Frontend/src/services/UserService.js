@@ -415,3 +415,8 @@ export async function deleteExam (examId) {
   const response = await axios.delete(tempURL);
   return response;
 }
+export async function getExamById(id){
+  let tempURL = URL + `exam/${id}`
+  const response = await axios.get(tempURL);
+  return response;
+}

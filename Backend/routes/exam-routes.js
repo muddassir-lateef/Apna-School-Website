@@ -44,6 +44,7 @@ router.patch('/updateMarks/:examId', ExamController.updateMarks);
     }
 */
 
+router.get('/:examId', ExamController.getExamById)
 
 router.get('/', ExamController.getAllExams);
 

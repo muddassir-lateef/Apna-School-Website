@@ -4,6 +4,7 @@ import { Grid, Card, CardContent, CardActions, Typography, Box, Button, Divider,
 import SearchBox from "../../components/SearchBox";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
 const style = {
     position: "absolute",
     top: "50%",
@@ -16,6 +17,7 @@ const style = {
     p: 4,
   };
 const AllExams = () => {
+    const navigate = useNavigate();
     const [examsMasterList, setExamsMasterList] = useState([]);
     const [examsList, setExamsList] = useState([]);
     const [searchTitle, setSearchTitle] = useState("")
@@ -152,7 +154,7 @@ const AllExams = () => {
             }}
             >
                 <Card sx={{ minWidth: 320, maxWidth:320}}>
-                    <CardContent height='100%' onClick={()=>{console.log(item.subject + " Clicked")}}>
+                    <CardContent height='100%' onClick={()=>{navigate(`/exams/${item._id}`)}}>
                         <Typography gutterBottom variant="h5" component="div">
                             {item.subject}
                         </Typography>
@@ -173,7 +175,7 @@ const AllExams = () => {
                             startIcon={<EditIcon />}
                             onClick={() => console.log("Edit Clicked")}
                             >
-                            Edit
+                            Mark
                             </Button>
                             <Button
                             sx={{ width: "40%" }}

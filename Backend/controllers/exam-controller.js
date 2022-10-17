@@ -112,9 +112,22 @@ const dropExam = async(req, res, next) => {
   .catch((err) => res.status(400).json("Error: " + err));
 
 }
+
+const getExamById = async(req, res, next) => {
+  try {
+    const examId = req.params.examId;
+    Exam.findOne({ _id: examId }).populate('classId').populate('marks').populate('teacherId')
+      .then((exams) => res.status(201).json(exams))
+      .catch((err) => res.status(400).json("Error: " + err));
+  } catch (err) {
+    return next(new HttpError(err.message, 500));
+  }
+}
+
 exports.dropExam = dropExam;
 exports.createExam = createExam;
 exports.getAllExams = getAllExams;
 exports.updateExam = updateExam;
 exports.addMarks = addMarks;
 exports.updateMarks = updateMarks;
+exports.getExamById = getExamById;
