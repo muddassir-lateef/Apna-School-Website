@@ -34,6 +34,7 @@ const teacherRouter = require('./routes/teacher-routes')
 
 const feeRecordRouter = require('./routes/feeRecord-routes');
 const classRouter = require('./routes/class-routes');
+const studentAttendanceRouter = require('./routes/studentAttendance-routes');
 
 //app.use('/exercises', exercisesRouter);
 app.use('/staff',staffRouter);
@@ -48,6 +49,7 @@ app.use('/student',studentRouter);
 app.use('/exam', examRouter);
 app.use('/marks', marksRouter);
 app.use('/lecture', lectureRouter);
+app.use('/studentAttendance', studentAttendanceRouter);
 
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{

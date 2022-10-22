@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 let Section = require('../models/section.model');
+let StudentAttendanceRegistry = require('../models/studentAttendanceRegistry.model');
 
 const Schema = mongoose.Schema;
 
@@ -25,6 +26,7 @@ const classSchema = new Schema({
   [{
     type:Schema.Types.ObjectId ,ref:'Section',  
   }],
+}, {
 }, {
   timestamps: true,
 });
