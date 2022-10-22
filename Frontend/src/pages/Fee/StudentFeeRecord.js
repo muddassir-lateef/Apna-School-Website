@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { useNavigate, useLocation } from "react-router-dom";
+import AppBar from '@mui/material/AppBar';
 import { getAllFeeDetailsFromStudentFeeRecord, getStudentFeeRecord } from "../../services/UserService";
 
 const StudentFeeRecord = () => {
@@ -24,7 +25,7 @@ const StudentFeeRecord = () => {
     const [firstName,setFirstName] = useState("")
     const [lastName, setLastName] = useState("");
     const location = useLocation();
-    const [displayFlag, setDisplayFlag] = useState(false)
+    
     const rollNo = location.state.param1;
     const fname = location.state.param2;
     const lname = location.state.param3;
@@ -39,7 +40,7 @@ const StudentFeeRecord = () => {
                 console.log(response.data);
                 console.log("Sections Found")
                 setFeeRecord(response.data);
-                setDisplayFlag(true)
+                
             }
             else if (response.status === -1) {
                 alert("Sections not Found");
@@ -49,7 +50,7 @@ const StudentFeeRecord = () => {
     }, []);
 
     const handleGoBackClick = () => {
-      let url = `/students/view/${rollNumber}`;
+      let url = `/Fee/ViewFees`;
       navigate(url);
     }
 
@@ -59,11 +60,19 @@ const StudentFeeRecord = () => {
       })
 
     }
-    const FeeDisplay = () => {
-      if(displayFlag === true)
-          return (
+    const FeeRecordDisplay = () => {
+      
+          return ( 
             <Paper variant="outlined" square>
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: '#0000' }}>
+              <List sx={{ width: '100%', maxWidth: 300, bgcolor: '#0000' }}>
+                <ListItem>
+                  <AppBar>
+                  <Typography>
+                    Fee Record
+                  </Typography>
+                  Hello
+                  </AppBar>
+                </ListItem>
                 <ListItem>
                 <Typography variant="h5" gutterBottom>
                 Name : {firstName +' '+ lastName}
@@ -122,7 +131,7 @@ const StudentFeeRecord = () => {
       }
 
     return (
-        <FeeDisplay/>
+        <FeeRecordDisplay/>
 
     );
 };

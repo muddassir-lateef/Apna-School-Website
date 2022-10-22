@@ -50,10 +50,6 @@ const AddNewTeacher = () => {
 
   const [formStateStudent, InputHandlerStudent] = useForm(
     {
-      rollNumber: {
-        value: 0,
-        isValid: false,
-      },
       age: {
         value: 0,
         isValid: false,
@@ -101,7 +97,6 @@ const AddNewTeacher = () => {
     const image = previewSource || '';
     console.log(previewSource)
     addStudent(
-      formStateStudent.inputs.rollNumber.value,
       formStateStudent.inputs.age.value,
       formStateStudent.inputs.firstName.value,
       formStateStudent.inputs.lastName.value,
@@ -225,16 +220,6 @@ const AddNewTeacher = () => {
               p: 1,
             }}
           >
-            <Input
-              sx={{ pr: 2, pb: 3, flex: "100%" }}
-              id="rollNumber"
-              label="Roll Number"
-              variant="standard"
-              value="HAHA"
-              onInput={InputHandlerStudent}
-              validators={[VALIDATOR_MINLENGTH(1)]}
-              errorText="Roll Number is a required field"
-            />
             <Input
               sx={{ pr: 2, pb: 3, flex: "100%" }}
               id="firstName"
@@ -459,14 +444,11 @@ const AddNewTeacher = () => {
   //FInal Verification Page
   else if (pageFlag === 2) {
     return (
-      <Grid item sm={12} md={6} lg={4} key={formStateStudent.inputs.rollNumber.value}>
+      <Grid item sm={12} md={6} lg={4}>
         <Card sx={{ maxWidth: 500 }}>
           <CardContent>
           <Typography gutterBottom variant="h4" component="div">
               {'Student Personal Details'}
-            </Typography>
-            <Typography gutterBottom variant="div" component="div">
-              {'Roll Number : ' + formStateStudent.inputs.rollNumber.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
               {'Name : ' + formStateStudent.inputs.guardianFirstName.value + " " + formStateStudent.inputs.guardianLastName.value}

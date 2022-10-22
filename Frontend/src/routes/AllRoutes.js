@@ -14,9 +14,13 @@ import EditTeacher from "../pages/Teacher/EditTeacher";
 import SectionInfo from '../pages/Classes/SectionInfo'
 import MarkStudentAttendance from "../pages/Attendance/MarkStudentAttendance";
 import StudentInfo from "../pages/Students/StudentInfo";
-import FeeRecordInfo from "../pages/Students/FeeRecordInfo";
-import StudentFeeRecord from "../pages/Students/StudentFeeRecord";
+import StudentFeeRecord from "../pages/Fee/StudentFeeRecord";
 import EditStudent from "../pages/Students/EditStudent";
+import AddNewExam from "../pages/Exams/AddNewExam";
+import AllExams from "../pages/Exams/AllExams";
+import ViewFees from "../pages/Fee/ViewFees";
+import addNewFees from "../pages/Fee/AddNewFees";
+import ExamInfo from "../pages/Exams/ExamInfo";
 export const LoggedOutRoutes = () => {
   let routes;
   
@@ -47,9 +51,13 @@ export const LoggedInRoutes = () => {
         <Route path="/class/section" element = {<SectionInfo/>} />
         <Route path="/attendance/student" element={<MarkStudentAttendance/>} />
         <Route path="/students/view/:rollNumber" element={<StudentInfo/>} />
-        <Route path="/students/feerecord/info" element={<FeeRecordInfo/>} />
-        <Route path="/student/FeeRecord" element={<StudentFeeRecord/>} />
-        <Route path="/students/edit" element ={<EditStudent/>} />      
+        <Route path="/Fee/FeeRecord" element={<StudentFeeRecord/>} />
+        <Route path="/students/edit" element ={<EditStudent/>} />  
+        <Route path="/exams/add" element ={<AddNewExam/>} />     
+        <Route path="/exams/search" element ={<AllExams/>} /> 
+        <Route path="/exams/:examId" element ={<ExamInfo/>} />   
+        <Route path ="/Fee/ViewFees" element = {<ViewFees/>} />
+        <Route path ="/Fee/AddNewFees" element = {<addNewFees/>} />
         </Routes>
     );
     return routes;

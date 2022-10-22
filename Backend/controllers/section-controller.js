@@ -144,7 +144,7 @@ const getSectionById = async (req, res, next) => {
 };
 
 const getAllStudentsInSection = async (req, res, next) => {
-    const class_query = { sectionName: req.body.sectionName }
+    const class_query = { classYear: req.body.classYear }
     console.log(class_query)
     console.log("Starting")
     const temp_class = await Class.findOne(class_query).populate('sectionList');

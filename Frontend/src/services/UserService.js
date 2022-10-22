@@ -14,7 +14,6 @@ export async function login(username, password) {
   }
 }
 export async function addStudent(
-  rollNumber,
   Age,
   firstName,
   lastName,
@@ -39,7 +38,6 @@ export async function addStudent(
   console.log("hit")
   let tempURL = URL + "student/addStudent";
   const response = await axios.post(tempURL, {
-    rollNumber,
     Age,
     firstName,
     lastName,
@@ -386,6 +384,30 @@ export async function deleteSection(classYear1, sectionName) {
 
 }
 
+export async function addNewExam(subject, venue, totalMarks, date, classId) {
+  let tempURL = URL + "exam/addNew";
+  const response = await axios.post(tempURL, {
+    subject, venue, totalMarks, date, classId
+  });
+  return response;
+}
+
+export async function getAllExams () {
+  let tempURL = URL + 'exam' 
+  const response = await axios.get(tempURL);
+  return response;
+}
+
+export async function deleteExam (examId) {
+  let tempURL = URL + `exam/${examId}`;
+  const response = await axios.delete(tempURL);
+  return response;
+}
+export async function getExamById(id){
+  let tempURL = URL + `exam/${id}`
+  const response = await axios.get(tempURL);
+  return response;
+}
 export async function getstudentAttendanceRegisteries(section,classYear) {
 
   
@@ -422,3 +444,4 @@ console.log("in")
 
   return response2;
 }
+

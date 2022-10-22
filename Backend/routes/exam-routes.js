@@ -23,6 +23,8 @@ router.patch('/:examId', ExamController.updateExam);
     venue = 'GPU Lab'
 }
 */
+router.delete('/:examId', ExamController.dropExam);
+
 
 router.patch('/addMarks/:examId', ExamController.addMarks);
 //exam id in the url
@@ -42,6 +44,7 @@ router.patch('/updateMarks/:examId', ExamController.updateMarks);
     }
 */
 
+router.get('/:examId', ExamController.getExamById)
 
 router.get('/', ExamController.getAllExams);
 

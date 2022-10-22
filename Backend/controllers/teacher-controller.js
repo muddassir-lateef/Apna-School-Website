@@ -142,7 +142,7 @@ const unAssignSection = async(req, res, next) => {
       console.log("Here 2")
       const temp_sec = await Section.findById(temp_teacher.sections[i])
       console.log(temp_sec)
-      if (temp_sec.classYear == classYear && temp_sec.sectionName == section){
+      if (temp_sec !== null && temp_sec.classYear == classYear && temp_sec.sectionName == section){
         console.log("Here 3")
         const filtered_sections = temp_teacher.sections.filter(item => item != temp_teacher.sections[i])
         temp_teacher.sections = filtered_sections;
