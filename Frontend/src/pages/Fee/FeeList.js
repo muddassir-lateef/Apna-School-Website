@@ -135,6 +135,7 @@ const FeeRecordInfo = () => {
    
                 }
               />
+              
               <ListItemText
                 primary={
             
@@ -196,7 +197,7 @@ const FeeRecordInfo = () => {
               <Divider />
               <ListItemText>
               <Stack direction="row" spacing={1}>
-                <Button variant="outlined"  onClick = {() => handleMarkPaidClick(fee.createdAt)} > Mark Paid </Button>
+                <Button variant="outlined"  onClick = {() => handleMarkPaidClick(fee._id)} > Mark Paid </Button>
                 <Button variant="outlined"> Delete Fee </Button>
                 <Button variant="outlined"> Pay Amount </Button>
                 </Stack>
@@ -211,11 +212,13 @@ const FeeRecordInfo = () => {
           );
     
       }
-      const handleMarkPaidClick = (date) => {
-        console.log("In button handler")
-        console.log(date)
+      const handleMarkPaidClick = (id) => {
+        console.log("In button handlerXD")
+        console.log(id)
         console.log(rollNo)
-        const check = markFeePaid(rollNo, date)
+        console.log(rollNo)
+        setAddModalOpen((isOpen) => !isOpen);
+        const check = markFeePaid(rollNo, id)
       }
 
      const BackNavigationHandler = () => {

@@ -91,12 +91,21 @@ const payFee = async (req, res, next) => {
 }
 const markFeePaid = async (req, res, next) => {
     const rollNumber = req.body.rollNumber;
-    const date = Date(req.body.date)
-    const filter = {createdAt : date}
-    console.log(filter)
-    console.log(rollNumber + " " + date)
-    const tempFee = await FeeRecord.find(filter)
-    console.log(tempFee)
+    const id = req.body.id;
+    const filter = {rollNumber : req.body.rollNumber}
+    const Fee = await FeeDetail.findById(id);
+    const tempStudent = await Student.findOne(filter)
+    console.log(tempStudent)
+    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord)
+    console.log(Fee)
+    console.log(tempFeeRecord)
+    console.log(rollNumber)
+
+     Fee.paidFee = Fee.totalFee;
+    Fee.remainingFee = 0;
+    Fee.save()
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - Fee.totalFee
+    tempFeeRecord.save()
     res.status(201).json(1)
     return
 }
