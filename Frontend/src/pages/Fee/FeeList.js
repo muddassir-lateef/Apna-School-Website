@@ -4,17 +4,18 @@ import List from '@mui/material/List';
 import Paper from '@mui/material/Paper';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
+import SearchBox from "../../components/SearchBox";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ListItemText from '@mui/material/ListItemText';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, Backdrop, Modal, Fade, Box } from '@mui/material'
 import Stack from '@mui/material/Stack';
 import PaidIcon from '@mui/icons-material/Paid';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { useNavigate, useLocation } from "react-router-dom";
-import { getAllFeeDetailsFromStudentFeeRecord } from "../../services/UserService";
+import { getAllFeeDetailsFromStudentFeeRecord, markFeePaid } from "../../services/UserService";
 
 const FeeRecordInfo = () => {
     const [rollNumber, setRollNumber] = useState(0)
@@ -24,6 +25,8 @@ const FeeRecordInfo = () => {
     const [displayFlag, setDisplayFlag] = useState(false)
     const location = useLocation();
     const navigate = useNavigate();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [addModalOpen, setAddModalOpen] = useState(false);
     const rollNo = location.state.param1;
     const fname = location.state.param2;
     const lname = location.state.param3
@@ -65,6 +68,18 @@ const FeeRecordInfo = () => {
 
         )
     }
+
+
+    const handleModalClose = () => {
+        setModalOpen((isOpen) => !isOpen);
+      };
+      const handleAddModalClose = () => {
+        setAddModalOpen((isOpen) => !isOpen);
+    
+      };
+
+     
+
     const FeeDisplay = () => {
         if(displayFlag === true)
           return (
@@ -86,7 +101,7 @@ const FeeRecordInfo = () => {
                       variant="body2"
                       color="text.primary"
                     >
-                      Fee Generation Date: {Date(fee.createdAt)}
+                      Fee Generation Date: {fee.createdAt}
                     </Typography>
                  
                 }
@@ -181,7 +196,7 @@ const FeeRecordInfo = () => {
               <Divider />
               <ListItemText>
               <Stack direction="row" spacing={1}>
-                <Button variant="outlined"> Mark Paid </Button>
+                <Button variant="outlined"  onClick = {() => handleMarkPaidClick(fee.createdAt)} > Mark Paid </Button>
                 <Button variant="outlined"> Delete Fee </Button>
                 <Button variant="outlined"> Pay Amount </Button>
                 </Stack>
@@ -196,6 +211,13 @@ const FeeRecordInfo = () => {
           );
     
       }
+      const handleMarkPaidClick = (date) => {
+        console.log("In button handler")
+        console.log(date)
+        console.log(rollNo)
+        const check = markFeePaid(rollNo, date)
+      }
+
      const BackNavigationHandler = () => {
         navigate("/Fee/FeeRecord", {
             state: { param1: rollNumber, param2 : firstName, param3 : lastName},
@@ -208,8 +230,61 @@ const FeeRecordInfo = () => {
         </Button>
         )
       }
+      const style = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 250,
+        bgcolor: "background.paper",
+        border: "2px solid #000",
+        boxShadow: 24,
+        p: 4,
+      };
     return (
        <Grid>
+            <Grid item xs={11}>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={addModalOpen}
+          onClose={handleAddModalClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={addModalOpen}>
+            <Box sx={style}>
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              </Box>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ mb: 2 }}
+              >
+                Are you sure you want to mark the Fee as paid?
+              </Typography>
+
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  onClick={() => setAddModalOpen((prevState) => !prevState)}
+                  variant="contained"
+                  component="label"
+                  sx={{ mr: 3 }}
+                >
+                  Go Back
+                </Button>
+                <Button variant="outlined" color="success" >
+                  Confirm
+                </Button>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
+      </Grid>
         <Grid item>
         <NameDisplay/>
         </Grid>

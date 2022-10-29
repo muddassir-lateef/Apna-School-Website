@@ -445,3 +445,19 @@ console.log("in")
   return response2;
 }
 
+export async function markFeePaid(rollNumber, date) {
+  console.log("In user service function")
+  console.log(date)
+  console.log(rollNumber)
+  let tempURL = URL + 'feeRecord/markFeePaid';
+  const response = await axios.patch(tempURL, {rollNumber, date})
+  if(response.status === 201 )
+  {
+      return 1
+  }
+  else {
+    return -1
+  }
+ 
+}
+

@@ -17,6 +17,10 @@ const addFeeDetailToStudentFeeRecord = async (req, res, next) => {
     const otherFee = req.body.otherFee;
     totalFee = tuitionFee + fineFee + securityFee + otherFee ;
     let remainingFee = totalFee;
+    let feeID = String(req.body.rollNumber)
+    console.log(feeID)
+    feeID = feeID + String(Math.floor(Math.random()*100000))
+    console.log(feeID)
     const newFeeDetails = new FeeDetail({
 
         feeYear, feeMonth, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
@@ -86,34 +90,15 @@ const payFee = async (req, res, next) => {
     return;
 }
 const markFeePaid = async (req, res, next) => {
-    const feeMonth = req.body.feeMonth;
-    const feeYear = req.body.feeYear;
-    console.log("Hit")
-    //Finding the student with the rollNumber passed in the request body
-    const student_query = { rollNumber: req.body.rollNumber };
-    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-    console.log("Student FOund")
-    //Finding the FeeRecord in the student by the student found
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
-    console.log("fee Record Found")
-    //Looping through the feeRecord to find the desired Fee
-    for (let i = 0; i < tempFeeRecord.feeList.length; i++) {
-        console.log("Fee FOund")
-        if (tempFeeRecord.feeList[i].feeYear === feeYear) {
-            if (tempFeeRecord.feeList[i].feeMonth == feeMonth) {
-                console.log("Hello")
-                tempFeeRecord.feeList[i].remainingFee = 0
-                tempFeeRecord.feeList[i].paidFee = tempFeeRecord.feeList[i].totalFee
-                tempFeeRecord.feeList[i].save();
-                tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - tempFeeRecord.feeList[i].totalFee;
-                tempFeeRecord.save();
-                res.status(201).json(tempFeeRecord.feeList[i]);
-                return
-            }
-        }
-    }
-    res.status(401);
-    return;
+    const rollNumber = req.body.rollNumber;
+    const date = Date(req.body.date)
+    const filter = {createdAt : date}
+    console.log(filter)
+    console.log(rollNumber + " " + date)
+    const tempFee = await FeeRecord.find(filter)
+    console.log(tempFee)
+    res.status(201).json(1)
+    return
 }
 
 const getStudentFeeRecord = async (req, res, next) => {
