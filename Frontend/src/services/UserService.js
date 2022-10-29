@@ -458,6 +458,22 @@ export async function markFeePaid(rollNumber, id) {
   else {
     return -1
   }
- 
 }
+
+export async function deleteFeeDetails(rollNumber, id) {
+  console.log("In the delete service")
+  console.log(rollNumber)
+  console.log(id)
+  let tempURL = URL + 'feeRecord/deleteFeeDetails'
+  const response = await axios.patch(tempURL, {rollNumber, id})
+  if (response.status === 201)
+  {
+    return 1
+  }
+  else {
+    return -1
+  }
+  
+}
+ 
 

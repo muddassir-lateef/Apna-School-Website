@@ -102,9 +102,10 @@ const markFeePaid = async (req, res, next) => {
     console.log(rollNumber)
 
      Fee.paidFee = Fee.totalFee;
-    Fee.remainingFee = 0;
+    let temp = Fee.totalFee - Fee.remainingFee
     Fee.save()
-    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - Fee.totalFee
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - Fee.remainingFee
+    Fee.remainingFee = 0;
     tempFeeRecord.save()
     res.status(201).json(1)
     return
@@ -238,6 +239,23 @@ const generateFeeForListOfStudents = async(req,res,next) => {
     }
 }
 
+const deleteFeeDetails = async(req,res,next) => {
+    const tempFee = await FeeDetail.findById(req.body.id)
+    const filter = {rollNumber : req.body.rollNumber}
+    const tempStudent = await Student.findOne(filter)
+    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord)
+    console.log(tempStudent)
+    console.log("In the Function")
+    console.log(tempFee)
+    console.log(tempFeeRecord)
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - tempFee.remainingFee;
+    tempFeeRecord.save();
+    const check = await FeeDetail.findByIdAndDelete(tempFee._id)
+    res.status(201).json(1)
+    return
+}
+
+exports.deleteFeeDetails = deleteFeeDetails
 exports.getStudentFeeRecord = getStudentFeeRecord;
 exports.markFeePaid = markFeePaid;
 exports.payFee = payFee;

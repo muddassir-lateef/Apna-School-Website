@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { useNavigate, useLocation } from "react-router-dom";
-import { getAllFeeDetailsFromStudentFeeRecord, markFeePaid } from "../../services/UserService";
+import { getAllFeeDetailsFromStudentFeeRecord, markFeePaid,deleteFeeDetails } from "../../services/UserService";
 
 const FeeRecordInfo = () => {
     const [rollNumber, setRollNumber] = useState(0)
@@ -27,9 +27,11 @@ const FeeRecordInfo = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [addModalOpen, setAddModalOpen] = useState(false);
+    const [delModalOpen, setDelModalOpen] = useState(false)
     const rollNo = location.state.param1;
     const fname = location.state.param2;
     const lname = location.state.param3
+    const [tempFeeId, setTempFeeId] = useState(0)
 
     useEffect(() => {
         setRollNumber(rollNo)
@@ -53,7 +55,7 @@ const FeeRecordInfo = () => {
                 console.log(response.data);
             }
         })
-    }, []);
+    }, [addModalOpen, delModalOpen]);
     const NameDisplay = () =>
     {
         return(
@@ -198,7 +200,7 @@ const FeeRecordInfo = () => {
               <ListItemText>
               <Stack direction="row" spacing={1}>
                 <Button variant="outlined"  onClick = {() => handleMarkPaidClick(fee._id)} > Mark Paid </Button>
-                <Button variant="outlined"> Delete Fee </Button>
+                <Button variant="outlined" onClick = {() => deleteFeeClick(fee._id)}> Delete Fee </Button>
                 <Button variant="outlined"> Pay Amount </Button>
                 </Stack>
               </ListItemText>
@@ -212,13 +214,47 @@ const FeeRecordInfo = () => {
           );
     
       }
+      const deleteFeeClick = (id) => {
+        console.log("here")
+        //console.log(id)
+        setDelModalOpen((isOpen) => !isOpen);
+        setTempFeeId(id)
+        //const check = deleteFeeDetails(rollNumber, id)
+      }
       const handleMarkPaidClick = (id) => {
-        console.log("In button handlerXD")
-        console.log(id)
-        console.log(rollNo)
-        console.log(rollNo)
+        setTempFeeId(id)
         setAddModalOpen((isOpen) => !isOpen);
-        const check = markFeePaid(rollNo, id)
+        //
+      }
+      const modalDeleteClick = () => {
+        console.log("Delete")
+        console.log(tempFeeId)
+        console.log(rollNo)
+        deleteFeeDetails(rollNumber, tempFeeId).then((response) => {
+            if(response.status === 201)
+            {
+                setDelModalOpen((isOpen) => !isOpen);
+            }
+            else {
+                setDelModalOpen((isOpen) => !isOpen);
+            }
+        })
+      }
+      const modalPaidClick = () => {
+        console.log("Paid")
+        console.log(tempFeeId)
+        console.log(rollNo)
+        
+        markFeePaid(rollNumber, tempFeeId).then((response) => {
+            if(response.status === 201)
+            {
+                setAddModalOpen((isOpen) => !isOpen);
+            }
+            else {
+                setAddModalOpen((isOpen) => !isOpen);
+            }
+        })
+        
       }
 
      const BackNavigationHandler = () => {
@@ -280,7 +316,49 @@ const FeeRecordInfo = () => {
                 >
                   Go Back
                 </Button>
-                <Button variant="outlined" color="success" >
+                <Button variant="outlined" color="success" onClick = {modalPaidClick} >
+                  Confirm
+                </Button>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
+      </Grid>
+      <Grid item xs={11}>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={delModalOpen}
+          onClose={setDelModalOpen}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={delModalOpen}>
+            <Box sx={style}>
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              </Box>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ mb: 2 }}
+              >
+                Are you sure you want to Delete this Fee?
+              </Typography>
+
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  onClick={() => setDelModalOpen((prevState) => !prevState)}
+                  variant="contained"
+                  component="label"
+                  sx={{ mr: 3 }}
+                >
+                  Go Back
+                </Button>
+                <Button variant="outlined" color="success" onClick =  {modalDeleteClick} >
                   Confirm
                 </Button>
               </Box>

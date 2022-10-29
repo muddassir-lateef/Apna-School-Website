@@ -75,5 +75,15 @@ router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeReco
 }
 */
 
+router.patch('/deleteFeeDetails', FeeRecordController.deleteFeeDetails)
+/*
+{
+    "rollNumber" : 220002,
+    "id" : Something
+}
+*/
+
 router.post('/generateFeeForListOfStudents', FeeRecordController.generateFeeForListOfStudents);
+
+
 module.exports = router;
