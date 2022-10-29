@@ -55,7 +55,7 @@ const StudentFeeRecord = () => {
     }
 
     const viewAllFeeClick = () => {
-      navigate("/students/feerecord/info", {
+      navigate("/Fee/FeeList", {
         state: { param1: rollNumber, param2 : firstName, param3 : lastName},
       })
 
