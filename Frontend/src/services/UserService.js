@@ -1,5 +1,5 @@
 import axios from "axios";
-let URL = "http://localhost:5000/";
+let URL = "http://192.168.10.88:5000/";
 
 export async function login(username, password) {
   let tempURL = URL + "login/verify/";
