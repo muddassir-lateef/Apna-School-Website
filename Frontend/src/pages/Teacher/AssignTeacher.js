@@ -19,6 +19,9 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
+
+//utility function
 const getClassAndSections = (classList) => {
     console.log("CLASSLIST: ", classList)
     const retList = []

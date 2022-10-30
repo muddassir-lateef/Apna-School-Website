@@ -95,7 +95,7 @@ const SearchTeacher = () => {
       teacherOptions.filter((option) => option.label !== teacherId)
     );
     let res = deleteTeacher(teacherId);
-    if (res.status === 202) console.log("Student was deleted successfully");
+    if (res.status === 202) console.log("Teacher was deleted successfully");
     else console.log(res);
   };
 

@@ -173,7 +173,7 @@ const AllExams = () => {
                             variant="contained"
                             component="label"
                             startIcon={<EditIcon />}
-                            onClick={() => console.log("Edit Clicked")}
+                            onClick={()=>{navigate(`/exams/uploadMarks/${item._id}`)}}
                             >
                             Mark
                             </Button>
