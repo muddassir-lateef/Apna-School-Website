@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 let Section = require('../models/section.model');
 let FeeRecord = require('../models/feeRecord.model')
+let StudentAttendance = require('../models/studentAttendance.model')
+
 const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
@@ -74,6 +76,10 @@ const studentSchema = new Schema({
   classYear : {
     type: Number,
   },
+  attendance: 
+  [{
+    type:Schema.Types.ObjectId ,ref:'StudentAttendance',  
+  }],
 
 }, {
   timestamps: true,

@@ -255,6 +255,14 @@ const deleteSection = async(req,res,next) => {
    return
 }
 
+const getAllStudentsInClass = async(req,res,next) => {
+    const class_query = {classYear :  req.params.classYear}
+    const student_list = await Student.find(class_query)
+    res.status(201).json(student_list)
+    return res
+}
+
+exports.getAllStudentsInClass = getAllStudentsInClass
 exports.deleteSection = deleteSection;
 exports.deleteClass = deleteClass;
 exports.assignTeacherToSection = assignTeacherToSection;

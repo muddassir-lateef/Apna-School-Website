@@ -24,7 +24,11 @@ router.patch('/deleteClass', classController.deleteClass)
    "classYear" : 7
 }
 */
-
+router.get('/getAllStudentsInClass/:classYear', classController.getAllStudentsInClass)
+/*
+URL
+/getAllStudentsInClass/7
+*/
 router.patch('/deleteSection', classController.deleteSection)
 /*
 {
