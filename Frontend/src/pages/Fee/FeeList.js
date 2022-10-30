@@ -35,7 +35,8 @@ const FeeRecordInfo = () => {
     const [tempFeeId, setTempFeeId] = useState(0)
     const [amount, setAmount] = useState(0)
     const [tempFeeAmount, setTempFeeAmount] = useState(0)
-
+    const [errorCheck, setErrorCheck] = useState(false)
+    const [remFee, setRemFee] = useState(0)
     
 
     useEffect(() => {
@@ -255,6 +256,7 @@ const FeeRecordInfo = () => {
         setTempFeeAmount(rem)
         console.log(tempFeeAmount)
         setTempFeeId(id)
+        setRemFee(rem)
         console.log(tempFeeId)
         setPayModalOpen((isOpen) => !isOpen);
     }
@@ -303,6 +305,12 @@ const FeeRecordInfo = () => {
         console.log(tempFeeId)
         console.log(rollNo)
         console.log(amount)
+        console.log(tempFeeAmount)
+        console.log(typeof amount)
+        if(amount > tempFeeAmount ) {
+          setErrorCheck(true)
+        }
+        else {
         payFee(rollNo,tempFeeId,amount).then((response) => {
             if(response.status === 201){
                 setPayModalOpen((isOpen) => !isOpen);
@@ -312,6 +320,7 @@ const FeeRecordInfo = () => {
             }
          
     })
+  }
 }
 
     const BackNavigationHandler = () => {
@@ -328,7 +337,7 @@ const FeeRecordInfo = () => {
     }
     const handleAmountChange = event => {
         setAmount(event.target.value);
-    
+
         console.log('value is:', event.target.value);
       };
     const style = {
@@ -450,16 +459,20 @@ const FeeRecordInfo = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                Enter Amount to pay
+                                Enter The Amount To Pay
                             </Typography>
                             <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
-                                remainingFee Amount : {tempFeeAmount}
+                                Remaining Amount : {tempFeeAmount}
                             </Typography>
                             <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
                             <Input
+                             id="outlined-error-helper-text"
+                             label="Error"
+                             error = {errorCheck}
                                  variant = "outlined"
                                  placeholder = "Amount"
                                  onChange={handleAmountChange}
+                                 helpertext="Incorrect entry."
                                 >
                                 Hey
                                 </Input>

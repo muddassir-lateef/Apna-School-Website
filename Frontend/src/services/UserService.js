@@ -1,5 +1,5 @@
 import axios from "axios";
-let URL = "http://192.168.10.88:5000/";
+let URL = "http://localhost:5000/";
 
 export async function login(username, password) {
   let tempURL = URL + "login/verify/";
@@ -448,9 +448,8 @@ console.log("in")
 export async function markFeePaid(rollNumber, id) {
   console.log("In user service function")
   console.log(id)
-  console.log(rollNumber)
   let tempURL = URL + 'feeRecord/markFeePaid';
-  const response = await axios.patch(tempURL, {rollNumber, id})
+  const response = await axios.patch(tempURL, {rollNumber,id})
   if(response.status === 201 )
   {
       return 1
@@ -458,24 +457,8 @@ export async function markFeePaid(rollNumber, id) {
   else {
     return -1
   }
+ 
 }
-
-export async function deleteFeeDetails(rollNumber, id) {
-  console.log("In the delete service")
-  console.log(rollNumber)
-  console.log(id)
-  let tempURL = URL + 'feeRecord/deleteFeeDetails'
-  const response = await axios.patch(tempURL, {rollNumber, id})
-  if (response.status === 201)
-  {
-    return 1
-  }
-  else {
-    return -1
-  }
-  
-}
-
 export async function payFee(rollNumber, id, amount) {
   console.log("In the service")
   console.log(id + " " + rollNumber+ " " + amount)
@@ -493,5 +476,18 @@ export async function payFee(rollNumber, id, amount) {
     return -1
   }
 }
- 
+export async function deleteFeeDetails(rollNumber, id) {
+  console.log("In the delete service")
+  console.log(rollNumber)
+  console.log(id)
+  let tempURL = URL + 'feeRecord/deleteFeeDetails'
+  const response = await axios.patch(tempURL, {rollNumber, id})
+  if (response.status === 201)
+  {
+    return 1
+  }
+  else {
+    return -1
+  }
+}
 
