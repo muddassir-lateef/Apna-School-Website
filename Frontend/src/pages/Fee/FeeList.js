@@ -8,7 +8,7 @@ import SearchBox from "../../components/SearchBox";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ListItemText from '@mui/material/ListItemText';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
-import { Button, Grid, Backdrop, Modal, Fade, Box } from '@mui/material'
+import { Button, Grid, Backdrop, Modal, Fade, Box, getInitColorSchemeScript } from '@mui/material'
 import Stack from '@mui/material/Stack';
 import PaidIcon from '@mui/icons-material/Paid';
 import Typography from '@mui/material/Typography';
@@ -55,11 +55,12 @@ const FeeRecordInfo = () => {
                 console.log(response.data);
             }
         })
+        feeList.sort(function(a, b){return b.remainingFee - a.remainingFee})
     }, [addModalOpen, delModalOpen]);
     const NameDisplay = () =>
     {
         return(
-            <Paper variant = "outlined">
+            <Paper variant = "contained">
                 <Typography variant="h6" gutterBottom>
                 Name : {firstName + "  " + lastName}
                 </Typography>
@@ -71,6 +72,24 @@ const FeeRecordInfo = () => {
         )
     }
 
+    const ColorPicker = (value) => {
+        console.log(value)
+        let colorT = "";
+        let Text = ""
+        if (value.Type === 0) {
+            colorT = "success"
+            Text = "PAID"
+        }
+        else {
+            colorT = "error"
+            Text = "UNPAID"
+        }
+        return (
+            <Button variant = "contained" color = {colorT} onClick = {() => console.log("Hello")}>
+                {Text}
+            </Button>
+        )
+    }
 
     const handleModalClose = () => {
         setModalOpen((isOpen) => !isOpen);
@@ -104,6 +123,20 @@ const FeeRecordInfo = () => {
                       color="text.primary"
                     >
                       Fee Generation Date: {fee.createdAt}
+                    </Typography>
+                 
+                }
+                />
+                 <ListItemText
+                secondary={
+                  
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      Fee ID: {fee._id}
                     </Typography>
                  
                 }
@@ -202,6 +235,7 @@ const FeeRecordInfo = () => {
                 <Button variant="outlined"  onClick = {() => handleMarkPaidClick(fee._id)} > Mark Paid </Button>
                 <Button variant="outlined" onClick = {() => deleteFeeClick(fee._id)}> Delete Fee </Button>
                 <Button variant="outlined"> Pay Amount </Button>
+                <ColorPicker Type = {fee.remainingFee}/>
                 </Stack>
               </ListItemText>
                 
@@ -368,6 +402,9 @@ const FeeRecordInfo = () => {
       </Grid>
         <Grid item>
         <NameDisplay/>
+        </Grid>
+        <Grid item xs={12} textAlign="right">
+        <BackButton/>
         </Grid>
         <Grid item>
         <FeeDisplay/>
