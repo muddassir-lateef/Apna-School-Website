@@ -475,5 +475,23 @@ export async function deleteFeeDetails(rollNumber, id) {
   }
   
 }
+
+export async function payFee(rollNumber, id, amount) {
+  console.log("In the service")
+  console.log(id + " " + rollNumber+ " " + amount)
+  console.log(typeof amount)
+  console.log(typeof id)
+  console.log(typeof "hey")
+  let tempURL = URL + 'feeRecord/payFee'
+  const response = await axios.patch(tempURL, {rollNumber, id, amount})
+  if(response.status === 201)
+  {
+    return 1
+  }
+  else 
+  {
+    return -1
+  }
+}
  
 

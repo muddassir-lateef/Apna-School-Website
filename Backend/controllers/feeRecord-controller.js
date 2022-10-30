@@ -58,36 +58,23 @@ const getAllFeeDetailsFromStudentFeeRecord = async (req, res, next) => {
     };
 
 const payFee = async (req, res, next) => {
+    const id = req.body.id;
+    const amount = req.body.amount;
+    const filter = {rollNumber : req.body.rollNumber}
+    console.log(id + " is ID " +  amount + " isAmount " + req.body.rollNumber)
+    const Fee = await FeeDetail.findById(id);
+    const tempStudent = await Student.findOne(filter)
+    console.log(tempStudent)
+    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord)
+    console.log(tempFeeRecord)
+     Fee.paidFee = Fee.paidFee + Number(amount);
 
-    const feeMonth = req.body.feeMonth;
-    const feeYear = req.body.feeYear;
-    const paidAmount = req.body.paidAmount;
-    console.log("Hit")
-    //Finding the student with the rollNumber passed in the request body
-    const student_query = { rollNumber: req.body.rollNumber };
-    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-    console.log("Student FOund")
-    //Finding the FeeRecord in the student by the student found
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
-    console.log("fee Record Found")
-    //Looping through the feeRecord to find the desired Fee
-    for (let i = 0; i < tempFeeRecord.feeList.length; i++) {
-        console.log("Fee FOund")
-        if (tempFeeRecord.feeList[i].feeYear === feeYear) {
-            if (tempFeeRecord.feeList[i].feeMonth == feeMonth) {
-                console.log("Hello")
-                tempFeeRecord.feeList[i].remainingFee = tempFeeRecord.feeList[i].remainingFee - paidAmount;
-                tempFeeRecord.feeList[i].paidFee = tempFeeRecord.feeList[i].paidFee + paidAmount;
-                tempFeeRecord.feeList[i].save();
-                tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - paidAmount;
-                tempFeeRecord.save();
-                res.status(201).json(tempFeeRecord.feeList[i]);
-                return
-            }
-        }
-    }
-    res.status(401);
-    return;
+    Fee.save()
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees - Number(amount)
+    Fee.remainingFee = Fee.remainingFee - Number(amount);
+    tempFeeRecord.save()
+    res.status(201).json(1)
+    return
 }
 const markFeePaid = async (req, res, next) => {
     const rollNumber = req.body.rollNumber;
