@@ -85,6 +85,14 @@ export async function getAllStudents() {
   }
 }
 
+export async function getAllStudentsInClass(classYear) {
+  let tempURL = URL + "class/getAllStudentsInClass/"; // 'http://localhost:5000/class/getAllStudentsInClass/:classYear'
+  tempURL = tempURL + classYear;
+  console.log(tempURL);
+  const response = await axios.get(tempURL);
+  return response;
+}
+
 
 export async function addNewTeacher(firstName, lastName, age, username, image) {
   let tempURL = URL + "teacher/addNew";
