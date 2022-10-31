@@ -92,6 +92,7 @@ const getAllLogin = async (req, res, next) => {
     }
   };
   const verifyLogin = async (req, res, next) => {
+    console.log("here")
     try {
       const user=req.body.username;
       const pass=req.body.password;
