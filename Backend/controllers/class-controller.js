@@ -256,10 +256,17 @@ const deleteSection = async(req,res,next) => {
 }
 
 const getAllStudentsInClass = async(req,res,next) => {
-    const class_query = {classYear :  req.params.classYear}
-    const student_list = await Student.find(class_query)
-    res.status(201).json(student_list)
-    return res
+    if (req.params.classYear !==  null){
+        const class_query = {classYear :  req.params.classYear}
+        const student_list = await Student.find(class_query)
+        if (Array.isArray(student_list) && student_list.length > 0)
+            return res.status(201).json(student_list)
+        else 
+            return res.status(404).json({message: "No students were found"})
+    }
+    else {
+        return res.status(400).json({message: "Invalid request"})
+    }
 }
 
 exports.getAllStudentsInClass = getAllStudentsInClass
