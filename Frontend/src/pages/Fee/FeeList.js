@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import List from '@mui/material/List';
 import Paper from '@mui/material/Paper';
 import ListItem from '@mui/material/ListItem';
+import { VALIDATOR_MIN, VALIDATOR_MINLENGTH } from "../../services/validators";
 import Divider from '@mui/material/Divider';
 import SearchBox from "../../components/SearchBox";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -33,7 +34,7 @@ const FeeRecordInfo = () => {
     const fname = location.state.param2;
     const lname = location.state.param3
     const [tempFeeId, setTempFeeId] = useState(0)
-    const [amount, setAmount] = useState(0)
+    const [amount, setAmount] = useState("")
     const [tempFeeAmount, setTempFeeAmount] = useState(0)
     const [errorCheck, setErrorCheck] = useState(false)
     const [remFee, setRemFee] = useState(0)
@@ -241,7 +242,6 @@ const FeeRecordInfo = () => {
                                     <ColorPicker Type={fee.remainingFee} />
                                 </Stack>
                             </ListItemText>
-
                             <Divider />
                             <Divider />
                             <Divider />
@@ -253,6 +253,7 @@ const FeeRecordInfo = () => {
     }
     const payAmountClicked = (id, rem) => {
         //console.log(id)
+        setErrorCheck(false)
         setTempFeeAmount(rem)
         console.log(tempFeeAmount)
         setTempFeeId(id)
@@ -336,7 +337,9 @@ const FeeRecordInfo = () => {
         )
     }
     const handleAmountChange = event => {
-        setAmount(event.target.value);
+      const result = event.target.value.replace(/\D/g, '');
+      console.log("ha")
+        setAmount(result);
 
         console.log('value is:', event.target.value);
       };
@@ -469,6 +472,7 @@ const FeeRecordInfo = () => {
                              id="outlined-error-helper-text"
                              label="Error"
                              error = {errorCheck}
+                             value={amount}
                                  variant = "outlined"
                                  placeholder = "Amount"
                                  onChange={handleAmountChange}
