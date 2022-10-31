@@ -95,6 +95,24 @@ const FeeRecordInfo = () => {
         )
     }
 
+    const FeeGenDate = (value) => {
+        var d = new Date(value.Type);
+        //console.log("Created at: ", teacher.createdAt)
+        var date = d.getDate();
+        var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+        var year = d.getFullYear();
+        var newDate = date + "/" + month + "/" + year;
+        return (
+            <Typography
+            sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary">
+                Generation Date: {newDate}
+            </Typography>
+        )
+    }
+
     const handleModalClose = () => {
         setModalOpen((isOpen) => !isOpen);
     };
@@ -120,14 +138,7 @@ const FeeRecordInfo = () => {
                             <ListItemText
                                 secondary={
 
-                                    <Typography
-                                        sx={{ display: 'inline' }}
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
-                                    >
-                                        Fee Generation Date: {fee.createdAt}
-                                    </Typography>
+                                    <FeeGenDate Type={fee.createdAt} />
 
                                 }
                             />
@@ -227,7 +238,7 @@ const FeeRecordInfo = () => {
                                         variant="body2"
                                         color="text.primary"
                                     >
-                                        remainingFee:   {fee.remainingFee}
+                                        Remaining Fee:   {fee.remainingFee}
                                     </Typography>
 
                                 }
