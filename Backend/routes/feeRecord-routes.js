@@ -68,10 +68,11 @@ FOR CLEARING DATABASE
 router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeRecord)
 /*
 {
-    "securityFee": 5
-    "tutionFee": 5
-    "scholarshipAmount": 5
-    "rollNumber": 66
+    "securityFee": 5,
+    "tutionFee": 5,
+    "scholarshipAmount": 5,
+    "otherFee" : 5,
+    "id" : SomeID
 }
 */
 

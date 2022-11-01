@@ -149,21 +149,15 @@ const updateStudentFeeRecord = async (req, res, next) => {
     const scholarshipAmount = req.body.scholarshipAmount;
     const otherFee = req.body.otherFee;
 
-
-    const student_query = { rollNumber: req.body.rollNumber };
-    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList')
-
+    const tempFeeRecord = await FeeRecord.findById(req.body.id)
     tempFeeRecord.securityFee = securityFee;
     tempFeeRecord.tuitionFee = tuitionFee;
-    tempFeeRecord.scholarshipAmount = scholarshipAmount;
+    tempFeeRecord.scholarshipAmount = scholarshipAmount
     tempFeeRecord.otherFee = otherFee;
-    tempFeeRecord.totalFee = securityFee + tuitionFee;
+    tempFeeRecord.totalFee = Number(securityFee) + Number(tuitionFee) + Number(scholarshipAmount) + Number(otherFee)
     tempFeeRecord.save()
-        .then(() => res.status(201).json({ message: "Fee Record Updates" }))
-        .catch((err) => res.status(401).json("Error: " + err));
-    return;
+    res.status(201).json(1)
+    return
 
 
 }

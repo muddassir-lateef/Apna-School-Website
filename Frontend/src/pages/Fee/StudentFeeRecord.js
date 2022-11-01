@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
-import { Button, Input } from '@mui/material'
+import { Button, Input, Grid } from '@mui/material'
 import Stack from '@mui/material/Stack';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -27,11 +27,13 @@ const StudentFeeRecord = () => {
     const [lastName, setLastName] = useState("");
     const location = useLocation();
     const [edit, setEdit] = useState(true)
-    const [tuFee, setTuFee] = useState()
-    const [secFee, setSecFee] = useState()
-    const [otFee, setOtFee] = useState()
-    const [scFee, setScFee] = useState()
-    
+    const [tuFee, setTuFee] = useState("")
+    const [secFee, setSecFee] = useState("")
+    const [otFee, setOtFee] = useState("")
+    const [scFee, setScFee] = useState("")
+    const [undo, setUndo] = useState(true)
+    const [tempFeeId, setTempFeeId] = useState("");
+    const [flag, setFlag] = useState(true)
     const rollNo = location.state.param1;
     const fname = location.state.param2;
     const lname = location.state.param3;
@@ -44,23 +46,23 @@ const StudentFeeRecord = () => {
         getStudentFeeRecord(rollNo).then((response) => {
             if (response.status === 201) {
                 console.log(response.data);
-                console.log("Sections Found")
-                setFeeRecord(response.data);
-                setTuFee(feeRecord.tuitionFee)
-                setOtFee(feeRecord.otherFee)
-                setSecFee(feeRecord.securityFee)
+                console.log("Sections Found") 
                 console.log(feeRecord.tuitionFee)
-                setScFee(feeRecord.scholarshipAmount)
                 console.log("Attempt ")
                 console.log(scFee)
-                
+                setTempFeeId(feeRecord._id)
+                setFeeRecord(response.data)
+                setTuFee("")
+                setSecFee("")
+                setScFee("")
+                setOtFee("")
             }
             else if (response.status === -1) {
                 alert("Sections not Found");
                 console.log(response.data);
             }
         })
-    }, []);
+    }, [flag]);
 
     const handleGoBackClick = () => {
       let url = `/Fee/ViewFees`;
@@ -74,105 +76,124 @@ const StudentFeeRecord = () => {
 
     }
 
-    const handleAmountChange = event => {
-      const result = event.target.value.replace(/\D/g, '');
-      //setTuFee(result)
-      console.log(tuFee)
-        console.log(result)
-      };
-    const FeeRecordDisplay = () => {
+    const onSaveClicked = () => {
+      console.log("The Fees")
+      console.log(tuFee + " " + scFee + " " + otFee + " " + secFee + " " + tempFeeId)
+      setEdit(true)
+      setFlag((isOpen) => !isOpen)
+    }
+    const OnEditClicked = (value) => {
+      if(value.type === false)
+      {
+        setUndo(false)
+        return (
+          <Button variant = "contained" onClick = {onSaveClicked}>
+            Save
+          </Button>
+        )
+      }
+      if(value.type === true)
+      {
+        setUndo(true)
+        return (
+          <Button variant = "outlined" onClick = {() => setEdit(false)}>
+            Edit
+          </Button>
+        )
+      }
+    }
+
+    const undoClicked = () => {
+      setUndo(true)
+      setEdit(true)
+    }
       
           return ( 
             <Paper variant="outlined" square>
-              <List sx={{ width: '100%', maxWidth: 500, bgcolor: '#0000' }}>
-                <ListItem>
-                  <AppBar>
-                  <Typography>
+              <List sx={{ width: '100%', maxWidth: 500, bgcolor: '#0000' }} justifyContent="space-between">
+                <ListItem textAlign = "right">
+                  <Typography variant = "h6" gutterBottom>
                     Fee Record
                   </Typography>
-                  Hello
-                  </AppBar>
                 </ListItem>
+                <Grid container display="flex" justifyContent="space-between">
+                <OnEditClicked type = {edit}/> 
+                    <Button disabled = {undo} variant = "outlined" onClick = {undoClicked}>
+                      UNDO
+                    </Button>                 
+                 </Grid>      
+                <Divider/>
+                <Divider>
+                </Divider>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
-                  Name : 
-                  <Input disabled = {true} value = {"  " + firstName + ' ' + lastName}/>      
+                  Name : {"  " + firstName + ' ' + lastName}   
                 </Typography>
                 </ListItem>
                 <Divider/>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
-                  Roll Number : 
-                <Input   disabled = {true} label="Roll Number" value = { rollNumber}/>
-                </Typography>
-                 
+                  Roll Number : {rollNumber}
+                </Typography>   
                 </ListItem>
                 <Divider/>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Tuition Fee : 
-                  <Input  disabled = {false} placeholder = {feeRecord.tuitionFee} label="Multiline" onChange = {handleAmountChange} />
+                  <Input  disabled = {edit} value = {tuFee} placeholder = { feeRecord.tuitionFee} label="Multiline" onChange = {() => setTuFee(event.target.value.replace(/\D/g, ''))} />
                 </Typography>
                 </ListItem>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Security Fee : 
-                  <Input disabled = {edit} placeholder = { feeRecord.securityFee}/>      
+                  <Input disabled = {edit} value = {secFee} placeholder = { feeRecord.securityFee} onChange = {() => setSecFee(event.target.value.replace(/\D/g, ''))}/>      
                 </Typography>
                 </ListItem>
                 </List>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Other Fee(s) : 
-                  <Input disabled = {edit} placeholder = { feeRecord.otherFee}/>      
+                  <Input disabled = {edit} value = {otFee} placeholder = { feeRecord.otherFee} onChange = {() => setOtFee(event.target.value.replace(/\D/g, ''))}/>      
                 </Typography>
                 </ListItem>
-                <ListItem>
-                <Typography variant="h6" gutterBottom>
-                  Monthly Total Fee : 
-                  <Input  disabled = {edit} placeholder = { feeRecord.totalFee}/>      
-                </Typography>
-                </ListItem>
-                <Divider/>
-                <Divider/>
-                <Divider/>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Scholarship Amount : 
-                  <Input disabled = {edit} placeholder = { feeRecord.scholarshipAmount}/>      
+                  <Input disabled = {edit} placeholder = { feeRecord.scholarshipAmount} onChange = {() => setScFee(event.target.value.replace(/\D/g, ''))}/>      
                 </Typography>
                 </ListItem>
+                <Divider/>
+                <Divider/>
+                <Divider/>
+               
+                <ListItem>
+                <Typography variant="h6" gutterBottom>
+                  Monthly Total Fee : {feeRecord.totalFee}
+                </Typography>
+                </ListItem>
+                <Divider/>
+                <Divider/>
+                <Divider/>
+               
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                 Total Outstanding Fee : {feeRecord.outStandingFees}
                 </Typography>
                 </ListItem>
-                <ListItem>
-
-                  
-                  <Button variant = "outlined" onClick = {viewAllFeeClick}>
+                <Grid container display="flex" justifyContent="space-between">
+                <Button variant = "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>
+                    Back
+                  </Button>
+                <Button variant = "outlined" onClick = {viewAllFeeClick}>
                     View All Fees
                   </Button>
-                  <Button variant = "outlined" align = "right">
-                    Edit Fee Record
-                  </Button>
-                    <Button variant = "outlined" > Edit </Button>
-                    
-                  <Button variant = "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>
-                    Back
-                  </Button> 
-                </ListItem>
+                   
+                 </Grid>
                 </Paper>
               
 
           )
-    
-      }
 
-    return (
-        <FeeRecordDisplay/>
-
-    );
 };
 
 export default StudentFeeRecord;
