@@ -18,7 +18,7 @@ import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { useNavigate, useLocation } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
-import { getAllFeeDetailsFromStudentFeeRecord, getStudentFeeRecord } from "../../services/UserService";
+import { getAllFeeDetailsFromStudentFeeRecord, getStudentFeeRecord, editFeeRecord } from "../../services/UserService";
 
 const StudentFeeRecord = () => {
     const [rollNumber, setRollNumber] = useState(0)
@@ -52,10 +52,10 @@ const StudentFeeRecord = () => {
                 console.log(scFee)
                 setTempFeeId(feeRecord._id)
                 setFeeRecord(response.data)
-                setTuFee("")
-                setSecFee("")
-                setScFee("")
-                setOtFee("")
+                setTuFee(response.data.tuitionFee)
+                setSecFee(response.data.securityFee)
+                setScFee(response.data.scholarshipAmount)
+                setOtFee(response.data.otherFee)
             }
             else if (response.status === -1) {
                 alert("Sections not Found");
@@ -81,6 +81,16 @@ const StudentFeeRecord = () => {
       console.log(tuFee + " " + scFee + " " + otFee + " " + secFee + " " + tempFeeId)
       setEdit(true)
       setFlag((isOpen) => !isOpen)
+      editFeeRecord(tuFee, secFee, scFee, otFee, feeRecord._id).then((response) => {
+        if(response == 1)
+        {
+          setFlag((isOpen) => !isOpen)
+        }
+        else {
+          setFlag((isOpen) => !isOpen)
+        }
+      })
+      
     }
     const OnEditClicked = (value) => {
       if(value.type === false)
@@ -104,8 +114,7 @@ const StudentFeeRecord = () => {
     }
 
     const undoClicked = () => {
-      setUndo(true)
-      setEdit(true)
+      setFlag((isOpen) => !isOpen)
     }
       
           return ( 
@@ -140,26 +149,26 @@ const StudentFeeRecord = () => {
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Tuition Fee : 
-                  <Input  disabled = {edit} value = {tuFee} placeholder = { feeRecord.tuitionFee} label="Multiline" onChange = {() => setTuFee(event.target.value.replace(/\D/g, ''))} />
+                  <Input  disabled = {edit} value = {tuFee} placeholder = {String(feeRecord.tuitionFee)} label="Multiline" onChange = {() => setTuFee(event.target.value.replace(/\D/g, ''))} />
                 </Typography>
                 </ListItem>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Security Fee : 
-                  <Input disabled = {edit} value = {secFee} placeholder = { feeRecord.securityFee} onChange = {() => setSecFee(event.target.value.replace(/\D/g, ''))}/>      
+                  <Input disabled = {edit} value = {secFee} placeholder = {String(feeRecord.securityFee)} onChange = {() => setSecFee(event.target.value.replace(/\D/g, ''))}/>      
                 </Typography>
                 </ListItem>
                 </List>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Other Fee(s) : 
-                  <Input disabled = {edit} value = {otFee} placeholder = { feeRecord.otherFee} onChange = {() => setOtFee(event.target.value.replace(/\D/g, ''))}/>      
+                  <Input disabled = {edit} value = {otFee} placeholder = {String(feeRecord.otherFee)} onChange = {() => setOtFee(event.target.value.replace(/\D/g, ''))}/>      
                 </Typography>
                 </ListItem>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>
                   Scholarship Amount : 
-                  <Input disabled = {edit} placeholder = { feeRecord.scholarshipAmount} onChange = {() => setScFee(event.target.value.replace(/\D/g, ''))}/>      
+                  <Input disabled = {edit} value = {scFee} placeholder = {String(feeRecord.scholarshipAmount)} onChange = {() => setScFee(event.target.value.replace(/\D/g, ''))}/>      
                 </Typography>
                 </ListItem>
                 <Divider/>

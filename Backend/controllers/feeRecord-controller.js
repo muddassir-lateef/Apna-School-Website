@@ -143,11 +143,11 @@ const generateStudentFee = async (req, res, next) => {
 }
 
 const updateStudentFeeRecord = async (req, res, next) => {
-
-    const securityFee = req.body.securityFee;
-    const tuitionFee = req.body.tuitionFee;
-    const scholarshipAmount = req.body.scholarshipAmount;
-    const otherFee = req.body.otherFee;
+    console.log("here")
+    const securityFee = Number(req.body.securityFee);
+    const tuitionFee =Number(req.body.tuitionFee);
+    const scholarshipAmount = Number(req.body.scholarshipAmount);
+    const otherFee = Number(req.body.otherFee);
 
     const tempFeeRecord = await FeeRecord.findById(req.body.id)
     tempFeeRecord.securityFee = securityFee;
@@ -156,6 +156,7 @@ const updateStudentFeeRecord = async (req, res, next) => {
     tempFeeRecord.otherFee = otherFee;
     tempFeeRecord.totalFee = Number(securityFee) + Number(tuitionFee) + Number(scholarshipAmount) + Number(otherFee)
     tempFeeRecord.save()
+    console.log(tempFeeRecord)
     res.status(201).json(1)
     return
 
