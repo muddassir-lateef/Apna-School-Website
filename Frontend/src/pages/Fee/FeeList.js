@@ -112,6 +112,23 @@ const FeeRecordInfo = () => {
             </Typography>
         )
     }
+    const FeeDueDate = (value) => {
+        var d = new Date(value.Type);
+        //console.log("Created at: ", teacher.createdAt)
+        var date = d.getDate();
+        var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+        var year = d.getFullYear();
+        var newDate = date + "/" + month + "/" + year;
+        return (
+            <Typography
+            sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary">
+                Due Date: {newDate}
+            </Typography>
+        )
+    }
 
     const handleModalClose = () => {
         setModalOpen((isOpen) => !isOpen);
@@ -139,6 +156,13 @@ const FeeRecordInfo = () => {
                                 secondary={
 
                                     <FeeGenDate Type={fee.createdAt} />
+
+                                }
+                            />
+                            <ListItemText
+                                secondary={
+
+                                    <FeeDueDate Type={fee.date} />
 
                                 }
                             />

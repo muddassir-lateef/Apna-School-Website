@@ -19,46 +19,28 @@ export default function AddNewFees() {
 }
 
   return (
-    <Card  sx={{ width: "90%", maxWidth: "900px" }}>
-        <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-evenly",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-
-                        p: 1,
-                    }}
-                >
+    <Grid justifyContent="center" display="flex" flex-direction="row">
+    <Card sx={{ width: "90%", maxWidth: "900px" }}>
+     
                   <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Button  sx={{ pb: 2, flex: "100%" }} variant  = "outlined">
+     
+     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant  = "outlined">
       Student
      </Button>
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Button  sx={{ pb: 2, flex: "100%" }} variant = "outlined" onClick = {ClassFeeClicked}>
+    
+     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%'}} variant = "outlined" onClick = {ClassFeeClicked}>
       Class
      </Button>
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Button  sx={{ pb: 2, flex: "100%" }} variant = "outlined">
+    
+     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant = "outlined">
       Section
      </Button>
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Divider variant="middle" />
-     <Button  sx={{ pb: 2, flex: "100%" }} variant = "outlined">
+     
+     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%'}}variant = "outlined">
       All
      </Button>
-      </Box>
-      </Card>
+    </Card>
+    </Grid>
+      
   );
 }

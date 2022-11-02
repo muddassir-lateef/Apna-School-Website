@@ -5,6 +5,7 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { Typography, Card, Grid, Box, Avatar, Snackbar, TextField, Select, InputLabel, MenuItem, Button, FormControl } from "@mui/material";
 import { VALIDATOR_MINLENGTH } from "../../services/validators";
 import Input from "../../components/Input";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { addNewExam, getAllClasses, generateFeeForListOfStudents } from "../../services/UserService";
 import SendIcon from "@mui/icons-material/Send";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -22,25 +23,8 @@ const AddNewFeeForClass= () => {
     const [snackOpen, setSnackOpen] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(0);
     const [examDate, setExamDate] = useState(new Date);
-    const [formState, InputHandler] = useForm(
-        {
-            subject: {
-                value: "",
-                isValid: false,
-            },
-            totalMarks: {
-                value: 0,
-                isValid: false,
-            },
-            venue: {
-                value: "",
-                isValid: false,
-            },
-
-
-        },
-        false
-    );
+    const [dateCheck, setDateCheck] = useState(true)
+    const [classCheck, setClassCheck] = useState(true)
 
     useEffect(() => {
         getAllClasses()
@@ -65,8 +49,11 @@ const AddNewFeeForClass= () => {
     const handleDateChange = (newDate) => {
         setExamDate(newDate);
         console.log("New Date: ", newDate)
+        setDateCheck(false)
     }
     const StatusAlert = () => {
+        console.log("Alert check")
+        console.log(submitStatus)
         if (submitStatus === -1)
             return (
                 <Alert
@@ -74,7 +61,7 @@ const AddNewFeeForClass= () => {
                     severity="error"
                     sx={{ width: "100%" }}
                 >
-                    Exam was not added!
+                    Fee was not Generated!
                 </Alert>
             );
         if (submitStatus === 1)
@@ -84,7 +71,7 @@ const AddNewFeeForClass= () => {
                     severity="success"
                     sx={{ width: "100%" }}
                 >
-                    Exam Added Successfully!
+                    Fee Generated Successfully!
                 </Alert>
             );
     };
@@ -92,6 +79,7 @@ const AddNewFeeForClass= () => {
     const handleClassChange = (event) => {
         setSelectedClass(event.target.value);
         console.log(event.target.value)
+        setClassCheck(false)
     };
 
     const onSubmitHandler = async () => {
@@ -101,6 +89,13 @@ const AddNewFeeForClass= () => {
         console.log(examDate.$d)
         generateFeeForListOfStudents(selectedClass, examDate.$d).then((res) =>{
             console.log(res)
+            if(res === 1)
+            {
+                setSnackOpen(true)
+                console.log("Success x2")
+                setSubmitStatus(1)
+            }
+            setSnackOpen(true)
         }
         )
     }
@@ -140,7 +135,7 @@ const AddNewFeeForClass= () => {
                     }}
                 >  <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
-                    label="Exam Date"
+                    label="Due Date"
                     inputFormat="DD/MM/YYYY"
                     value={examDate}
                     onChange={handleDateChange}
@@ -175,7 +170,7 @@ const AddNewFeeForClass= () => {
                             variant="contained"
                             endIcon={<SendIcon />}
                             fullWidth sx={{ mb: 2 }}
-                            
+                            disabled = {classCheck}
                         >
                             
                             Generate Normal Chalan
@@ -185,12 +180,12 @@ const AddNewFeeForClass= () => {
                             variant="contained"
                             endIcon={<SendIcon />}
                             fullWidth sx={{ mb: 2 }}
-                            
+                            disabled = {classCheck}
                         >
                             
                             Generate New Challan
                         </Button>
-                        <Button  onClick = {BackButtonClicked}  fullWidth sx={{ mb: 2 }} variant = "outlined">
+                        <Button  startIcon={<ArrowBackIcon />} onClick = {BackButtonClicked}  fullWidth sx={{ mb: 2 }} variant = "outlined">
                             Back
                         </Button>
                     </Grid>

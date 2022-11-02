@@ -519,6 +519,7 @@ export async function generateFeeForListOfStudents(classYear, date) {
   const response = await axios.post(tempURL, {classYear, date})
   if(response.status === 201)
   {
+    console.log("Success")
     return 1
   }
   else {
