@@ -500,19 +500,23 @@ export async function deleteFeeDetails(rollNumber, id) {
 }
 
 export async function editFeeRecord(tuitionFee, securityFee, scholarshipAmount, otherFee, id) {
-  console.log("In the service")
-  console.log("tu")
-  console.log(tuitionFee)
-  console.log("sec")
-  console.log(securityFee)
-  console.log("schol")
-  console.log(scholarshipAmount)
-  console.log("other")
-  console.log(otherFee)
-  console.log("id")
-  console.log(id)
   let tempURL = URL + 'feeRecord/updateStudentFeeRecord'
   const response = await axios.patch(tempURL, {tuitionFee, securityFee, otherFee, scholarshipAmount, id})
+  if(response.status === 201)
+  {
+    return 1
+  }
+  else {
+    return -1
+  }
+}
+
+export async function generateFeeForListOfStudents(classYear, date) {
+  let tempURL = URL + 'feeRecord/generateFeeForListOfStudents';
+  console.log("In the service")
+  console.log(classYear)
+  console.log(date)
+  const response = await axios.post(tempURL, {classYear, date})
   if(response.status === 201)
   {
     return 1

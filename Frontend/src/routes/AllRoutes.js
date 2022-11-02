@@ -23,6 +23,7 @@ import AddNewFees from "../pages/Fee/AddNewFees";
 import ExamInfo from "../pages/Exams/ExamInfo";
 import FeeList from "../pages/Fee/FeeList";
 import UploadMarks from "../pages/Exams/UploadMarks";
+import NewFeeForClass from "../pages/Fee/NewFeeForClass";
 export const LoggedOutRoutes = () => {
   let routes;
   
@@ -62,6 +63,7 @@ export const LoggedInRoutes = () => {
         <Route path ="/Fee/ViewFees" element = {<ViewFees/>} />
         <Route path ="/Fee/AddNewFees" element = {<AddNewFees/>} />
         <Route path = "Fee/FeeList" element = {<FeeList/>} />
+        <Route path = "Fee/Add/NewFeeForClass" element = {<NewFeeForClass/>} />
         
         </Routes>
     );

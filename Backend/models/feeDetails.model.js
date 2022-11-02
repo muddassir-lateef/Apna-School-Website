@@ -4,15 +4,9 @@ const Schema = mongoose.Schema;
 
 const feeDetailsSchema = new Schema({
   //The month of the fee
-  feeYear: {
-    type : Number,
-    required : true
-  },
-
-  feeMonth:{
-    type: Number,
-    required: true,
-    //testing
+  date:{
+    type: Date,
+    required: false
   },
   //Sum of all individual fees
   totalFee: {
