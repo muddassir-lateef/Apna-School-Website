@@ -55,6 +55,7 @@ router.delete('/deleteStudent/:rollNumber', StudentController.deleteStudent);
 
 router.post('/test', StudentController.dateTest)
 
+router.patch('/getStudentsForFee', StudentController.getStudentsForFee)
 
 
 module.exports = router;

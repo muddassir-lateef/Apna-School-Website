@@ -269,6 +269,25 @@ const getAllStudentsInClass = async(req,res,next) => {
     }
 }
 
+const getAllSectionsInClassByClassYear = async(req,res,next) => {
+    const class_query = {classYear : req.params.classYear}
+    const sectionList = await Section.find(class_query)
+    if(sectionList.length !== 0)
+    {
+    console.log("Not null" )
+    res.status(201).json(sectionList)
+    return
+    }
+    if(sectionList.length === 0)
+    {
+        console.log("null")
+        res.status(401).json(1)
+        return
+    }
+    
+}
+
+exports.getAllSectionsInClassByClassYear = getAllSectionsInClassByClassYear
 exports.getAllStudentsInClass = getAllStudentsInClass
 exports.deleteSection = deleteSection;
 exports.deleteClass = deleteClass;

@@ -222,26 +222,15 @@ const deleteStudent = async (req, res, next) => {
     const section_query = {sectionName : temp_student.sectionName}
     console.log(class_query)
     console.log(section_query)
-    const tempOldClass = await Class.findOne(class_query).populate('sectionList');
-    if(tempOldClass !== null)
-    {
-      if(tempOldClass.sectionList !== null)
-      {
-        for (let i = 0; i < tempOldClass.sectionList.length; i++) {
-          if (tempOldClass.sectionList[i].sectionName === temp_student.sectionName) {
-              // console.log(tempOldClass.sectionList[i].sectionName)
-              console.log("in the zone")
-              const tempOldSection = await Section.findOne(section_query)  
-              tempOldSection.strength = tempOldSection.strength -1;
-              tempOldSection.save();           
-      
-              }
-          }
-      }
-    }
-   
-
-
+    console.log("before")
+    const tempOldClass = await Section.find({classYear : temp_student.classYear , sectionName : temp_student.sectionName})
+    console.log(tempOldClass)
+    console.log("After")
+    const strength = tempOldClass.strentgh-1;
+    console.log("Strength")
+    Section.findByIdAndUpdate(tempOldClass._id, {strength})
+ 
+    console.log("here")
 
     const public_id = temp_student.image;
     console.log("Public ID: " + public_id)
@@ -307,10 +296,38 @@ rollFinalYear = highestRollNumber + 1;
   res.status(201).json(rollFinalYear)
 }
 
+const getStudentsForFee = async(req,res,next) => {
+const classYear = req.body.classYear;
+const sectionName = req.body.sectionName;
 
+if(classYear == "All")
+{
+  const tempStudentList = await Student.find();
+  res.status(201).json(tempStudentList)
+  return
+}
+if(classYear !== "All")
+{
+  if(sectionName === "All")
+  {
+    const tempStudentList = await Student.find({classYear : classYear})
+    res.status(201).json(tempStudentList)
+    return
+  }
+  if(sectionName !== "All")
+  {
+    const tempStudentList = await Student.find({classYear : classYear, sectionName : sectionName});
+    res.status(201).json(tempStudentList)
+    return
+  }
+}
+res.status(401).json(1)
+return
+}
 exports.dateTest = dateTest;
 exports.deleteStudent = deleteStudent;
 exports.getStudentByRollNumber = getStudentByRollNumber;
 exports.updateStudent = updateStudent;
 exports.addStudent = addStudent;
 exports.getAllStudents = getAllStudents;
+exports.getStudentsForFee = getStudentsForFee

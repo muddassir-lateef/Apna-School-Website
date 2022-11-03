@@ -215,11 +215,51 @@ const deleteAllFeeRecord = async(req,res,next) => {
 
 const generateFeeForListOfStudents = async(req,res,next) => {
     const class_query = {classYear : req.body.classYear}
+    const section_query = {sectionName : req.body.sectionName}
+    console.log(req.body.classYear)
+    console.log(req.body.sectionName)
+    // All Classes Selected
+    if(req.body.classYear === "All")
+    {
+        const date = req.body.date;
+        let tempStudent = await Student.find().populate('sectionId', 'feeRecord');
+        //console.log(tempStudent)
+        for(let i = 0; i < tempStudent.length; i++)
+        {
+            console.log(tempStudent[i].rollNumber)
+        const tempFeeRecord = await FeeRecord.findById(tempStudent[i].feeRecord).populate('feeList');
+        let totalFee = tempFeeRecord.totalFee;
+        const tuitionFee = tempFeeRecord.tuitionFee;
+        const fineFee = 0;
+        const securityFee = tempFeeRecord.securityFee;
+        const otherFee = tempFeeRecord.otherFee;
+        const paidFee = 0;
+        const remainingFee = totalFee;
+        const newFeeDetails = new FeeDetail({
+        date, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
+        });
+        newFeeDetails.save();
+    
+        tempFeeRecord.feeList = tempFeeRecord.feeList || [];
+        tempFeeRecord.feeList.push(newFeeDetails._id);
+        tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+        tempFeeRecord.save();
+    }
+    res.status(201).json(tempStudent)
+    return
+    }
+    //Some Class Selected
+    if(req.body.classYear !== "All")
+    {
+        //All sections Selected
+        if(req.body.sectionName === "All")
+        {
     const date = req.body.date;
-    const tempStudent = await Student.find(class_query).populate('sectionId', 'feeRecord');
-    console.log(tempStudent)
+    let tempStudent = await Student.find(class_query).populate('sectionId', 'feeRecord');
+    //console.log(tempStudent)
     for(let i = 0; i < tempStudent.length; i++)
     {
+        console.log(tempStudent[i].rollNumber)
     const tempFeeRecord = await FeeRecord.findById(tempStudent[i].feeRecord).populate('feeList');
     let totalFee = tempFeeRecord.totalFee;
     const tuitionFee = tempFeeRecord.tuitionFee;
@@ -237,6 +277,46 @@ const generateFeeForListOfStudents = async(req,res,next) => {
     tempFeeRecord.feeList.push(newFeeDetails._id);
     tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
     tempFeeRecord.save();
+}
+    res.status(201).json(tempStudent)
+    return
+    }
+    //Some Section Selected
+    if(req.body.sectionName !== "All")
+        {
+    const date = req.body.date;
+
+    console.log(class_query)
+    console.log(section_query)
+    let tempStudent = await Student.find({classYear : req.body.classYear, sectionName : req.body.sectionName}).populate('sectionId', 'feeRecord');
+   
+    for(let i = 0; i < tempStudent.length; i++)
+    {
+        console.log(tempStudent[i].rollNumber)
+        console.log(tempStudent[i].sectionName)
+    const tempFeeRecord = await FeeRecord.findById(tempStudent[i].feeRecord).populate('feeList');
+    //console.log(tempStudent)
+    let totalFee = tempFeeRecord.totalFee;
+    const tuitionFee = tempFeeRecord.tuitionFee;
+    const fineFee = 0;
+    const securityFee = tempFeeRecord.securityFee;
+    const otherFee = tempFeeRecord.otherFee;
+    const paidFee = 0;
+    const remainingFee = totalFee;
+    const newFeeDetails = new FeeDetail({
+    date, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
+    });
+    newFeeDetails.save();
+
+    tempFeeRecord.feeList = tempFeeRecord.feeList || [];
+    tempFeeRecord.feeList.push(newFeeDetails._id);
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+    tempFeeRecord.save();
+}
+res.status(201).json(tempStudent)
+    return
+    }
+
 }
 
     res.status(201).json(1)

@@ -511,18 +511,57 @@ export async function editFeeRecord(tuitionFee, securityFee, scholarshipAmount, 
   }
 }
 
-export async function generateFeeForListOfStudents(classYear, date) {
+export async function generateFeeForListOfStudents(classYear, date, sectionName) {
   let tempURL = URL + 'feeRecord/generateFeeForListOfStudents';
-  console.log("In the service")
-  console.log(classYear)
-  console.log(date)
-  const response = await axios.post(tempURL, {classYear, date})
+  //console.log("In the service")
+ // console.log(classYear)
+ // console.log(date)
+ // console.log(sectionName)
+ console.log("FINAL")
+  const response = await axios.post(tempURL, {classYear, date, sectionName})
   if(response.status === 201)
   {
-    console.log("Success")
+    //console.log("Success")
     return 1
   }
   else {
+    return -1
+  }
+}
+
+export async function getAllSectionsInClassByClassYear(classYear) {
+  let tempURL = URL + 'class/getAllSectionsInClassByClassYear/' + classYear
+  //console.log("In the Service")
+  //console.log(classYear)
+  if(classYear === "")
+  {
+    return -1
+  }
+  if(classYear === "All")
+  {
+    return -1
+  }
+  const response = await axios.get(tempURL, {classYear})
+  if(response.status == 201)
+  {
+    return response
+  }
+  else {
+    return -1
+  }
+}
+
+export async function getStudentsForFee(classYear, sectionName) {
+  console.log("In the student search box service")
+  console.log("Class Year" + classYear + "Section" + sectionName)
+  let tempURL = URL + 'student/getStudentsForFee'
+  const response = await axios.patch(tempURL, {classYear, sectionName})
+  if(response.status === 201)
+  {
+    return response
+  }
+  if(response.status === 401)
+  {
     return -1
   }
 }

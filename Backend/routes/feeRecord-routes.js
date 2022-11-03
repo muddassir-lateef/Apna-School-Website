@@ -87,4 +87,6 @@ router.patch('/deleteFeeDetails', FeeRecordController.deleteFeeDetails)
 router.post('/generateFeeForListOfStudents', FeeRecordController.generateFeeForListOfStudents);
 
 
+
+
 module.exports = router;

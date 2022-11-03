@@ -47,4 +47,6 @@ router.get('/getAllSectionsInClass/:classYear', classController.getAllSectionsIn
 
 router.patch('/assignTeacher', classController.assignTeacherToSection);
 
+router.get('/getAllSectionsInClassByClassYear/:classYear', classController.getAllSectionsInClassByClassYear);
+
 module.exports = router;

@@ -6,13 +6,14 @@ import { Typography, Card, Grid, Box, Avatar, Snackbar, TextField, Select, Input
 import { VALIDATOR_MINLENGTH } from "../../services/validators";
 import Input from "../../components/Input";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { addNewExam, getAllClasses, generateFeeForListOfStudents } from "../../services/UserService";
+import { addNewExam, getAllClasses, generateFeeForListOfStudents, getAllSectionsInClassByClassYear } from "../../services/UserService";
 import SendIcon from "@mui/icons-material/Send";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { useNavigate, useLocation } from "react-router-dom";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import SearchBox from "../../components/SearchBox";
 
 
 const AddNewFeeForClass= () => {
@@ -25,14 +26,20 @@ const AddNewFeeForClass= () => {
     const [examDate, setExamDate] = useState(new Date);
     const [dateCheck, setDateCheck] = useState(true)
     const [classCheck, setClassCheck] = useState(true)
+    const [sectionList, setSectionList] = useState([])
+    const [selectedSection, setSelectedSection] = useState("")
+    const [formattedSectionList, setFormattedSectionList] = useState([])
 
     useEffect(() => {
+        if(selectedClass === "")
+        {
         getAllClasses()
             .then((res) => {
                 if (res !== -1) {
                     setAllClasses(res.data);
                     if (Array.isArray(res.data) && res.data.length > 0) {
                         const temp_list = [];
+                        temp_list.push("All")
                         for (var i = 0; i < res.data.length; i++) {
                             temp_list.push(res.data[i].classYear)
                         }
@@ -43,7 +50,37 @@ const AddNewFeeForClass= () => {
                 //console.log("Getting Classes: ", res.data)
             })
             .catch(err => console.log(err))
-    }, [])
+        }
+
+
+            //FOR SECTIONS
+            getAllSectionsInClassByClassYear(selectedClass)
+            .then((res) => {
+                setSelectedSection("")
+                if (res !== -1) {
+                    setSectionList(res.data);
+                    if (Array.isArray(res.data) && res.data.length > 0) {
+                        const temp_list = [];
+                        temp_list.push("All")
+                        for (var i = 0; i < res.data.length; i++) {
+                            temp_list.push(res.data[i].sectionName)
+                        }
+                        console.log("Prepared List: ", temp_list)
+                        setFormattedSectionList(temp_list);
+                    }
+                }
+                if(res === -1)
+                {
+                    console.log("No sections found")
+                    setSectionList([])
+                    setFormattedSectionList([])
+                }
+                //console.log("Getting Classes: ", res.data)
+            })
+            .catch(err => console.log(err))
+        
+
+    }, [selectedClass])
 
 
     const handleDateChange = (newDate) => {
@@ -78,16 +115,30 @@ const AddNewFeeForClass= () => {
 
     const handleClassChange = (event) => {
         setSelectedClass(event.target.value);
+        setSelectedSection("")
+        setClassCheck(true)
+        console.log("In the class setter")
+        if(event.target.value === "All")
+        {
+            setClassCheck(false)
+        }
         console.log(event.target.value)
-        setClassCheck(false)
+        
     };
+    const handleSectionChange = (event) => {
+        console.log("In section Change")
+        console.log(event.target.value)
+        setSelectedSection(event.target.value)
+        setClassCheck(false)
+    }
 
     const onSubmitHandler = async () => {
 
-        console.log("Submit: " +  selectedClass)
+        console.log("Class " +  selectedClass)
         console.log("JS Date: ", new Date(examDate.$d))
-        console.log(examDate.$d)
-        generateFeeForListOfStudents(selectedClass, examDate.$d).then((res) =>{
+        console.log("The section is")
+        console.log(selectedSection)
+        generateFeeForListOfStudents(selectedClass, examDate.$d, selectedSection).then((res) =>{
             console.log(res)
             if(res === 1)
             {
@@ -103,6 +154,7 @@ const AddNewFeeForClass= () => {
         let url = '/Fee/AddNewFees';
         navigate(url);
     }
+
 
 
     return (
@@ -160,6 +212,24 @@ const AddNewFeeForClass= () => {
                             }
                         </Select>
                     </FormControl>
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                        <InputLabel id="demo-simple-select-label">Section</InputLabel>
+                        <Select
+                            sx={{ mb: 3, flex: "100%", width: '100%' }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedSection}
+                            label="Class"
+                            onChange={handleSectionChange}
+                            defaultValue=""
+                        >
+                            {formattedSectionList.map((item) => (
+                                <MenuItem key={item} value={item}>{item}</MenuItem>
+                            ))
+                            }
+                        </Select>
+                    </FormControl>
+                  
 
                   
 
