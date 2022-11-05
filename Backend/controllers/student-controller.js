@@ -228,9 +228,11 @@ const deleteStudent = async (req, res, next) => {
     const tempOldClass = await Section.findOne({classYear : temp_student.classYear , sectionName : temp_student.sectionName})
     console.log("The class")
     console.log(tempOldClass)
-
+    if(tempOldClass !== null)
+    {
     tempOldClass.strength = tempOldClass.strength - 1;
     const check = await tempOldClass.save();
+    }
     
    
     const public_id = temp_student.image;
@@ -239,17 +241,20 @@ const deleteStudent = async (req, res, next) => {
       .destroy(public_id)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-    console.log("hit")
+  
     const tempFeeRecord = await FeeRecord.findById(temp_student.feeRecord).populate('feeList')
-    console.log*"The fee Record"
-    console.log(tempFeeRecord)
-    const feeList = await FeeDetails.findById(tempFeeRecord.feeList);
-    if(feeList != null)
-    {
-    const deletefeecheck = await FeeDetails.findById(feeList._id)
-    }
+    console.log(tempFeeRecord.feeList.length)
+ 
+    console.log("Fee list not null")
+      for (let i=0; i< tempFeeRecord.feeList.length; i++)
+      {
+        console.log("in loop")
+        console.log(tempFeeRecord.feeList[i])
+    const deletefeecheck = await FeeDetails.findByIdAndDelete(tempFeeRecord.feeList[i]._id)
+    
+      }
     const deletecheck = await FeeRecord.findByIdAndDelete(tempFeeRecord._id);
-
+      console.log("Fee record deleted")
     if (temp_student !== null) {
       Student.findByIdAndRemove(temp_student._id)
         .then(() => res.status(201).json("Delete operation called successfuly!"))

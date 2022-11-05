@@ -238,8 +238,8 @@ const AddNewTeacher = () => {
               label="Age"
               variant="standard"
               onInput={InputHandlerStudent}
-              validators={[VALIDATOR_MIN(6)]}
-              errorText="Age must be over 18 years"
+              validators={[VALIDATOR_MIN(0)]}
+              errorText="Age must be over 0"
             />
             <Input
               sx={{ pr: 2, pb: 3, flex: "100%" }}

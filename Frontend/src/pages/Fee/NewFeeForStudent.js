@@ -182,10 +182,12 @@ const AddNewFeeForStudent= () => {
                 {
                     setSubmitStatus(1)
                     setSnackOpen(true)
+                    setAddModalOpen((isOpen) => !isOpen);
                 }
                 else {
                     setSubmitStatus(-1)
                     setSnackOpen(true)
+                    
                 }
             })
         }

@@ -26,21 +26,24 @@ export default function AddNewFees() {
   return (
     <Grid justifyContent="center" display="flex" flex-direction="row">
     <Card sx={{ width: "90%", maxWidth: "900px" }}>
-     
                   <Divider variant="middle" />
-     <Typography >
-     Generate Fee Challan for Student(s) </Typography>
-
+                  <Typography>
+    Generate Fee Challans for Student(s)
+    </Typography>
+                  <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
      <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant  = "outlined" onClick = {StudentFeeClicked}>
       Student
      </Button>
+     </Box>
     <Divider></Divider>
     <Typography>
     Generate Fee Challans for Classes & Sections
     </Typography>
+    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
      <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%'}} variant = "outlined" onClick = {ClassFeeClicked}>
       Class
      </Button>
+     </Box>
     <Divider></Divider>
     </Card>
     </Grid>
