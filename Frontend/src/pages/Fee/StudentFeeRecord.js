@@ -152,12 +152,6 @@ const StudentFeeRecord = () => {
                   <Input  disabled = {edit} value = {tuFee} placeholder = {String(feeRecord.tuitionFee)} label="Multiline" onChange = {() => setTuFee(event.target.value.replace(/\D/g, ''))} />
                 </Typography>
                 </ListItem>
-                <ListItem>
-                <Typography variant="h6" gutterBottom>
-                  Security Fee : 
-                  <Input disabled = {edit} value = {secFee} placeholder = {String(feeRecord.securityFee)} onChange = {() => setSecFee(event.target.value.replace(/\D/g, ''))}/>      
-                </Typography>
-                </ListItem>
                 </List>
                 <ListItem>
                 <Typography variant="h6" gutterBottom>

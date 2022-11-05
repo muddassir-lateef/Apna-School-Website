@@ -18,6 +18,10 @@ export default function AddNewFees() {
     let url = '/Fee/Add/NewFeeForClass';
     navigate(url);
 }
+  const StudentFeeClicked = () => {
+    let url = '/Fee/Add/NewFeeForStudent';
+    navigate(url);
+  }
 
   return (
     <Grid justifyContent="center" display="flex" flex-direction="row">
@@ -25,31 +29,19 @@ export default function AddNewFees() {
      
                   <Divider variant="middle" />
      <Typography >
-     Generate Fee Challan for an Individual Student</Typography>
+     Generate Fee Challan for Student(s) </Typography>
 
-     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant  = "outlined">
+     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant  = "outlined" onClick = {StudentFeeClicked}>
       Student
      </Button>
     <Divider></Divider>
     <Typography>
-    Generate Fee Challans for all the students in a class Year
+    Generate Fee Challans for Classes & Sections
     </Typography>
      <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%'}} variant = "outlined" onClick = {ClassFeeClicked}>
       Class
      </Button>
     <Divider></Divider>
-    <Typography>
-    Generate Fee Challans for all the students in a Section
-    </Typography>
-     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant = "outlined">
-      Section
-     </Button>
-     <Typography>
-    Generate Fee Challans for All the students
-    </Typography>
-     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%'}}variant = "outlined">
-      All
-     </Button>
     </Card>
     </Grid>
       

@@ -20,7 +20,6 @@ router.post('/addStudent', StudentController.addStudent)
     "phoneNumber" : "0300panji"
 
     //FeeRecord Attributes
-      "securityFee" = : 0,
       "outStandingFees" : 0,
       "totalFee" : 0,
       "tuitionFee" : 0,

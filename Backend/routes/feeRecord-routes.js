@@ -20,7 +20,7 @@ router.patch('/markFeePaid', FeeRecordController.markFeePaid)
     "rollNumber" : 3
 }
 */
-router.post('/generateFeeForAllStudents', FeeRecordController.generateFeeForAllStudents)
+router.patch('/generateFeeForAllStudents', FeeRecordController.generateFeeForAllStudents)
 /*
 {
     "feeMonth" : 2,
@@ -33,7 +33,7 @@ router.get('/getStudentFeeRecord/:rollNumber', FeeRecordController.getStudentFee
     "rollNumber" : 66 
 }
 */
-router.post('/addFeeDetailToStudentFeeRecord', FeeRecordController.addFeeDetailToStudentFeeRecord);
+router.patch('/addFeeDetailToStudentFeeRecord', FeeRecordController.addFeeDetailToStudentFeeRecord);
 /*
 {
     "feeMonth": 1,
@@ -54,7 +54,7 @@ router.get('/getAllFeeDetailsFromStudentFeeRecord/:rollNumber', FeeRecordControl
 */
 
 
-router.post('/generateStudentFee', FeeRecordController.generateStudentFee)
+router.patch('/generateStudentFee', FeeRecordController.generateStudentFee)
 /*
     "feeMonth" : 1,
     "feeYear" : 2,
@@ -76,6 +76,17 @@ router.patch('/updateStudentFeeRecord', FeeRecordController.updateStudentFeeReco
 }
 */
 
+router.patch('/generateNewStudentFee', FeeRecordController.generateNewStudentFee)
+/*
+{
+    rollNumber
+    Date
+    totalFee
+    secFee
+    FineFee
+    tuFee
+}
+*/
 router.patch('/deleteFeeDetails', FeeRecordController.deleteFeeDetails)
 /*
 {

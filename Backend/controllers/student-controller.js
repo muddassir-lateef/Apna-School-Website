@@ -34,10 +34,13 @@ const addStudent = async (req, res, next) => {
     
     const feeList = req.body.feeList ? req.body.feeList : null;
     const scholarshipAmount = req.body.scholarshipAmount;
-    let totalFee = 0;
-    totalFee = Number(securityFee) + Number(tuitionFee) + Number(otherFee);
+ 
+    const totalFee = Number(tuitionFee) + Number(otherFee) - Number(scholarshipAmount);
     console.log(totalFee)
-
+    console.log(securityFee)
+    console.log(tuitionFee)
+    console.log(otherFee)
+    console.log(scholarshipAmount)
     console.log("hit")
     const image = req.body.image || "";
     var uploadResponse;
@@ -222,16 +225,14 @@ const deleteStudent = async (req, res, next) => {
     const section_query = {sectionName : temp_student.sectionName}
     console.log(class_query)
     console.log(section_query)
-    console.log("before")
-    const tempOldClass = await Section.find({classYear : temp_student.classYear , sectionName : temp_student.sectionName})
+    const tempOldClass = await Section.findOne({classYear : temp_student.classYear , sectionName : temp_student.sectionName})
+    console.log("The class")
     console.log(tempOldClass)
-    console.log("After")
-    const strength = tempOldClass.strentgh-1;
-    console.log("Strength")
-    Section.findByIdAndUpdate(tempOldClass._id, {strength})
- 
-    console.log("here")
 
+    tempOldClass.strength = tempOldClass.strength - 1;
+    const check = await tempOldClass.save();
+    
+   
     const public_id = temp_student.image;
     console.log("Public ID: " + public_id)
     const deleteResponse = await cloudinary.uploader
@@ -240,7 +241,8 @@ const deleteStudent = async (req, res, next) => {
       .catch((err) => console.log(err));
     console.log("hit")
     const tempFeeRecord = await FeeRecord.findById(temp_student.feeRecord).populate('feeList')
-    
+    console.log*"The fee Record"
+    console.log(tempFeeRecord)
     const feeList = await FeeDetails.findById(tempFeeRecord.feeList);
     if(feeList != null)
     {

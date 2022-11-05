@@ -26,10 +26,6 @@ const feeDetailsSchema = new Schema({
     required: true,
   },
   //If any security
-  securityFee: {
-    type : Number,
-    required : true,
-  },
   //Amount paid as of yet
   paidFee: {
     type : Number,

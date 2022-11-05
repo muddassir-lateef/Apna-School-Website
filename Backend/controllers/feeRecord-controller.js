@@ -6,39 +6,112 @@ let FeeDetail = require('../models/feeDetails.model');
 
 
 const addFeeDetailToStudentFeeRecord = async (req, res, next) => {
-    //Creating new FeeDetail object by Body
-    const feeYear = req.body.feeYear;
-    const feeMonth = req.body.feeMonth;
-    let totalFee = req.body.totalFee ? req.body.totalFee : 0;
+    const class_query = {classYear : req.body.classYear}
+    const section_query = {sectionName : req.body.sectionName}
+    console.log(req.body.classYear)
+    console.log(req.body.sectionName)
+    // All Classes Selected
+    if(req.body.classYear === "All")
+    {
+        const date = req.body.date;
+        let tempStudent = await Student.find().populate('sectionId', 'feeRecord');
+        //console.log(tempStudent)
+        for(let i = 0; i < tempStudent.length; i++)
+        {
+            console.log(tempStudent[i].rollNumber)
+        const tempFeeRecord = await FeeRecord.findById(tempStudent[i].feeRecord).populate('feeList');
+       
+        const tuitionFee = req.body.tuitionFee;
+        const fineFee = req.body.fineFee;
+        const otherFee = req.body.otherFee;
+        const paidFee = 0;
+        let totalFee = Number(tuitionFee) + Number(fineFee) +  Number(otherFee) - tempFeeRecord.scholarshipAmount
+        const remainingFee = totalFee;
+        const newFeeDetails = new FeeDetail({
+        date, totalFee, tuitionFee, fineFee,  paidFee, remainingFee, otherFee
+        });
+        newFeeDetails.save();
+    
+        tempFeeRecord.feeList = tempFeeRecord.feeList || [];
+        tempFeeRecord.feeList.push(newFeeDetails._id);
+        tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+        tempFeeRecord.save();
+    }
+    res.status(201).json(tempStudent)
+    return
+    }
+    //Some Class Selected
+    if(req.body.classYear !== "All")
+    {
+        //All sections Selected
+        if(req.body.sectionName === "All")
+        {
+    const date = req.body.date;
+    let tempStudent = await Student.find(class_query).populate('sectionId', 'feeRecord');
+    //console.log(tempStudent)
+    for(let i = 0; i < tempStudent.length; i++)
+    {
+        console.log(tempStudent[i].rollNumber)
+    const tempFeeRecord = await FeeRecord.findById(tempStudent[i].feeRecord).populate('feeList');
     const tuitionFee = req.body.tuitionFee;
-    const fineFee = req.body.fineFee;
-    const securityFee = req.body.securityFee;
-    const paidFee = 0;
-    const otherFee = req.body.otherFee;
-    totalFee = tuitionFee + fineFee + securityFee + otherFee ;
-    let remainingFee = totalFee;
-    let feeID = String(req.body.rollNumber)
-    console.log(feeID)
-    feeID = feeID + String(Math.floor(Math.random()*100000))
-    console.log(feeID)
-    const newFeeDetails = new FeeDetail({
-
-        feeYear, feeMonth, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
-
+        const fineFee = req.body.fineFee;
+        const otherFee = req.body.otherFee;
+        const paidFee = 0;
+        let totalFee = Number(tuitionFee) + Number(fineFee) + Number(otherFee) - tempFeeRecord.scholarshipAmount
+        const remainingFee = totalFee;
+        const newFeeDetails = new FeeDetail({
+        date, totalFee, tuitionFee, fineFee,  paidFee, remainingFee, otherFee
     });
     newFeeDetails.save();
 
-    const student_query = { rollNumber: req.body.rollNumber };
-    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
-    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
-
     tempFeeRecord.feeList = tempFeeRecord.feeList || [];
     tempFeeRecord.feeList.push(newFeeDetails._id);
-    tempFeeRecord.save()
-        .then(() => res.json({ message: "FeeRecord has been updated with new Fee", FeeRecord: tempFeeRecord }))
-        .catch((err) => res.status(400).json("Error: " + err));
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+    tempFeeRecord.save();
+}
+    res.status(201).json(tempStudent)
+    return
+    }
+    //Some Section Selected
+    if(req.body.sectionName !== "All")
+        {
+    const date = req.body.date;
 
+    console.log(class_query)
+    console.log(section_query)
+    let tempStudent = await Student.find({classYear : req.body.classYear, sectionName : req.body.sectionName}).populate('sectionId', 'feeRecord');
+   
+    for(let i = 0; i < tempStudent.length; i++)
+    {
+        console.log(tempStudent[i].rollNumber)
+        console.log(tempStudent[i].sectionName)
+    const tempFeeRecord = await FeeRecord.findById(tempStudent[i].feeRecord).populate('feeList');
+    //console.log(tempStudent)
+    const tuitionFee = req.body.tuitionFee;
+    const fineFee = req.body.fineFee;
+    const otherFee = req.body.otherFee;
+    const paidFee = 0;
+    let totalFee = Number(tuitionFee) + Number(fineFee)  + Number(otherFee) - tempFeeRecord.scholarshipAmount
+    const remainingFee = totalFee;
+    const newFeeDetails = new FeeDetail({
+    date, totalFee, tuitionFee, fineFee, paidFee, remainingFee, otherFee
+    });
+    newFeeDetails.save();
+    console.log("student saved")
+    tempFeeRecord.feeList = tempFeeRecord.feeList || [];
+    tempFeeRecord.feeList.push(newFeeDetails._id);
+    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+    tempFeeRecord.save();
+    console.log("Student Saved")
+}
+res.status(201).json(tempStudent)
+    return
+    }
+
+}
+
+    res.status(201).json(1)
+    return;
 }
 
 
@@ -110,36 +183,59 @@ const getStudentFeeRecord = async (req, res, next) => {
 
 const generateStudentFee = async (req, res, next) => {
 
-    const feeYear = req.body.feeYear;
-    const feeMonth = req.body.feeMonth;
 
-    const student_query = { rollNumber: req.body.rollNumber };
-    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
+        const date = req.body.date;
+        studentQuery = {rollNumber : req.body.rollNumber}
+        let tempStudent = await Student.findOne(studentQuery).populate('sectionId', 'feeRecord');
+   
 
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
+        console.log(tempStudent.rollNumber)
+        const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
+        let totalFee = tempFeeRecord.totalFee;
+        const tuitionFee = tempFeeRecord.tuitionFee;
+        const fineFee = 0;
+        const otherFee = tempFeeRecord.otherFee;
+        const paidFee = 0;
+        const remainingFee = totalFee;
+        const newFeeDetails = new FeeDetail({
+        date, totalFee, tuitionFee, fineFee, paidFee, remainingFee, otherFee
+        });
+        newFeeDetails.save();
+    
+        tempFeeRecord.feeList = tempFeeRecord.feeList || [];
+        tempFeeRecord.feeList.push(newFeeDetails._id);
+        tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+        tempFeeRecord.save();
+    res.status(201).json(tempStudent)
+    return
 
-    let totalFee = tempFeeRecord.totalFee - tempFeeRecord.scholarshipAmount;
-    const tuitionFee = tempFeeRecord.tuitionFee;
-    const fineFee = 0;
-    const securityFee = tempFeeRecord.securityFee;
-    const otherFee = tempFeeRecord.otherFee;
-    const paidFee = 0;
-    const remainingFee = totalFee;
+}
 
+const generateNewStudentFee = async(req,res,next) => {
+    const date = req.body.date;
+        studentQuery = {rollNumber : req.body.rollNumber}
+        let tempStudent = await Student.findOne(studentQuery).populate('sectionId', 'feeRecord');
+   
 
-    const newFeeDetails = new FeeDetail({
-
-        feeYear, feeMonth, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
-    });
-    newFeeDetails.save();
-
-    tempFeeRecord.feeList = tempFeeRecord.feeList || [];
-    tempFeeRecord.feeList.push(newFeeDetails._id);
-    tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
-    tempFeeRecord.save();
-    res.status(201).json(newFeeDetails)
-    return;
-
+        console.log(tempStudent.rollNumber)
+        const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
+        let totalFee = req.body.totalFee - Number(tempFeeRecord.scholarshipAmount)
+        const tuitionFee = req.body.tuitionFee
+        const fineFee = req.body.fineFee
+        const otherFee = req.body.otherFee
+        const paidFee = 0;
+        const remainingFee = totalFee
+        const newFeeDetails = new FeeDetail({
+        date, totalFee, tuitionFee, fineFee, paidFee, remainingFee, otherFee
+        });
+        newFeeDetails.save();
+    
+        tempFeeRecord.feeList = tempFeeRecord.feeList || [];
+        tempFeeRecord.feeList.push(newFeeDetails._id);
+        tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
+        tempFeeRecord.save();
+    res.status(201).json(tempStudent)
+    return
 }
 
 const updateStudentFeeRecord = async (req, res, next) => {
@@ -150,11 +246,10 @@ const updateStudentFeeRecord = async (req, res, next) => {
     const otherFee = Number(req.body.otherFee);
 
     const tempFeeRecord = await FeeRecord.findById(req.body.id)
-    tempFeeRecord.securityFee = securityFee;
     tempFeeRecord.tuitionFee = tuitionFee;
     tempFeeRecord.scholarshipAmount = scholarshipAmount
     tempFeeRecord.otherFee = otherFee;
-    tempFeeRecord.totalFee = Number(securityFee) + Number(tuitionFee) - Number(scholarshipAmount) + Number(otherFee)
+    tempFeeRecord.totalFee =  Number(tuitionFee) - Number(scholarshipAmount) + Number(otherFee)
     tempFeeRecord.save()
     console.log(tempFeeRecord)
     res.status(201).json(1)
@@ -165,32 +260,28 @@ const updateStudentFeeRecord = async (req, res, next) => {
 
 
 const generateFeeForAllStudents = async (req, res, next) => {
-    const feeYear = req.body.feeYear;
-    const feeMonth = req.body.feeMonth;
-
-    const allStudents = await Student.find().populate("sectionId", "feeRecord")
-    for (let i = 0; i < allStudents.length; i++) {
-        const tempFeeRecord = await FeeRecord.findById(allStudents[i].feeRecord).populate('feeList')
-        let totalFee = tempFeeRecord.totalFee - tempFeeRecord.scholarshipAmount;
+    const date = req.body.date ? req.body.date : null ;
+    const query = {rollNumber : req.body.rollNumber}
+    const allStudents = await Student.findOne(query).populate("sectionId", "feeRecord")
+        const tempFeeRecord = await FeeRecord.findById(allStudents.feeRecord).populate('feeList')
+        let totalFee = tempFeeRecord.totalFee
         const tuitionFee = tempFeeRecord.tuitionFee;
         const fineFee = 0;
-        const securityFee = tempFeeRecord.securityFee;
         const otherFee = tempFeeRecord.otherFee;
         const paidFee = 0;
         const remainingFee = totalFee;
 
         const newFeeDetails = new FeeDetail({
 
-            feeYear, feeMonth, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee,otherFee
+             totalFee, tuitionFee, fineFee,  paidFee, remainingFee,otherFee
         });
         newFeeDetails.save();
         tempFeeRecord.feeList = tempFeeRecord.feeList || [];
         tempFeeRecord.feeList.push(newFeeDetails._id);
         tempFeeRecord.outStandingFees = tempFeeRecord.outStandingFees + totalFee;
         tempFeeRecord.save();
-        
-    }
-    res.status(201).json(feeYear)
+       
+    res.status(201).json(tempFeeRecord)
 }
 
 const deleteAllFeeRecord = async(req,res,next) => {
@@ -231,12 +322,11 @@ const generateFeeForListOfStudents = async(req,res,next) => {
         let totalFee = tempFeeRecord.totalFee;
         const tuitionFee = tempFeeRecord.tuitionFee;
         const fineFee = 0;
-        const securityFee = tempFeeRecord.securityFee;
         const otherFee = tempFeeRecord.otherFee;
         const paidFee = 0;
         const remainingFee = totalFee;
         const newFeeDetails = new FeeDetail({
-        date, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
+        date, totalFee, tuitionFee, fineFee, paidFee, remainingFee, otherFee
         });
         newFeeDetails.save();
     
@@ -264,12 +354,11 @@ const generateFeeForListOfStudents = async(req,res,next) => {
     let totalFee = tempFeeRecord.totalFee;
     const tuitionFee = tempFeeRecord.tuitionFee;
     const fineFee = 0;
-    const securityFee = tempFeeRecord.securityFee;
     const otherFee = tempFeeRecord.otherFee;
     const paidFee = 0;
     const remainingFee = totalFee;
     const newFeeDetails = new FeeDetail({
-    date, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
+    date, totalFee, tuitionFee, fineFee,  paidFee, remainingFee, otherFee
     });
     newFeeDetails.save();
 
@@ -299,12 +388,11 @@ const generateFeeForListOfStudents = async(req,res,next) => {
     let totalFee = tempFeeRecord.totalFee;
     const tuitionFee = tempFeeRecord.tuitionFee;
     const fineFee = 0;
-    const securityFee = tempFeeRecord.securityFee;
     const otherFee = tempFeeRecord.otherFee;
     const paidFee = 0;
     const remainingFee = totalFee;
     const newFeeDetails = new FeeDetail({
-    date, totalFee, tuitionFee, fineFee, securityFee, paidFee, remainingFee, otherFee
+    date, totalFee, tuitionFee, fineFee,  paidFee, remainingFee, otherFee
     });
     newFeeDetails.save();
 
@@ -351,4 +439,5 @@ exports.generateStudentFee = generateStudentFee;
 exports.updateStudentFeeRecord = updateStudentFeeRecord;
 exports.generateFeeForAllStudents = generateFeeForAllStudents;
 exports.deleteAllFeeRecords = deleteAllFeeRecord;
+exports.generateNewStudentFee = generateNewStudentFee
 exports.generateFeeForListOfStudents = generateFeeForListOfStudents;

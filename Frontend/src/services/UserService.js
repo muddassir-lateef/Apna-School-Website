@@ -25,7 +25,6 @@ export async function addStudent(
   houseAddress,
   image,
   tuitionFee,
-  securityFee,
   otherFee,
   scholarshipAmount
 ) {
@@ -33,7 +32,7 @@ export async function addStudent(
 
 
   const outStandingFees = 0;
-  let totalFee = tuitionFee + otherFee + securityFee;
+  let totalFee = tuitionFee + otherFee;
   const feeList = null;
   console.log("hit")
   let tempURL = URL + "student/addStudent";
@@ -48,7 +47,6 @@ export async function addStudent(
     phoneNumber,
     houseAddress,
     image,
-    securityFee,
     outStandingFees,
     totalFee,
     tuitionFee,
@@ -115,6 +113,45 @@ export async function updateTeacher(oldUsername, firstName, lastName, age, usern
   return response;
 
 }
+
+export async function generateStudentFee(rollNumber, date)
+{
+  console.log("in generation user serivce")
+  console.log(rollNumber)
+  console.log(date)
+  let tempURL = URL + 'feeRecord/generateStudentFee'
+  const response = await axios.patch(tempURL, {rollNumber, date})
+  if(response.status === 201)
+  {
+    return 1
+  }
+  else
+  {
+    return -1
+  }
+}
+export async function generateNewStudentFee(rollNumber, date, tuitionFee, fineFee, otherFee)
+{
+  console.log("in generation user serivce")
+  console.log(rollNumber)
+  console.log(date)
+  console.log(tuitionFee)
+  console.log(fineFee)
+  console.log(otherFee)
+  const totalFee = tuitionFee + otherFee + fineFee
+  console.log(totalFee)
+  let tempURL = URL + 'feeRecord/generateNewStudentFee'
+  const response = await axios.patch(tempURL, {rollNumber, date, totalFee, tuitionFee, otherFee, fineFee})
+  if(response.status === 201)
+  {
+    return 1
+  }
+  else
+  {
+    return -1
+  }
+}
+
 
 export async function updateStudent(rollNumber, firstName, lastName, Age1, cnic, guardianFirstName, guardianLastName, houseAddress, phoneNumber, emailAddress, image) {
   let tempURL = URL + 'student/update';
@@ -556,12 +593,30 @@ export async function getStudentsForFee(classYear, sectionName) {
   console.log("Class Year" + classYear + "Section" + sectionName)
   let tempURL = URL + 'student/getStudentsForFee'
   const response = await axios.patch(tempURL, {classYear, sectionName})
+  console.log(response.data)
   if(response.status === 201)
   {
-    return response
+    return 1
   }
   if(response.status === 401)
   {
+    return -1
+  }
+}
+
+export async function addFeeDetailToStudentFeeRecord(classYear, sectionName, tuitionFee, otherFee, fineFee) {
+  let tempURL = URL + 'feeRecord/addFeeDetailToStudentFeeRecord'
+  console.log("classYear " + classYear)
+  console.log("Section " + sectionName)
+  console.log("Tuition Fee " + tuitionFee)
+  console.log("Other Fee " + otherFee)
+  console.log("Fine Fee " + fineFee)
+  const response = await axios.patch(tempURL, {classYear, sectionName, tuitionFee, otherFee, fineFee})
+  if(response.status === 201)
+  {
+    return 1
+  }
+  else {
     return -1
   }
 }

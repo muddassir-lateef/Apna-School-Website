@@ -30,11 +30,6 @@ const AddNewTeacher = () => {
       value: 0,
       isValid: false,
     },
-    securityFee: {
-      type: Number,
-      value: 0,
-      isValid: false,
-    },
     otherFee: {
       type: Number,
       value: 0,
@@ -108,7 +103,6 @@ const AddNewTeacher = () => {
       formStateStudent.inputs.houseAddress.value,
       image,
       formStateFee.inputs.tuitionFee.value,
-      formStateFee.inputs.securityFee.value,
       formStateFee.inputs.otherFee.value,
       formStateFee.inputs.scholarshipAmount.value
     )
@@ -370,15 +364,6 @@ const AddNewTeacher = () => {
             />
             <Input
               sx={{ pr: 2, pb: 3, flex: "100%" }}
-              id="securityFee"
-              label="Security Fee"
-              variant="standard"
-              onInput={InputHandlerFee}
-              validators={[VALIDATOR_MIN(0)]}
-              errorText="Security Fee is a required field (Can be 0)"
-            />
-            <Input
-              sx={{ pr: 2, pb: 3, flex: "100%" }}
               id="otherFee"
               label="Other Fees"
               variant="standard"
@@ -475,10 +460,7 @@ const AddNewTeacher = () => {
               {'Student Fee Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Security Fee: ' + formStateFee.inputs.securityFee.value }
-            </Typography>
-            <Typography gutterBottom variant="div" component="div">
-              {'tuition Fee: ' + formStateFee.inputs.tuitionFee.value }
+              {'Tuition Fee: ' + formStateFee.inputs.tuitionFee.value }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
               {'Other Fees Fee: ' + formStateFee.inputs.otherFee.value }
