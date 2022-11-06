@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import SearchBox from "../../components/SearchBox";
 
 
-const AddNewFeeForClass= () => {
+const AddNewFeeForClass = () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [addModalOpen, setAddModalOpen] = useState(false);
@@ -38,30 +38,29 @@ const AddNewFeeForClass= () => {
     const [errCheck1, setErr1Check] = useState(false)
     const [errCheck2, setErr2Check] = useState(false)
     useEffect(() => {
-        if(selectedClass === "")
-        {
-        getAllClasses()
-            .then((res) => {
-                if (res !== -1) {
-                    setAllClasses(res.data);
-                    if (Array.isArray(res.data) && res.data.length > 0) {
-                        const temp_list = [];
-                        temp_list.push("All")
-                        for (var i = 0; i < res.data.length; i++) {
-                            temp_list.push(res.data[i].classYear)
+        if (selectedClass === "") {
+            getAllClasses()
+                .then((res) => {
+                    if (res !== -1) {
+                        setAllClasses(res.data);
+                        if (Array.isArray(res.data) && res.data.length > 0) {
+                            const temp_list = [];
+                            temp_list.push("All")
+                            for (var i = 0; i < res.data.length; i++) {
+                                temp_list.push(res.data[i].classYear)
+                            }
+                            //console.log("Prepared List: ", temp_list)
+                            setFormattedClasses(temp_list);
                         }
-                        //console.log("Prepared List: ", temp_list)
-                        setFormattedClasses(temp_list);
                     }
-                }
-                //console.log("Getting Classes: ", res.data)
-            })
-            .catch(err => console.log(err))
+                    //console.log("Getting Classes: ", res.data)
+                })
+                .catch(err => console.log(err))
         }
 
 
-            //FOR SECTIONS
-            getAllSectionsInClassByClassYear(selectedClass)
+        //FOR SECTIONS
+        getAllSectionsInClassByClassYear(selectedClass)
             .then((res) => {
                 setSelectedSection("")
                 if (res !== -1) {
@@ -76,16 +75,15 @@ const AddNewFeeForClass= () => {
                         setFormattedSectionList(temp_list);
                     }
                 }
-                if(res === -1)
-                {
-                   // console.log("No sections found")
+                if (res === -1) {
+                    // console.log("No sections found")
                     setSectionList([])
                     setFormattedSectionList([])
                 }
                 //console.log("Getting Classes: ", res.data)
             })
             .catch(err => console.log(err))
-        
+
 
     }, [selectedClass])
 
@@ -125,13 +123,12 @@ const AddNewFeeForClass= () => {
         setSelectedSection("")
         setClassCheck(true)
         console.log("In the class setter")
-        if(event.target.value === "All")
-        {
+        if (event.target.value === "All") {
             setClassCheck(false)
         }
         console.log(event.target.value)
         console.log(selectedSection)
-        
+
     };
     const handleSectionChange = (event) => {
         console.log("In section Change")
@@ -143,14 +140,13 @@ const AddNewFeeForClass= () => {
 
     const onSubmitHandler = async () => {
 
-        console.log("Class " +  selectedClass)
+        console.log("Class " + selectedClass)
         console.log("JS Date: ", new Date(examDate.$d))
         console.log("The section is")
         console.log(selectedSection)
-        generateFeeForListOfStudents(selectedClass, examDate.$d, selectedSection).then((res) =>{
+        generateFeeForListOfStudents(selectedClass, examDate.$d, selectedSection).then((res) => {
             console.log(res)
-            if(res === 1)
-            {
+            if (res === 1) {
                 setSnackOpen(true)
                 console.log("Success x2")
                 setSubmitStatus(1)
@@ -183,51 +179,45 @@ const AddNewFeeForClass= () => {
         setAddModalOpen((isOpen) => !isOpen);
     }
 
-    const ConfirmHandler = () =>
-    {
+    const ConfirmHandler = () => {
         console.log("In submission")
         console.log(tuFee)
         console.log(fiFee)
         console.log(otFee)
-        if(otFee.trim().length === 0)
-        {
+        if (otFee.trim().length === 0) {
             console.log("Empty Value lol")
             setErrCheck(true)
         }
         else {
             setErrCheck(false)
         }
-        if(tuFee.trim().length === 0)
-        {
+        if (tuFee.trim().length === 0) {
             console.log("Empty Value lol")
             setErr1Check(true)
         }
         else {
             setErr1Check(false)
         }
-        if(fiFee.trim().length === 0)
-        {
+        if (fiFee.trim().length === 0) {
             console.log("Empty Value lol")
             setErr2Check(true)
         }
         else {
             setErr2Check(false)
         }
-        if(fiFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0)
-        {
+        if (fiFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0) {
             addFeeDetailToStudentFeeRecord(selectedClass, selectedSection, Number(tuFee), Number(fiFee), Number(otFee)).then
-            ((res) => {
-                if(res == 1)
-                {
-                    setAddModalOpen((isOpen) => !isOpen)
-                    setSnackOpen(true)
-                    setSubmitStatus(1)
-                }
-                else {
-                    console.log("error1")
-                }
+                ((res) => {
+                    if (res == 1) {
+                        setAddModalOpen((isOpen) => !isOpen)
+                        setSnackOpen(true)
+                        setSubmitStatus(1)
+                    }
+                    else {
+                        console.log("error1")
+                    }
 
-            })
+                })
         }
         return
     }
@@ -235,7 +225,7 @@ const AddNewFeeForClass= () => {
     return (
         <Grid justifyContent="center" display="flex" flex-direction="row">
             <Grid item>
-            <Modal
+                <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     open={addModalOpen}
@@ -257,7 +247,7 @@ const AddNewFeeForClass= () => {
                                 sx={{ mb: 2 }}
                             >
                                 Enter Fee Details for
-                                
+
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -265,7 +255,7 @@ const AddNewFeeForClass= () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                
+
                                 Class : {selectedClass} || Section : {selectedSection}
                             </Typography>
                             <Typography
@@ -274,9 +264,9 @@ const AddNewFeeForClass= () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                            <Box sx={{ width: '100%'}}>
-                            <TextField  error = {errCheck1} value = {tuFee} label="Tuition Fee" onChange = {() => {setTuFee(event.target.value.replace(/\D/g, ''))}}></TextField>
-                            </Box>
+                                <Box sx={{ width: '100%' }}>
+                                    <TextField error={errCheck1} value={tuFee} label="Tuition Fee" onChange={(event) => { setTuFee(event.target.value.replace(/\D/g, '')) }}></TextField>
+                                </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -284,11 +274,11 @@ const AddNewFeeForClass= () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                            <Box sx={{ width: '100%'}}>
-                            <TextField  error = {errCheck2} value = {fiFee} label="Fine Fee" onChange = {() => {setFiFee(event.target.value.replace(/\D/g, ''))}}>
+                                <Box sx={{ width: '100%' }}>
+                                    <TextField error={errCheck2} value={fiFee} label="Fine Fee" onChange={(event) => { setFiFee(event.target.value.replace(/\D/g, '')) }}>
 
-                            </TextField>
-                            </Box>
+                                    </TextField>
+                                </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -296,11 +286,11 @@ const AddNewFeeForClass= () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                            <Box sx={{ width: '100%'}}>
-                            <TextField error = {errCheck} value = {otFee} label="Other Fee(s)" onChange = {() => {setOtFee(event.target.value.replace(/\D/g, ''))}}>
+                                <Box sx={{ width: '100%' }}>
+                                    <TextField error={errCheck} value={otFee} label="Other Fee(s)" onChange={(event) => { setOtFee(event.target.value.replace(/\D/g, '')) }}>
 
-                            </TextField>
-                            </Box>
+                                    </TextField>
+                                </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -308,13 +298,13 @@ const AddNewFeeForClass= () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                            <Box sx={{ width: '100%'}}>
-                            <Typography>
-                                Total Fee : {Number(otFee) + Number(fiFee) + Number(tuFee)}
+                                <Box sx={{ width: '100%' }}>
+                                    <Typography>
+                                        Total Fee : {Number(otFee) + Number(fiFee) + Number(tuFee)}
+                                    </Typography>
+                                </Box>
                             </Typography>
-                            </Box>
-                            </Typography>
-                            
+
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                                 <Button
                                     onClick={() => setAddModalOpen((prevState) => !prevState)}
@@ -324,7 +314,7 @@ const AddNewFeeForClass= () => {
                                 >
                                     Go Back
                                 </Button>
-                                <Button variant="outlined" color="success" onClick = {ConfirmHandler} >
+                                <Button variant="outlined" color="success" onClick={ConfirmHandler} >
                                     Confirm
                                 </Button>
                             </Box>
@@ -343,7 +333,7 @@ const AddNewFeeForClass= () => {
                     }}
                 >
                     <Avatar sx={{ mr: 2 }}>
-                    <MonetizationOnIcon/>
+                        <MonetizationOnIcon />
 
                     </Avatar>
                     <Typography variant="h4">New Fee Challan</Typography>
@@ -359,15 +349,15 @@ const AddNewFeeForClass= () => {
                         p: 1,
                     }}
                 >  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DesktopDatePicker
-                    label="Due Date"
-                    inputFormat="DD/MM/YYYY"
-                    value={examDate}
-                    onChange={handleDateChange}
-                    renderInput={(params) => <TextField sx={{ pb: 3, flex: "100%" }} {...params} />}
-                />
-            </LocalizationProvider>
-               
+                        <DesktopDatePicker
+                            label="Due Date"
+                            inputFormat="DD/MM/YYYY"
+                            value={examDate}
+                            onChange={handleDateChange}
+                            renderInput={(params) => <TextField sx={{ pb: 3, flex: "100%" }} {...params} />}
+                        />
+                    </LocalizationProvider>
+
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <InputLabel id="demo-simple-select-label">Class</InputLabel>
                         <Select
@@ -402,9 +392,9 @@ const AddNewFeeForClass= () => {
                             }
                         </Select>
                     </FormControl>
-                  
 
-                  
+
+
 
                     <Grid container display="flex" justifyContent="flex">
 
@@ -413,9 +403,9 @@ const AddNewFeeForClass= () => {
                             variant="contained"
                             endIcon={<SendIcon />}
                             fullWidth sx={{ mb: 2 }}
-                            disabled = {classCheck}
+                            disabled={classCheck}
                         >
-                            
+
                             Generate Normal Chalan
                         </Button>
                         <Button
@@ -423,12 +413,12 @@ const AddNewFeeForClass= () => {
                             variant="contained"
                             endIcon={<SendIcon />}
                             fullWidth sx={{ mb: 2 }}
-                            disabled = {classCheck}
+                            disabled={classCheck}
                         >
-                            
+
                             Generate New Challan
                         </Button>
-                        <Button  startIcon={<ArrowBackIcon />} onClick = {BackButtonClicked}  fullWidth sx={{ mb: 2 }} variant = "outlined">
+                        <Button startIcon={<ArrowBackIcon />} onClick={BackButtonClicked} fullWidth sx={{ mb: 2 }} variant="outlined">
                             Back
                         </Button>
                     </Grid>

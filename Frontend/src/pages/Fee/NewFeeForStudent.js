@@ -249,7 +249,7 @@ const AddNewFeeForStudent= () => {
                                 sx={{ mb: 2 }}
                             >
                             <Box sx={{ width: '100%'}}>
-                            <TextField  error = {errCheck1} value = {tuFee} label="Tuition Fee" onChange = {() => {setTuFee(event.target.value.replace(/\D/g, ''))}}></TextField>
+                            <TextField  error = {errCheck1} value = {tuFee} label="Tuition Fee" onChange = {(event) => {setTuFee(event.target.value.replace(/\D/g, ''))}}></TextField>
                             </Box>
                             </Typography>
                             <Typography
@@ -259,7 +259,7 @@ const AddNewFeeForStudent= () => {
                                 sx={{ mb: 2 }}
                             >
                             <Box sx={{ width: '100%'}}>
-                            <TextField  error = {errCheck2} value = {fiFee} label="Fine Fee" onChange = {() => {setFiFee(event.target.value.replace(/\D/g, ''))}}>
+                            <TextField  error = {errCheck2} value = {fiFee} label="Fine Fee" onChange = {(event) => {setFiFee(event.target.value.replace(/\D/g, ''))}}>
 
                             </TextField>
                             </Box>
@@ -271,7 +271,7 @@ const AddNewFeeForStudent= () => {
                                 sx={{ mb: 2 }}
                             >
                             <Box sx={{ width: '100%'}}>
-                            <TextField error = {errCheck} value = {otFee} label="Other Fee(s)" onChange = {() => {setOtFee(event.target.value.replace(/\D/g, ''))}}>
+                            <TextField error = {errCheck} value = {otFee} label="Other Fee(s)" onChange = {(event) => {setOtFee(event.target.value.replace(/\D/g, ''))}}>
 
                             </TextField>
                             </Box>
