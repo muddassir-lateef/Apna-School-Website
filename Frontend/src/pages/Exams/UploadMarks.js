@@ -4,10 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Card, Typography, Avatar, Button, Divider } from "@mui/material";
 import { Cloudinary } from "@cloudinary/url-gen";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { VALIDATOR_MINLENGTH, VALIDATOR_MIN, VALIDATOR_MAX } from "../../services/validators";
+import DoneIcon from '@mui/icons-material/Done';
+import { VALIDATOR_MINLENGTH, VALIDATOR_MIN, VALIDATOR_MAX, validate } from "../../services/validators";
 import { useForm } from '../../hooks/form-hook';
 import Input from "../../components/Input";
 import { getAllStudentsInClass, getExamById } from '../../services/UserService';
+import { TextField } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import { addMarks } from '../../services/UserService';
+
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -24,6 +31,9 @@ const UploadMarks = () => {
     const examId = useParams().examId;
     const [allStudents, setAllStudents] = useState([]);
     const [exam, setExam] = useState({});
+    const [allMarks, setAllMarks] = useState([])
+    const [snackOpen, setSnackOpen] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(0);
     const navigate = useNavigate();
 
 
@@ -69,6 +79,28 @@ const UploadMarks = () => {
 
         return color;
     }
+    const StatusAlert = () => {
+        if (submitStatus === -1)
+          return (
+            <Alert
+              onClose={() => setSnackOpen(false)}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Marks were NOT uploaded successfully!
+            </Alert>
+          );
+        if (submitStatus === 1)
+          return (
+            <Alert
+              onClose={() => setSnackOpen(false)}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Marks were uploaded successfully!
+            </Alert>
+          );
+      };
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dqxdmayga'
@@ -79,16 +111,64 @@ const UploadMarks = () => {
         const myUrl = myImage.toURL();
         return myUrl
     }
-    const [formState, InputHandler] = useForm(
-        {
-            marks: [{
-                student: "",
-                value: "",
-                isValid: false,
-            }]
-        },
-        false
-    );
+
+
+    const handleMarksChange = (stuId, validators) => (e) => {
+        //console.log("Marks changed, ", e.target.value, "for Student: ", stuId)
+        var flag = false;
+        for (var i=0; i<allMarks.length; i++){
+            if (allMarks[i].studentId === stuId){
+                flag = true;
+                allMarks[i].obtainedMarks = e.target.value;
+                allMarks[i].validity = validate(e.target.value, validators)
+            }
+        } 
+        if (flag === false){
+            const newObj = {
+                studentId: stuId,
+                obtainedMarks: e.target.value,
+                validity : validate(e.target.value, validators)
+            }
+            setAllMarks(allMarks.concat(newObj))
+        }
+    }
+    const handleSubmit = () => {
+        console.log(allMarks)
+        for (let i=0; i< allMarks.length; i++){
+            if (allMarks[i].validity === false){
+                setSubmitStatus(-1);
+                setSnackOpen(true);
+                return;
+            }
+        }
+        //if the entire form is valid 
+        addMarks(allMarks, exam._id)
+        .then((res)=>{
+            console.log(res)
+            if (res.status === 201){
+                setSubmitStatus(1);
+                setSnackOpen(true);
+            }
+            else{
+                setSubmitStatus(-1);
+                setSnackOpen(true);
+            }
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+        
+    }
+    const traverseValidity = (stuId) => {
+        for (var i=0; i<allMarks.length; i++){
+            if (allMarks[i].studentId === stuId){
+              //  console.log("VALIDITY: ", allMarks[i].validity)
+                //allMarks[i].validity = allMarks[i].validity;
+                return allMarks[i].validity;                
+            }
+        } 
+        return true;
+    }
 
     return (
     <Grid container spacing={3}>
@@ -100,7 +180,7 @@ const UploadMarks = () => {
             </Card>
         </Grid>
 
-        {allStudents.map((value) => (
+        {allStudents.map((value, idx) => (
             <Grid item xs={12} key={value.username}>
                 <Grid container spacing={2} >
                     <Grid item >
@@ -118,14 +198,14 @@ const UploadMarks = () => {
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={2} lg={3}>
-                        <Input
+                        <TextField
                             sx={{flex: "100%" }}
                             id="marks"
                             label="Marks Obtained"
                             variant="standard"
-                            onInput={InputHandler}
-                            validators={[VALIDATOR_MINLENGTH(1), VALIDATOR_MIN(0), VALIDATOR_MAX(exam.totalMarks)]}
-                            errorText={`Enter Marks in range 0 - ${exam.totalMarks}`}
+                            onChange={handleMarksChange(value._id, [VALIDATOR_MINLENGTH(1), VALIDATOR_MIN(0), VALIDATOR_MAX(exam.totalMarks)])}
+                            error = {!traverseValidity(value._id)}
+                            helperText = {!traverseValidity(value._id) && `Enter marks in range 0 - ${exam.totalMarks}`}
                         />
                     </Grid>
 
@@ -134,11 +214,22 @@ const UploadMarks = () => {
             </Grid>
 
         ))}
-        <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} textAlign="right">
+        <Grid container spacing={2} sx={{ mt: 1, mx:2 }}>
+            <Grid item xs={12}  display={'flex'} justifyContent='space-between'>
                 <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>Go Back</Button>
+                <Button variant="contained" startIcon={<DoneIcon />} onClick={handleSubmit}>Submit</Button>
             </Grid>
         </Grid>
+        <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <div>
+          <StatusAlert />
+        </div>
+      </Snackbar>
     </Grid>
     )
 }

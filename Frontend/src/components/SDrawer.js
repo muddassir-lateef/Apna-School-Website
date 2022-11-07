@@ -163,7 +163,7 @@ const SDrawer = (props) => {
         <List >
 
           {menuItems.map((menu, index) => (
-            <>
+            <div key={index}>
               <ListItemButton onClick={()=>handleStudentMenuClick(index)}>
                 <ListItemText primary={menu.menuTitle} />
                 {menu.visible ? <ExpandLess /> : <ExpandMore />}
@@ -172,16 +172,16 @@ const SDrawer = (props) => {
                 <List component="div" disablePadding>
 
                   {menu.enteries.map(item => (
-                    <>
+                    <div key={item.title}>
                       <ListItem button key={item.title} onClick={() => handleSideBarClick(item.path)} sx={{ pl: 4 }}>
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.title} />
                       </ListItem>
-                    </>
+                    </div>
                   ))}
                 </List>
               </Collapse>
-            </>
+            </div>
           ))}
 
         </List>
@@ -205,7 +205,7 @@ const SDrawer = (props) => {
         <List>
 
           {menuItems.map((menu, index) => (
-            <>
+            <div key={index}>
               <ListItemButton onClick={()=>handleStudentMenuClick(index)}>
                 <ListItemText primary={menu.menuTitle} />
                 {menu.visible ? <ExpandLess /> : <ExpandMore />}
@@ -214,16 +214,16 @@ const SDrawer = (props) => {
                 <List component="div" disablePadding>
 
                   {menu.enteries.map(item => (
-                    <>
+                    <div key={item.title}>
                       <ListItem button key={item.title} onClick={() => handleSideBarClick(item.path)} sx={{ pl: 4 }}>
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.title} />
                       </ListItem>
-                    </>
+                    </div>
                   ))}
                 </List>
               </Collapse>
-            </>
+            </div>
           ))}
 
         </List>

@@ -566,3 +566,11 @@ export async function getStudentsForFee(classYear, sectionName) {
   }
 }
 
+export async function addMarks(marksList, examId) {
+  //http://localhost:5000/exam/addMarks/63689cac7bb3db22973189b7
+  let tempURL = URL + `exam/addMarks/${examId}`;
+  const response = await axios.patch(tempURL, {
+    marksList
+  });
+  return response;
+}

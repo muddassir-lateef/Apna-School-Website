@@ -32,7 +32,15 @@ router.patch('/addMarks/:examId', ExamController.addMarks);
     {
         "obtainedMarks": 46,
         "studentId": "6302b97d0854df3a3e8ad8ec"
-    }
+    },
+    {
+        "obtainedMarks": 46,
+        "studentId": "6302b97d0854df3a3e8ad8ec"
+    },
+    {
+        "obtainedMarks": 46,
+        "studentId": "6302b97d0854df3a3e8ad8ec"
+    },
 */
 
 

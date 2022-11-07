@@ -52,10 +52,44 @@ const updateExam = async (req, res, next) => {
 // add marks for a student for an exam
 const addMarks = async(req, res, next) => {
     const examId = req.params.examId;
-    const obtainedMarks = req.body.obtainedMarks;
-    const studentId = req.body.studentId? req.body.studentId : null;
 
+    var marksList = req.body.marksList || []
+    console.log("MARKS LIST: ", marksList)
+    console.log(typeof marksList)
+   // res.status(201).json({message: "Marks Received"})
     const exam = await Exam.findById(examId);
+    if (exam === null){
+      return next(new HttpError("No exams found", 404));
+    }
+
+    if (Array.isArray(marksList) && marksList.length > 0)
+    for (var i=0; i<marksList.length; i++){
+      var flag = false;
+
+      const obtainedMarks = marksList[i].obtainedMarks;
+      const studentId = marksList[i].studentId;
+    
+      //before entering marks, we need to check if marks for that student are already present
+      for (let i=0; i<exam.marks.length; i++){
+          temp_mark = await Marks.findById(exam.marks[i]);
+          if (temp_mark && temp_mark.studentId == studentId){
+              flag = true;
+              temp_mark.obtainedMarks = obtainedMarks;
+              await temp_mark.save();
+          }
+      }
+      if (flag === false){
+        const mark = new Marks({obtainedMarks, studentId});
+        await mark.save();
+        exam.marks.push(mark._id);
+      }
+      
+    }
+    exam
+      .save()
+      .then(() => res.status(201).json({ message: "Marks added to exam!", Exam: exam }))
+      .catch((err) => res.status(400).json("Error: " + err));
+    /*const exam = await Exam.findById(examId);
     if (exam == null){
         return next(new HttpError("No exams found", 404));
     }
@@ -73,7 +107,7 @@ const addMarks = async(req, res, next) => {
     exam
       .save()
       .then(() => res.json({ message: "Marks added to exam!", Exam: exam }))
-      .catch((err) => res.status(400).json("Error: " + err));
+      .catch((err) => res.status(400).json("Error: " + err));*/
 }
 
 //update marks for a student in an exam
