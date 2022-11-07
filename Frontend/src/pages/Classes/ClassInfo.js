@@ -98,7 +98,7 @@ const SearchTeacher = () => {
   }
   const onTextField = (event) => {
     console.log("here")
-    setAddSectionName(event.target.value)
+    setAddSectionName(event.target.value.replace(/[^a-z]/gi, ''))
     console.log(event.target.value)
     setError(false)
     setHelperText("")

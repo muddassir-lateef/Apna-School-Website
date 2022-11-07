@@ -39,7 +39,7 @@ const StudentInfo = () => {
     console.log(e)
     console.log(Name)
     console.log(Name2)
-    navigate("/student/FeeRecord", {
+    navigate("/Fee/FeeRecord", {
         state: { param1: e, param2 : Name, param3 : Name2},
       })
     

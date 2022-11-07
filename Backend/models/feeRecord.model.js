@@ -38,10 +38,6 @@ const feeRecordSchema = new Schema({
     required : true
   },
   //If any security
-  securityFee: {
-    type : Number,
-    required : true,
-  },
 }, {
   timestamps: true,
 });

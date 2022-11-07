@@ -20,15 +20,7 @@ const AddNewTeacher = () => {
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [statusFlag, setStatusFlag] = useState(0)
   const navigate = useNavigate();
-  const [formState, InputHandler] = useForm(
-    {
-      classYear: {
-        value: 0,
-        isValid: false,
-      },
-    },
-    false
-  );
+  const [tempClass, setTempClass] = useState("")
     const backButtonHandler = () => {
       let url = '/class/searchClass';
       navigate(url);
@@ -46,10 +38,25 @@ const AddNewTeacher = () => {
     {
       return(<Alert severity="error">Class of this Year already Exists!</Alert>)
     }
+    if(statusFlag === 3)
+    {
+      return(<Alert severity="error"> Invalid Class Year</Alert>)
+    }
+  } 
+
+  const handleChange = (event) => {
+    console.log(event.target.value)
+    console.log(event.target.value.replace(/\D/g, ''))
+    setTempClass(event.target.value.replace(/\D/g, ''))
   }
 
   const Handler = () => {
-    addClass(formState.inputs.classYear.value).then((res) => {
+    if(tempClass === "")
+    {
+      setStatusFlag(3)
+      return
+    }
+    addClass(Number(tempClass)).then((res) => {
       if (res.status === 201) 
       {
         console.log("Success check")
@@ -62,7 +69,8 @@ const AddNewTeacher = () => {
       }
     })
     console.log("All checks failed")
-    console.log(formState.inputs.classYear.value)
+
+    
   };
   return (
     <Grid justifyContent="center" display="flex" flex-direction="row">
@@ -92,12 +100,11 @@ const AddNewTeacher = () => {
             p: 1,
           }}
         >
-          <Input
+          <TextField
             sx={{ pr: 2, pb: 3, flex: "100%" }}
-            id="classYear"
             label="Class Year"
-            variant="standard"
-            onInput={InputHandler}
+            value = {tempClass}
+            onChange={ handleChange}
             validators={[VALIDATOR_MINLENGTH(1)]}
             errorText="Please enter the Class Year"
           />

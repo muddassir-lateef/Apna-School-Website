@@ -114,9 +114,21 @@ const FeeRecordInfo = () => {
     }
     const FeeDueDate = (value) => {
         var d = new Date(value.Type);
-        //console.log("Created at: ", teacher.createdAt)
+        //INVALID CHECK
+     
         var date = d.getDate();
         var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+        if(isNaN(month)) {
+            return(
+            <Typography
+            sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary">
+                Due Date: None
+            </Typography>
+            )
+        }
         var year = d.getFullYear();
         var newDate = date + "/" + month + "/" + year;
         return (
@@ -204,13 +216,12 @@ const FeeRecordInfo = () => {
                                         variant="body2"
                                         color="text.primary"
                                     >
-                                        Security Fee:   {fee.securityFee}
+                                        Other Fee(s):   {fee.otherFee}
                                     </Typography>
 
                                 }
                             />
-
-                            <ListItemText
+                              <ListItemText
                                 primary={
 
                                     <Typography
@@ -219,7 +230,7 @@ const FeeRecordInfo = () => {
                                         variant="body2"
                                         color="text.primary"
                                     >
-                                        Other Fee(s):   {fee.otherFee}
+                                        Fine Fee   {fee.fineFee}
                                     </Typography>
 
                                 }
@@ -267,6 +278,7 @@ const FeeRecordInfo = () => {
 
                                 }
                             />
+                            
                             <Divider />
                             <Divider />
                             <ListItemText>

@@ -6,7 +6,7 @@ import { Typography, Card, Grid, Box, Avatar, Snackbar, TextField, Select, Backd
 import { VALIDATOR_MINLENGTH } from "../../services/validators";
 import Input from "../../components/Input";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { addNewExam, getAllClasses, generateFeeForListOfStudents, getAllSectionsInClassByClassYear, addFeeDetailToStudentFeeRecord } from "../../services/UserService";
+import { addNewExam, getAllClasses, generateFeeForListOfStudents, getAllSectionsInClassByClassYear, addFeeDetailToStudentFeeRecord, getAllStudents, generateStudentFee, generateNewStudentFee } from "../../services/UserService";
 import SendIcon from "@mui/icons-material/Send";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import SearchBox from "../../components/SearchBox";
 
 
-const AddNewFeeForClass = () => {
+const AddNewFeeForStudent= () => {
     const navigate = useNavigate();
     const [modalOpen, setModalOpen] = useState(false);
     const [addModalOpen, setAddModalOpen] = useState(false);
@@ -30,6 +30,8 @@ const AddNewFeeForClass = () => {
     const [classCheck, setClassCheck] = useState(true)
     const [sectionList, setSectionList] = useState([])
     const [selectedSection, setSelectedSection] = useState("")
+    const [teacherOptions, setTeacherOptions] = useState([]);
+    const [username, setUsername] = useState(0);
     const [formattedSectionList, setFormattedSectionList] = useState([])
     const [tuFee, setTuFee] = useState("")
     const [fiFee, setFiFee] = useState("")
@@ -37,56 +39,34 @@ const AddNewFeeForClass = () => {
     const [errCheck, setErrCheck] = useState(false)
     const [errCheck1, setErr1Check] = useState(false)
     const [errCheck2, setErr2Check] = useState(false)
+    const [teachersList, setTeachersList] = useState([]);
+  const [teachersMasterList, setTeachersMasterList] = useState([]);
+    
     useEffect(() => {
-        if (selectedClass === "") {
-            getAllClasses()
-                .then((res) => {
-                    if (res !== -1) {
-                        setAllClasses(res.data);
-                        if (Array.isArray(res.data) && res.data.length > 0) {
-                            const temp_list = [];
-                            temp_list.push("All")
-                            for (var i = 0; i < res.data.length; i++) {
-                                temp_list.push(res.data[i].classYear)
-                            }
-                            //console.log("Prepared List: ", temp_list)
-                            setFormattedClasses(temp_list);
-                        }
-                    }
-                    //console.log("Getting Classes: ", res.data)
-                })
-                .catch(err => console.log(err))
-        }
-
-
-        //FOR SECTIONS
-        getAllSectionsInClassByClassYear(selectedClass)
-            .then((res) => {
-                setSelectedSection("")
-                if (res !== -1) {
-                    setSectionList(res.data);
-                    if (Array.isArray(res.data) && res.data.length > 0) {
-                        const temp_list = [];
-                        temp_list.push("All")
-                        for (var i = 0; i < res.data.length; i++) {
-                            temp_list.push(res.data[i].sectionName)
-                        }
-                        //console.log("Prepared List: ", temp_list)
-                        setFormattedSectionList(temp_list);
-                    }
-                }
-                if (res === -1) {
-                    // console.log("No sections found")
-                    setSectionList([])
-                    setFormattedSectionList([])
-                }
-                //console.log("Getting Classes: ", res.data)
-            })
-            .catch(err => console.log(err))
-
-
-    }, [selectedClass])
-
+        getAllStudents().then((response) => {
+          if (response.status === 201) {
+            console.log(response.data);
+            setTeachersList(response.data);
+            setTeachersMasterList(response.data);
+            if (response.data.length !== teacherOptions.length) {
+              var temp_list = [];
+              for (let i = 0; i < response.data.length; i++) {
+                let tempObj = { label: String(response.data[i].rollNumber) };
+                if (
+                  teacherOptions.find(
+                    (teacher) => teacher.label === tempObj.label
+                  ) === undefined
+                )
+                  temp_list.push(tempObj);
+              }
+              setTeacherOptions(temp_list);
+            }
+          } else if (response.status === 401) {
+            alert("Teacher not found");
+            console.log(response.data);
+          }
+        });// eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [addModalOpen]);
 
     const handleDateChange = (newDate) => {
         setExamDate(newDate);
@@ -94,8 +74,6 @@ const AddNewFeeForClass = () => {
         setDateCheck(false)
     }
     const StatusAlert = () => {
-        console.log("Alert check")
-        console.log(submitStatus)
         if (submitStatus === -1)
             return (
                 <Alert
@@ -118,42 +96,30 @@ const AddNewFeeForClass = () => {
             );
     };
 
-    const handleClassChange = (event) => {
-        setSelectedClass(event.target.value);
-        setSelectedSection("")
-        setClassCheck(true)
-        console.log("In the class setter")
-        if (event.target.value === "All") {
-            setClassCheck(false)
-        }
-        console.log(event.target.value)
-        console.log(selectedSection)
 
-    };
-    const handleSectionChange = (event) => {
-        console.log("In section Change")
-        console.log(event.target.value)
-        console.log(selectedClass)
-        setSelectedSection(event.target.value)
-        setClassCheck(false)
-    }
 
     const onSubmitHandler = async () => {
 
-        console.log("Class " + selectedClass)
+        console.log("Generating Normal Fee Challan for student")
         console.log("JS Date: ", new Date(examDate.$d))
-        console.log("The section is")
-        console.log(selectedSection)
-        generateFeeForListOfStudents(selectedClass, examDate.$d, selectedSection).then((res) => {
-            console.log(res)
-            if (res === 1) {
-                setSnackOpen(true)
-                console.log("Success x2")
-                setSubmitStatus(1)
-            }
+        console.log("The Student is")
+        console.log(username)
+        if(username === "")
+        {
+            setSubmitStatus(-1)
             setSnackOpen(true)
+            console.log("No student")
         }
-        )
+        else {
+            generateStudentFee(Number(username), examDate.$d ).then((res) =>{
+                console.log(res)       
+                    console.log("Success x2")
+                    setSubmitStatus(1)
+                setSnackOpen(true)
+            }
+            )
+        }
+      
     }
     const BackButtonClicked = () => {
         let url = '/Fee/AddNewFees';
@@ -179,53 +145,71 @@ const AddNewFeeForClass = () => {
         setAddModalOpen((isOpen) => !isOpen);
     }
 
-    const ConfirmHandler = () => {
-        console.log("In submission")
-        console.log(tuFee)
-        console.log(fiFee)
-        console.log(otFee)
-        if (otFee.trim().length === 0) {
-            console.log("Empty Value lol")
+    const ConfirmHandler = () =>
+    {
+
+        if(otFee.trim().length === 0)
+        {
+       
             setErrCheck(true)
         }
         else {
             setErrCheck(false)
         }
-        if (tuFee.trim().length === 0) {
-            console.log("Empty Value lol")
+        if(tuFee.trim().length === 0)
+        {
+    
             setErr1Check(true)
         }
         else {
             setErr1Check(false)
         }
-        if (fiFee.trim().length === 0) {
-            console.log("Empty Value lol")
+        if(fiFee.trim().length === 0)
+        {
+        
             setErr2Check(true)
         }
         else {
             setErr2Check(false)
         }
-        if (fiFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0) {
-            addFeeDetailToStudentFeeRecord(selectedClass, selectedSection, Number(tuFee), Number(fiFee), Number(otFee)).then
-                ((res) => {
-                    if (res == 1) {
-                        setAddModalOpen((isOpen) => !isOpen)
-                        setSnackOpen(true)
-                        setSubmitStatus(1)
-                    }
-                    else {
-                        console.log("error1")
-                    }
-
-                })
+        if(fiFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && username !== "")
+        {
+          
+   
+            generateNewStudentFee(Number(username), examDate.$d, Number(tuFee), Number(fiFee), Number(otFee)).then((res) => {
+                console.log(res)
+                if(res === 1)
+                {
+                    setSubmitStatus(1)
+                    setSnackOpen(true)
+                    setAddModalOpen((isOpen) => !isOpen);
+                }
+                else {
+                    setSubmitStatus(-1)
+                    setSnackOpen(true)
+                    
+                }
+            })
         }
         return
     }
+    const textChange = (value) => {
+        setUsername(value);
+        //console.log(Number(username));
+        //console.log("here: " + value);
+        if (typeof value === Number) {
+          const filteredArray = teachersMasterList.filter((teacher) => {
+            return teacher.username.includes(value);
+          });
+          setTeachersList(filteredArray);
+        }
+    
+      };
 
     return (
         <Grid justifyContent="center" display="flex" flex-direction="row">
             <Grid item>
-                <Modal
+            <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     open={addModalOpen}
@@ -246,8 +230,8 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                Enter Fee Details for
-
+                                Enter Fee Details
+                                
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -255,8 +239,8 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-
-                                Class : {selectedClass} || Section : {selectedSection}
+                                
+                               Roll Number : {Number(username)}
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -264,9 +248,9 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <TextField error={errCheck1} value={tuFee} label="Tuition Fee" onChange={(event) => { setTuFee(event.target.value.replace(/\D/g, '')) }}></TextField>
-                                </Box>
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck1} value = {tuFee} label="Tuition Fee" onChange = {(event) => {setTuFee(event.target.value.replace(/\D/g, ''))}}></TextField>
+                            </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -274,11 +258,11 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <TextField error={errCheck2} value={fiFee} label="Fine Fee" onChange={(event) => { setFiFee(event.target.value.replace(/\D/g, '')) }}>
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck2} value = {fiFee} label="Fine Fee" onChange = {(event) => {setFiFee(event.target.value.replace(/\D/g, ''))}}>
 
-                                    </TextField>
-                                </Box>
+                            </TextField>
+                            </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -286,11 +270,11 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <TextField error={errCheck} value={otFee} label="Other Fee(s)" onChange={(event) => { setOtFee(event.target.value.replace(/\D/g, '')) }}>
+                            <Box sx={{ width: '100%'}}>
+                            <TextField error = {errCheck} value = {otFee} label="Other Fee(s)" onChange = {(event) => {setOtFee(event.target.value.replace(/\D/g, ''))}}>
 
-                                    </TextField>
-                                </Box>
+                            </TextField>
+                            </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -298,13 +282,13 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <Typography>
-                                        Total Fee : {Number(otFee) + Number(fiFee) + Number(tuFee)}
-                                    </Typography>
-                                </Box>
+                            <Box sx={{ width: '100%'}}>
+                            <Typography>
+                                Total Fee : {Number(otFee) + Number(fiFee) + Number(tuFee)}
                             </Typography>
-
+                            </Box>
+                            </Typography>
+                            
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                                 <Button
                                     onClick={() => setAddModalOpen((prevState) => !prevState)}
@@ -314,7 +298,7 @@ const AddNewFeeForClass = () => {
                                 >
                                     Go Back
                                 </Button>
-                                <Button variant="outlined" color="success" onClick={ConfirmHandler} >
+                                <Button variant="outlined" color="success" onClick = {ConfirmHandler} >
                                     Confirm
                                 </Button>
                             </Box>
@@ -333,7 +317,7 @@ const AddNewFeeForClass = () => {
                     }}
                 >
                     <Avatar sx={{ mr: 2 }}>
-                        <MonetizationOnIcon />
+                    <MonetizationOnIcon/>
 
                     </Avatar>
                     <Typography variant="h4">New Fee Challan</Typography>
@@ -349,52 +333,23 @@ const AddNewFeeForClass = () => {
                         p: 1,
                     }}
                 >  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DesktopDatePicker
-                            label="Due Date"
-                            inputFormat="DD/MM/YYYY"
-                            value={examDate}
-                            onChange={handleDateChange}
-                            renderInput={(params) => <TextField sx={{ pb: 3, flex: "100%" }} {...params} />}
-                        />
-                    </LocalizationProvider>
-
+                <DesktopDatePicker
+                    label="Due Date"
+                    inputFormat="DD/MM/YYYY"
+                    value={examDate}
+                    onChange={handleDateChange}
+                    renderInput={(params) => <TextField sx={{ pb: 3, flex: "100%" }} {...params} />}
+                />
+            </LocalizationProvider>
+               
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="demo-simple-select-label">Class</InputLabel>
-                        <Select
-                            sx={{ mb: 3, flex: "100%", width: '100%' }}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectedClass}
-                            label="Class"
-                            onChange={handleClassChange}
-                            defaultValue=""
-                        >
-                            {formattedClasses.map((item) => (
-                                <MenuItem key={item} value={item}>{item}</MenuItem>
-                            ))
-                            }
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="demo-simple-select-label">Section</InputLabel>
-                        <Select
-                            sx={{ mb: 3, flex: "100%", width: '100%' }}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectedSection}
-                            label="Class"
-                            onChange={handleSectionChange}
-                            defaultValue=""
-                        >
-                            {formattedSectionList.map((item) => (
-                                <MenuItem key={item} value={item}>{item}</MenuItem>
-                            ))
-                            }
-                        </Select>
-                    </FormControl>
-
-
-
+                    <SearchBox
+                  onChange={textChange} // filtering the new array
+                  inputValue={username} //rollNumber
+                  options={teacherOptions} //options
+                  label="Student RollNumber"
+                />
+                    </FormControl>                
 
                     <Grid container display="flex" justifyContent="flex">
 
@@ -403,9 +358,9 @@ const AddNewFeeForClass = () => {
                             variant="contained"
                             endIcon={<SendIcon />}
                             fullWidth sx={{ mb: 2 }}
-                            disabled={classCheck}
+                            
                         >
-
+                            
                             Generate Normal Chalan
                         </Button>
                         <Button
@@ -413,12 +368,12 @@ const AddNewFeeForClass = () => {
                             variant="contained"
                             endIcon={<SendIcon />}
                             fullWidth sx={{ mb: 2 }}
-                            disabled={classCheck}
+                            
                         >
-
+                            
                             Generate New Challan
                         </Button>
-                        <Button startIcon={<ArrowBackIcon />} onClick={BackButtonClicked} fullWidth sx={{ mb: 2 }} variant="outlined">
+                        <Button  startIcon={<ArrowBackIcon />} onClick = {BackButtonClicked}  fullWidth sx={{ mb: 2 }} variant = "outlined">
                             Back
                         </Button>
                     </Grid>
@@ -440,4 +395,4 @@ const AddNewFeeForClass = () => {
     );
 }
 
-export default AddNewFeeForClass;
+export default AddNewFeeForStudent;
