@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Grid, Card, Typography, Avatar, IconButton,  Button, Divider, Modal, Backdrop, Fade, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Grid, Card, Typography, Avatar, IconButton, Button, Divider, Modal, Backdrop, Fade, Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { getAllTeachers, getAllSections, assignTeacher, getTeacher, getSectionById, unAssignTeacher } from "../../services/UserService";
 import { Cloudinary } from "@cloudinary/url-gen";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -63,19 +63,19 @@ const AssignTeacher = () => {
         setModalOpen(false);
     };
 
-    const openModal2 = async(username) => {
+    const openModal2 = async (username) => {
         setSelectedTeacher(username);
         const teacher = await getTeacher(username);
         console.log(teacher.data.sections)
 
-        if (Array.isArray(teacher.data.sections) && teacher.data.sections.length > 0){
+        if (Array.isArray(teacher.data.sections) && teacher.data.sections.length > 0) {
             const temp_sections = [];
-            for (let i=0; i< teacher.data.sections.length; i++){
-               // console.log("HELLo")
+            for (let i = 0; i < teacher.data.sections.length; i++) {
+                // console.log("HELLo")
                 const temp_sec = await getSectionById(teacher.data.sections[i]);
                 console.log("HERE:", temp_sec.data)
                 if (temp_sec.data !== null)
-                temp_sections.push(temp_sec.data)
+                    temp_sections.push(temp_sec.data)
             }
             setTeacherSections(temp_sections);
         }
@@ -86,14 +86,14 @@ const AssignTeacher = () => {
         setTeacherSectionOptions([]);
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         const temp_options = [];
-        if(Array.isArray(teacherSections) && teacherSections.length > 0 && teacherSections !== null){
-            for (let i=0; i<teacherSections.length; i++){
+        if (Array.isArray(teacherSections) && teacherSections.length > 0 && teacherSections !== null) {
+            for (let i = 0; i < teacherSections.length; i++) {
                 console.log("Hello: ", teacherSections[i])
                 const temp_str = teacherSections[i].classYear + " " + teacherSections[i].sectionName;
                 temp_options.push(temp_str)
-                
+
             }
         }
         setTeacherSectionOptions(temp_options);
@@ -117,7 +117,7 @@ const AssignTeacher = () => {
                 setAllSections(res.data);
                 console.log("Unformatted", res.data)
                 setFormattedSections(getClassAndSections(res.data).sort());
-                
+
                 //setFormattedSections(formattedSections.sort());
             })
             .catch(err => console.log(err))
@@ -171,12 +171,12 @@ const AssignTeacher = () => {
     const handleClassChange = (event) => {
         setSelectedClass(event.target.value);
         console.log(event.target.value)
-      };
+    };
 
     const handleUnAssignClassChange = (event) => {
         setSelectedClassDrop(event.target.value);
         console.log(event.target.value)
-      };
+    };
 
     const AssignClassHandler = () => {
         console.log("Assign", selectedClass, " to ", selectedTeacher)
@@ -184,10 +184,10 @@ const AssignTeacher = () => {
         const tokens = selectedClass.split(" ");
         const classYear = tokens[0];
         const section = tokens[1];
-        assignTeacher(username, classYear, section).then(res=>console.log(res.data))
+        assignTeacher(username, classYear, section).then(res => console.log(res.data))
         setModalOpen(false);
     }
-// comment for dummy commit
+    // comment for dummy commit
     const UnAssignClassHandler = () => {
         setModal2Open(false);
         console.log("Un Assign", selectedClassDrop, " to ", selectedTeacher)
@@ -196,10 +196,10 @@ const AssignTeacher = () => {
         const section = tokens[1];
         //console.log("Drop class", classYear, " section: ", section)
         const response = unAssignTeacher(selectedTeacher, classYear, section);
-        if (response.status === 201){
+        if (response.status === 201) {
             console.log("Teacher un-assigned successfully")
         }
-        else{
+        else {
             console.log("Teacher was NOT un-assigned successfully")
         }
 
@@ -209,7 +209,11 @@ const AssignTeacher = () => {
     return (
 
         <Grid container spacing={3}>
-            <Grid item xs={12}><Card><Typography variant='h4' sx={{ textAlign: 'center' }}>Select a Teacher</Typography></Card></Grid>
+            <Grid item xs={12}>
+                <Card>
+                    <Typography variant='h4' sx={{ textAlign: 'center' }}>Select a Teacher</Typography>
+                </Card>
+            </Grid>
             <Grid item xs={11}>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -226,17 +230,17 @@ const AssignTeacher = () => {
                         <Box sx={style}>
                             <Grid container>
                                 <Grid item>
-                            <Typography
-                                id="transition-modal-title"
-                                variant="h6"
-                                component="h2"
-                                sx={{ mb: 2 }}
-                            >
-                                Select a Class and Section
-                            </Typography>
-                            </Grid>
+                                    <Typography
+                                        id="transition-modal-title"
+                                        variant="h6"
+                                        component="h2"
+                                        sx={{ mb: 2 }}
+                                    >
+                                        Select a Class and Section
+                                    </Typography>
+                                </Grid>
 
-                            <Grid item xs={12}><FormControl fullWidth sx={{mb:2}}>
+                                <Grid item xs={12}><FormControl fullWidth sx={{ mb: 2 }}>
                                     <InputLabel id="demo-simple-select-label">Class</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
@@ -246,41 +250,41 @@ const AssignTeacher = () => {
                                         onChange={handleClassChange}
                                         defaultValue=""
                                     >
-                                        {formattedSections.map((item)=>(
+                                        {formattedSections.map((item) => (
                                             <MenuItem value={item}>{item}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                                 </Grid>
 
-                            <Grid item xs={12}>
-                            <Box
-                                sx={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                                
-                            >
-                                
-                                <Button
-                                    onClick={closeModal}
-                                    variant="contained"
-                                    component="label"
-                                    sx={{ mr: 3 }}
-                                >
-                                    Go Back
-                                </Button>
-                                <Button
-                                    onClick={AssignClassHandler}
-                                    variant="outlined"
-                                    color="success"
-                                >
-                                    ASSIGN
-                                </Button>
-                                
-                            </Box>
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <Box
+                                        sx={{
+                                            width: "100%",
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+
+                                    >
+
+                                        <Button
+                                            onClick={closeModal}
+                                            variant="contained"
+                                            component="label"
+                                            sx={{ mr: 3 }}
+                                        >
+                                            Go Back
+                                        </Button>
+                                        <Button
+                                            onClick={AssignClassHandler}
+                                            variant="outlined"
+                                            color="success"
+                                        >
+                                            ASSIGN
+                                        </Button>
+
+                                    </Box>
+                                </Grid>
                             </Grid>
                         </Box>
                     </Fade>
@@ -301,17 +305,17 @@ const AssignTeacher = () => {
                         <Box sx={style}>
                             <Grid container>
                                 <Grid item>
-                            <Typography
-                                id="transition-modal-title"
-                                variant="h6"
-                                component="h2"
-                                sx={{ mb: 2 }}
-                            >
-                                Select Class to Un-Assign
-                            </Typography>
-                            </Grid>
+                                    <Typography
+                                        id="transition-modal-title"
+                                        variant="h6"
+                                        component="h2"
+                                        sx={{ mb: 2 }}
+                                    >
+                                        Select Class to Un-Assign
+                                    </Typography>
+                                </Grid>
 
-                            <Grid item xs={12}><FormControl fullWidth sx={{mb:2}}>
+                                <Grid item xs={12}><FormControl fullWidth sx={{ mb: 2 }}>
                                     <InputLabel id="demo-simple-select-label">Class</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
@@ -321,42 +325,42 @@ const AssignTeacher = () => {
                                         onChange={handleUnAssignClassChange}
                                         defaultValue=""
                                     >
-                                        {teacherSectionOptions.length>0 ? teacherSectionOptions.map((item)=>(
+                                        {teacherSectionOptions.length > 0 ? teacherSectionOptions.map((item) => (
                                             <MenuItem value={item}>{item}</MenuItem>
-                                        )): <MenuItem color="error" value={""}>{"No sections found"}</MenuItem>}
+                                        )) : <MenuItem color="error" value={""}>{"No sections found"}</MenuItem>}
                                     </Select>
                                 </FormControl>
                                 </Grid>
 
-                            <Grid item xs={12}>
-                            <Box
-                                sx={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                                
-                            >
-                                
-                                <Button
-                                    onClick={closeModal2}
-                                    variant="contained"
-                                    component="label"
-                                    sx={{ mr: 3 }}
-                                >
-                                    Go Back
-                                </Button>
-                                <Button
-                                    onClick={UnAssignClassHandler}
-                                    variant="outlined"
-                                    color="error"
-                                    disabled = {teacherSectionOptions.length===0}
-                                >
-                                    UN ASSIGN
-                                </Button>
-                                
-                            </Box>
-                            </Grid>
+                                <Grid item xs={12}>
+                                    <Box
+                                        sx={{
+                                            width: "100%",
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+
+                                    >
+
+                                        <Button
+                                            onClick={closeModal2}
+                                            variant="contained"
+                                            component="label"
+                                            sx={{ mr: 3 }}
+                                        >
+                                            Go Back
+                                        </Button>
+                                        <Button
+                                            onClick={UnAssignClassHandler}
+                                            variant="outlined"
+                                            color="error"
+                                            disabled={teacherSectionOptions.length === 0}
+                                        >
+                                            UN ASSIGN
+                                        </Button>
+
+                                    </Box>
+                                </Grid>
                             </Grid>
                         </Box>
                     </Fade>
@@ -385,7 +389,7 @@ const AssignTeacher = () => {
                                 <GroupAddIcon fontSize="small" />
                             </IconButton>
                             <IconButton onClick={() => { openModal2(value.username) }} sx={{ height: '100%', width: '50%' }} aria-label="delete" size="small">
-                                <GroupRemoveIcon fontSize="small"/>
+                                <GroupRemoveIcon fontSize="small" />
                             </IconButton>
                         </Grid>
 
@@ -396,7 +400,7 @@ const AssignTeacher = () => {
             ))}
             <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid item xs={12} textAlign="right">
-                    <Button variant= "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>Go Back</Button>
+                    <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>Go Back</Button>
                 </Grid>
             </Grid>
         </Grid>

@@ -43,6 +43,7 @@ router.patch('/addMarks/:examId', ExamController.addMarks);
     },
 */
 
+router.get('/getMarks/:examId', ExamController.getMarks);
 
 router.patch('/updateMarks/:examId', ExamController.updateMarks);
 /* 

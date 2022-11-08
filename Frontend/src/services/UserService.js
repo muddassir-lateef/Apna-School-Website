@@ -629,3 +629,10 @@ export async function addMarks(marksList, examId) {
   });
   return response;
 }
+
+export async function getMarks(examId) {
+  //http://localhost:5000/exam/getMarks/63689cac7bb3db22973189b7
+  let tempURL = URL + `exam/getMarks/${examId}`;
+  const response = await axios.get(tempURL);
+  return response;
+}

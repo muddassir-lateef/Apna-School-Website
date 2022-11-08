@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAllExams, deleteExam } from '../../services/UserService';
 import { Grid, Card, CardContent, CardActions, Typography, Box, Button, Divider, Modal, Backdrop, Fade } from "@mui/material";
 import SearchBox from "../../components/SearchBox";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import GradingIcon from '@mui/icons-material/Grading';
 import { useNavigate } from 'react-router-dom';
 const style = {
     position: "absolute",
@@ -15,7 +16,7 @@ const style = {
     borderRadius: '2%',
     boxShadow: 24,
     p: 4,
-  };
+};
 const AllExams = () => {
     const navigate = useNavigate();
     const [examsMasterList, setExamsMasterList] = useState([]);
@@ -29,32 +30,32 @@ const AllExams = () => {
         setSearchTitle(value);
         if (typeof value === "string") {
             const filteredArray = examsMasterList.filter((exam) => {
-              return exam.subject.toLowerCase().includes(value.toLowerCase());
+                return exam.subject.toLowerCase().includes(value.toLowerCase());
             });
             setExamsList(filteredArray);
-          }
+        }
         if (value.length === 0) setExamsList(examsMasterList);
     }
-    useEffect(()=>{
+    useEffect(() => {
         getAllExams()
-        .then((res)=>{
-            setExamsMasterList(res.data)
-            setExamsList(res.data)
-            if (Array.isArray(res.data) && res.data.length !== examOptions.length) {
-                var temp_list = [];
-                for (let i = 0; i < res.data.length; i++) {
-                    let tempObj = { label: String(res.data[i].subject) };
-                    if (
-                        examOptions.find(
-                            (exam) => exam.label === tempObj.label
-                        ) === undefined
-                    )
-                        temp_list.push(tempObj);
+            .then((res) => {
+                setExamsMasterList(res.data)
+                setExamsList(res.data)
+                if (Array.isArray(res.data) && res.data.length !== examOptions.length) {
+                    var temp_list = [];
+                    for (let i = 0; i < res.data.length; i++) {
+                        let tempObj = { label: String(res.data[i].subject) };
+                        if (
+                            examOptions.find(
+                                (exam) => exam.label === tempObj.label
+                            ) === undefined
+                        )
+                            temp_list.push(tempObj);
+                    }
+                    setExamOptions(temp_list);
                 }
-                setExamOptions(temp_list);
-            }
-            console.log(res.data)
-        })// eslint-disable-next-line
+                console.log(res.data)
+            })// eslint-disable-next-line
     }, []);
 
     const handleModalClose = () => {
@@ -66,21 +67,21 @@ const AllExams = () => {
         console.log("Id: ", examId);
         setModalOpen(true);
     }
-    const deleteExamForSure = async() => {
+    const deleteExamForSure = async () => {
         const res = await deleteExam(examToDelete);
-        if (res.status === 202){
+        if (res.status === 202) {
             console.log("Exam deleted Successfully")
         }
-        else{
+        else {
             console.log("Exam was NOT deleted")
         }
         setModalOpen(false);
         const temp_exams = examsList.filter(
-        (exam) => exam._id !== examToDelete
+            (exam) => exam._id !== examToDelete
         );
         setExamsList(temp_exams);
         setExamOptions(
-        examOptions.filter((option) => option.label !== searchTitle)
+            examOptions.filter((option) => option.label !== searchTitle)
         );
     }
 
@@ -144,52 +145,72 @@ const AllExams = () => {
                 </Modal>
             </Grid>
             {examsList.map((item) => (
-            <Grid
-                item
-                sm={12}
-                md={6}
-                lg={4}
-                key={item._id}
-                sx={{ display: "flex", justifyContent: "center" 
-            }}
-            >
-                <Card sx={{ minWidth: 320, maxWidth:320}}>
-                    <CardContent height='100%' onClick={()=>{navigate(`/exams/${item._id}`)}}>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {item.subject}
-                        </Typography>
-                    </CardContent>
-                    <Divider />
-                    <CardActions>
-                        <Box
-                            sx={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            }}
-                        >
-                            <Button
-                            sx={{ width: "40%" }}
-                            variant="contained"
-                            component="label"
-                            startIcon={<EditIcon />}
-                            onClick={()=>{navigate(`/exams/uploadMarks/${item._id}`)}}
+                <Grid
+                    item
+                    sm={12}
+                    md={6}
+                    lg={4}
+                    key={item._id}
+                    sx={{
+                        display: "flex", justifyContent: "center"
+                    }}
+                >
+                    <Card sx={{ minWidth: 320, maxWidth: 320 }}>
+                        <CardContent sx={{backgroundColor:'#f2f2f2'}} height='100%' onClick={() => { navigate(`/exams/${item._id}`) }}>
+                            <Typography gutterBottom variant="h5" component="div">
+                                {item.subject}
+                            </Typography>
+                        </CardContent>
+                        <Divider />
+                        <CardActions sx={{ display: "flex" }}>
+                            <Grid
+                                container
+                                sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
                             >
-                            Mark
-                            </Button>
-                            <Button
-                            sx={{ width: "40%" }}
-                            variant="outlined"
-                            color="error"
-                            onClick={() => handleExamDelete(item._id)}
-                            startIcon={<DeleteIcon />}
-                            >
-                            Delete
-                            </Button>
-                        </Box>
-                </CardActions>
-                </Card>
-            </Grid>
+                                <Grid item>
+                                    <Button
+                                        //sx={{ width: "40%" }}
+                                        sm={6}
+                                        variant="contained"
+                                        component="label"
+                                        startIcon={<EditIcon />}
+                                        onClick={() => { navigate(`/exams/uploadMarks/${item._id}`) }}
+                                    >
+                                        Mark
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        //sx={{ width: "40%" }}
+                                        sm={6}
+                                        variant="outlined"
+                                        color="error"
+                                        onClick={() => handleExamDelete(item._id)}
+                                        startIcon={<DeleteIcon />}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        sx={{ width: "100%", mt: 1 }}
+                                        variant = 'outlined'
+                                        component="label"
+                                        startIcon={<GradingIcon />}
+                                        onClick={() => { navigate(`/exams/viewMarks/${item._id}`) }}
+                                    >
+                                        View Marks
+                                    </Button>
+                                </Grid>
+
+                            </Grid>
+                        </CardActions>
+                    </Card>
+                </Grid>
             ))}
         </Grid>
     )

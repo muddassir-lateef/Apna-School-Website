@@ -139,12 +139,16 @@ const updateMarks = async(req, res, next) => {
 
 const dropExam = async(req, res, next) => {
   const examId = req.params.examId;
+  const exam = await Exam.findById(examId);
+  if (exam !== null && Array.isArray(exam.marks))
+  for (let i=0; i<exam.marks.length; i++){
+    await Marks.findByIdAndRemove(exam.marks[i]);
+  }
   Exam.findByIdAndRemove(examId)
   .then(() =>
     res.status(202).json("Exam Deleted successfuly!")
   )
   .catch((err) => res.status(400).json("Error: " + err));
-
 }
 
 const getExamById = async(req, res, next) => {
@@ -158,6 +162,27 @@ const getExamById = async(req, res, next) => {
   }
 }
 
+const getMarks = async(req, res, next) => {
+  const examId = req.params.examId;
+  const exam = await Exam.findById(examId);
+  if (exam === null){
+    return res.status(404).json({message: "Marks were not found!"});
+  }
+
+  if (Array.isArray(exam.marks) && exam.marks.length > 0){
+    const marksList = []
+    for (let i=0; i<exam.marks.length; i++){
+      const mark = await Marks.findById(exam.marks[i]).populate('studentId');
+      marksList.push(mark)
+    }
+
+    return res.status(200).json(marksList)
+  }
+
+  return res.status(404).json({message: "Marks were not found!"});
+  
+}
+
 exports.dropExam = dropExam;
 exports.createExam = createExam;
 exports.getAllExams = getAllExams;
@@ -165,3 +190,4 @@ exports.updateExam = updateExam;
 exports.addMarks = addMarks;
 exports.updateMarks = updateMarks;
 exports.getExamById = getExamById;
+exports.getMarks = getMarks;

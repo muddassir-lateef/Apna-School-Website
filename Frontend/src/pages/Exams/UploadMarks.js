@@ -6,26 +6,12 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DoneIcon from '@mui/icons-material/Done';
 import { VALIDATOR_MINLENGTH, VALIDATOR_MIN, VALIDATOR_MAX, validate } from "../../services/validators";
-import { useForm } from '../../hooks/form-hook';
-import Input from "../../components/Input";
 import { getAllStudentsInClass, getExamById } from '../../services/UserService';
 import { TextField } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import { addMarks } from '../../services/UserService';
 
-
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 250,
-    bgcolor: "background.paper",
-    borderRadius: '2%',
-    boxShadow: 24,
-    p: 4,
-};
 
 const UploadMarks = () => {
     const examId = useParams().examId;
@@ -199,7 +185,7 @@ const UploadMarks = () => {
                     </Grid>
                     <Grid item xs={12} sm={2} lg={3}>
                         <TextField
-                            sx={{flex: "100%" }}
+                            sx={{flex: "100%", width:'100%' }}
                             id="marks"
                             label="Marks Obtained"
                             variant="standard"
