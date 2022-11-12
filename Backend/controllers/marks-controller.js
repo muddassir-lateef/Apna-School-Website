@@ -5,6 +5,7 @@ const getAllMarks = async(req, res, next) => {
     try {
         Marks.find()
           .populate("studentId")
+          .populate("examId")
           .then((marks) => res.status(201).json(marks))
           .catch((err) => res.status(400).json("Error: " + err));
       } catch (err) {
