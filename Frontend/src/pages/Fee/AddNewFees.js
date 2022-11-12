@@ -2,13 +2,16 @@ import * as React from 'react';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box'
+import { deepOrange } from '@mui/material/colors';
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useLocation } from "react-router-dom";
-import { Typography } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
 
 
 
@@ -25,27 +28,53 @@ export default function AddNewFees() {
 
   return (
     <Grid justifyContent="center" display="flex" flex-direction="row">
-    <Card sx={{ width: "90%", maxWidth: "900px" }}>
-                  <Divider variant="middle" />
-                  <Typography>
-    Generate Fee Challans for Student(s)
+     
+
+    <Card sx={{ width: "90%", maxWidth: "300"  }}>
+    <CardContent alignItems="center" onClick = {() =>  navigate('/Fee/Add/NewFeeForStudent')}>
+    <Stack direction="row" spacing={2}>
+     <Box   alignItems="center" sx={{  width: 300,  height: 100, backgroundColor: 'primary.dark', '&:hover': {  backgroundColor: 'primary.main', opacity: [0.9, 0.8, 0.7],}, }}>
+     
+     <Avatar
+        sx={{ bgcolor: deepOrange[500]  }}
+        alt="Remy Sharp"
+        src="/broken-image.jpg"
+      >
+        B
+      </Avatar>
+    
+    </Box>
+     <Typography>
+      Hello
     </Typography>
-                  <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%' }} variant  = "outlined" onClick = {StudentFeeClicked}>
-      Student
-     </Button>
-     </Box>
-    <Divider></Divider>
     <Typography>
-    Generate Fee Challans for Classes & Sections
+      Np
     </Typography>
-    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-     <Button  fullWidth sx={{  mb: 3, flex: "100%", width: '100%'}} variant = "outlined" onClick = {ClassFeeClicked}>
-      Class
-     </Button>
-     </Box>
-    <Divider></Divider>
+    </Stack>
+    </CardContent>
+    <CardContent alignItems="center" onClick = {() =>  navigate('/Fee/Add/NewFeeForClass')}>
+    <Stack direction="row" spacing={2}>
+     <Box   alignItems="center" sx={{  width: 300,  height: 100, backgroundColor: 'primary.dark', '&:hover': {  backgroundColor: 'primary.main', opacity: [0.9, 0.8, 0.7],}, }}>
+     
+     <Avatar
+        sx={{ bgcolor: deepOrange[500] }}
+        alt="Remy Sharp"
+        src="/broken-image.jpg"
+      >
+        B
+      </Avatar>
+    
+    </Box>
+     <Typography>
+      Hello
+    </Typography>
+    <Typography>
+      Np
+    </Typography>
+    </Stack>
+    </CardContent>
     </Card>
+    
     </Grid>
       
   );

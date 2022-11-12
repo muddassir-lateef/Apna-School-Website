@@ -5,14 +5,18 @@ import Paper from '@mui/material/Paper';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
+import ReplayIcon from '@mui/icons-material/Replay';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, Input, Grid } from '@mui/material'
 import Stack from '@mui/material/Stack';
+import EditIcon from '@mui/icons-material/Edit';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import PaidIcon from '@mui/icons-material/Paid';
 import Box from '@mui/material/Box';
+import Card from "@mui/material/Card"
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -106,7 +110,7 @@ const StudentFeeRecord = () => {
       {
         setUndo(true)
         return (
-          <Button variant = "outlined" onClick = {() => setEdit(false)}>
+          <Button  startIcon= {<EditIcon />}variant = "outlined" onClick = {() => setEdit(false)}>
             Edit
           </Button>
         )
@@ -115,19 +119,20 @@ const StudentFeeRecord = () => {
 
     const undoClicked = () => {
       setFlag((isOpen) => !isOpen)
+      setEdit(true)
     }
       
           return ( 
-            <Paper variant="outlined" square>
+            <Card sx={{width : '100%', maxWidth : 500, bgcolor : '0000'}}>
               <List sx={{ width: '100%', maxWidth: 500, bgcolor: '#0000' }} justifyContent="space-between">
                 <ListItem textAlign = "right">
-                  <Typography variant = "h6" gutterBottom>
+                  <Typography variant = "h6" gutterBottom  textAlign = "center" >
                     Fee Record
                   </Typography>
                 </ListItem>
                 <Grid container display="flex" justifyContent="space-between">
                 <OnEditClicked type = {edit}/> 
-                    <Button disabled = {undo} variant = "outlined" onClick = {undoClicked}>
+                    <Button  startIcon = {<ReplayIcon/> } disabled = {undo} variant = "outlined" onClick = {undoClicked}>
                       UNDO
                     </Button>                 
                  </Grid>      
@@ -187,12 +192,12 @@ const StudentFeeRecord = () => {
                 <Button variant = "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>
                     Back
                   </Button>
-                <Button variant = "outlined" onClick = {viewAllFeeClick}>
+                <Button endIcon = {<ArrowForwardIcon/>} variant = "outlined" onClick = {viewAllFeeClick}>
                     View All Fees
                   </Button>
                    
                  </Grid>
-                </Paper>
+                </Card>
               
 
           )

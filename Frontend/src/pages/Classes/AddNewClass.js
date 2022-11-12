@@ -111,7 +111,7 @@ const AddNewTeacher = () => {
            <Grid item xs={12} textAlign="right">
           <Button
                 variant="contained"
-                endIcon={<ArrowBackIcon/>}
+                startIcon={<ArrowBackIcon/>}
                 sx={{ mt: 2 }}
                 onClick={backButtonHandler}
               >

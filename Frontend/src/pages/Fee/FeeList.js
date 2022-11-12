@@ -7,6 +7,7 @@ import { VALIDATOR_MIN, VALIDATOR_MINLENGTH } from "../../services/validators";
 import Divider from '@mui/material/Divider';
 import SearchBox from "../../components/SearchBox";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CardContent from '@mui/material/CardContent';
 import ListItemText from '@mui/material/ListItemText';
 import { deepOrange, deepPurple, deepBlue } from '@mui/material/colors';
 import { Button, Grid, Backdrop, Modal, Fade, Box, getInitColorSchemeScript, TextField, Card, Input } from '@mui/material'
@@ -50,6 +51,7 @@ const FeeRecordInfo = () => {
                 console.log(response.data);
                 console.log("Sections Found")
                 setFeeList(response.data);
+                console.log(response.data)
                 setDisplayFlag(true)
                 if (response.data === null) {
                     setDisplayFlag(false)
@@ -61,18 +63,20 @@ const FeeRecordInfo = () => {
                 console.log(response.data);
             }
         })
-        feeList.sort(function (a, b) { return b.remainingFee - a.remainingFee })
+        feeList.sort((a,b) => a.remainingFee - b.remainingFee);
     }, [addModalOpen, delModalOpen, payModalOpen]);
     const NameDisplay = () => {
         return (
-            <Paper variant="contained">
+            <Card  sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
+                <CardContent>
                 <Typography variant="h6" gutterBottom>
                     Name : {firstName + "  " + lastName}
                 </Typography>
                 <Typography variant="h6" gutterBottom>
                     Roll Number : {rollNumber}
                 </Typography>
-            </Paper>
+                </CardContent>
+            </Card>
 
         )
     }
@@ -106,7 +110,7 @@ const FeeRecordInfo = () => {
             <Typography
             sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant= "h7" gutterBottom
                                         color="text.primary">
                 Generation Date: {newDate}
             </Typography>
@@ -123,7 +127,7 @@ const FeeRecordInfo = () => {
             <Typography
             sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary">
                 Due Date: None
             </Typography>
@@ -135,7 +139,7 @@ const FeeRecordInfo = () => {
             <Typography
             sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary">
                 Due Date: {newDate}
             </Typography>
@@ -154,16 +158,15 @@ const FeeRecordInfo = () => {
 
     const FeeDisplay = () => {
         if (displayFlag === true)
+        feeList.sort((a,b) => b.remainingFee - a.remainingFee);
             return (
                 feeList.map((fee) => (
 
-                    <Paper variant="outlined">
-                        <List sx={{ width: '100%', maxWidth: 360, bgcolor: '#0000' }}>
-                            <ListItemAvatar>
-                                <Avatar sx={{ bgcolor: '#182747' }} >
-                                    <PaidIcon />
-                                </Avatar>
-                            </ListItemAvatar>
+
+                        <Card  sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
+                            
+                        <List sx={{ width: '100%', maxWidth: 340, bgcolor: '#0000' }}>
+                        <CardContent  style={{backgroundColor: "#01579b"}}>
                             <ListItemText
                                 secondary={
 
@@ -184,22 +187,24 @@ const FeeRecordInfo = () => {
                                     <Typography
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant ="h7" gutterBottom
                                         color="text.primary"
                                     >
-                                        Fee ID: {fee._id}
+                                        ID: {fee._id}
                                     </Typography>
 
                                 }
                             />
+                            </CardContent>
                             <Divider />
+                            <CardContent>
                             <ListItemText
                                 primary={
 
                                     <Typography
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary"
                                     >
                                         Tuition Fee:   {fee.tuitionFee}
@@ -210,10 +215,10 @@ const FeeRecordInfo = () => {
                             <ListItemText
                                 primary={
 
-                                    <Typography
+                                    <Typography 
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary"
                                     >
                                         Other Fee(s):   {fee.otherFee}
@@ -224,13 +229,13 @@ const FeeRecordInfo = () => {
                               <ListItemText
                                 primary={
 
-                                    <Typography
+                                    <Typography 
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary"
                                     >
-                                        Fine Fee   {fee.fineFee}
+                                        Fine Fee:   {fee.fineFee}
                                     </Typography>
 
                                 }
@@ -241,7 +246,7 @@ const FeeRecordInfo = () => {
                                     <Typography
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary"
                                     >
                                         Paid Fee:   {fee.paidFee}
@@ -255,7 +260,7 @@ const FeeRecordInfo = () => {
                                     <Typography
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary"
                                     >
                                         Total Fee: {fee.totalFee}
@@ -263,14 +268,17 @@ const FeeRecordInfo = () => {
 
                                 }
                             />
+                            
+                            </CardContent>
                             <Divider />
+                            <CardContent>
                             <ListItemText
                                 primary={
 
                                     <Typography
                                         sx={{ display: 'inline' }}
                                         component="span"
-                                        variant="body2"
+                                        variant="h7" gutterBottom
                                         color="text.primary"
                                     >
                                         Remaining Fee:   {fee.remainingFee}
@@ -278,7 +286,7 @@ const FeeRecordInfo = () => {
 
                                 }
                             />
-                            
+                            </CardContent>
                             <Divider />
                             <Divider />
                             <ListItemText>
@@ -289,11 +297,14 @@ const FeeRecordInfo = () => {
                                     <ColorPicker Type={fee.remainingFee} />
                                 </Stack>
                             </ListItemText>
+                            
                             <Divider />
-                            <Divider />
-                            <Divider />
-                        </List>
-                    </Paper>
+                            
+                        </List> 
+                         
+                                                         
+                        </Card>
+                        
                 ))
             );
 
@@ -421,7 +432,7 @@ const FeeRecordInfo = () => {
                             </Box>
                             <Typography
                                 id="transition-modal-title"
-                                variant="h6"
+                                variant="h7"
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
@@ -463,7 +474,7 @@ const FeeRecordInfo = () => {
                             </Box>
                             <Typography
                                 id="transition-modal-title"
-                                variant="h6"
+                                variant="h7"
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
@@ -505,16 +516,16 @@ const FeeRecordInfo = () => {
                             </Box>
                             <Typography
                                 id="transition-modal-title"
-                                variant="h6"
+                                variant="h7"
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
                                 Enter The Amount To Pay
                             </Typography>
-                            <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
+                            <Typography id="transition-modal-title" variant="h7" component="h2" sx={{ mb: 2 }}>
                                 Remaining Amount : {tempFeeAmount}
                             </Typography>
-                            <Typography id="transition-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
+                            <Typography id="transition-modal-title" variant="h7" component="h2" sx={{ mb: 2 }}>
                             <Input
                              id="outlined-error-helper-text"
                              label="Error"
