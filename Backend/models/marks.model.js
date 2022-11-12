@@ -17,9 +17,9 @@ const marksSchema = new Schema({
   },
 
   //Exam to which the marks belong
-  //examId:{
-    //type:Schema.Types.ObjectId ,ref:'Exam',
-  //}
+  examId:{
+    type:Schema.Types.ObjectId ,ref:'Exam',
+  }
 
 },
  {

@@ -636,3 +636,10 @@ export async function getMarks(examId) {
   const response = await axios.get(tempURL);
   return response;
 }
+
+export async function getAllMarks() {
+  //http://localhost:5000/marks
+  let tempURL = URL + `marks`;
+  const response = await axios.get(tempURL);
+  return response;
+}

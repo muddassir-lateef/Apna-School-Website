@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid, Card, Typography } from "@mui/material";
-import { getAllStudentsInClass, getExamById, getMarks } from '../../services/UserService';
+import { getExamById, getMarks } from '../../services/UserService';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -82,7 +82,7 @@ const ViewExamMarks = () => {
             <Grid item xs={12}>
                 <Card>
                     <Typography variant='h4' sx={{ textAlign: 'center' }}>
-                        Exam Marks, Class {exam.classId.classYear}
+                       {exam.subject} Marks, Class {exam.classId.classYear}
                     </Typography>
                 </Card>
             </Grid>

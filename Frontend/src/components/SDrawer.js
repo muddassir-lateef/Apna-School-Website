@@ -7,7 +7,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React, { useState } from "react";
 import ClassIcon from '@mui/icons-material/Class';
 import Face6Icon from '@mui/icons-material/Face6';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import AddIcon from '@mui/icons-material/Add';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 const drawerWidth = 240;
@@ -27,9 +27,9 @@ const initial_menuItems = [
       icon: <AddIcon />
     },
     {
-      title: "Calendar",
-      path: '/admin/calendar',
-      icon: <CalendarMonthIcon /> 
+      title: "Results",
+      path: '/students/results',
+      icon: <SportsScoreIcon /> 
     }
     ]
   },
