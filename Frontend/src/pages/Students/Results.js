@@ -127,7 +127,7 @@ const Results = () => {
             setRows([])
             return;
         }
-        const tempMarks = allMarks.filter(item=>item.studentId.rollNumber == username)
+        const tempMarks = allMarks.filter(item=>item.studentId && item.studentId.rollNumber == username)
         console.log("TEMP MARKS: ", tempMarks)
         if (Array.isArray(tempMarks) && tempMarks.length > 0){
             const tempRows = [];
