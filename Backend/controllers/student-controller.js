@@ -243,8 +243,12 @@ const deleteStudent = async (req, res, next) => {
       .catch((err) => console.log(err));
   
     const tempFeeRecord = await FeeRecord.findById(temp_student.feeRecord).populate('feeList')
-    console.log(tempFeeRecord.feeList.length)
- 
+    console.log(tempFeeRecord)
+
+    if(tempFeeRecord.feeList !== null)
+    {
+      console.log("Null")
+    
     console.log("Fee list not null")
       for (let i=0; i< tempFeeRecord.feeList.length; i++)
       {
@@ -253,6 +257,7 @@ const deleteStudent = async (req, res, next) => {
     const deletefeecheck = await FeeDetails.findByIdAndDelete(tempFeeRecord.feeList[i]._id)
     
       }
+    }
     const deletecheck = await FeeRecord.findByIdAndDelete(tempFeeRecord._id);
       console.log("Fee record deleted")
     if (temp_student !== null) {

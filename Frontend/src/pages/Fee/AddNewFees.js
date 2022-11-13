@@ -7,7 +7,9 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box'
 import { deepOrange } from '@mui/material/colors';
 import Grid from '@mui/material/Grid'
+import GroupsIcon from '@mui/icons-material/Groups';
 import Button from '@mui/material/Button'
+import PersonIcon from '@mui/icons-material/Person';
 import { styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,54 +29,28 @@ export default function AddNewFees() {
   }
 
   return (
-    <Grid justifyContent="center" display="flex" flex-direction="row">
+    <Grid justifyContent="center" container spacing={2}>
      
+    <Grid item>
 
-    <Card sx={{ width: "90%", maxWidth: "300"  }}>
-    <CardContent alignItems="center" onClick = {() =>  navigate('/Fee/Add/NewFeeForStudent')}>
-    <Stack direction="row" spacing={2}>
-     <Box   alignItems="center" sx={{  width: 300,  height: 100, backgroundColor: 'primary.dark', '&:hover': {  backgroundColor: 'primary.main', opacity: [0.9, 0.8, 0.7],}, }}>
-     
-     <Avatar
-        sx={{ bgcolor: deepOrange[500]  }}
-        alt="Remy Sharp"
-        src="/broken-image.jpg"
-      >
-        B
-      </Avatar>
     
-    </Box>
-     <Typography>
-      Hello
-    </Typography>
-    <Typography>
-      Np
-    </Typography>
-    </Stack>
-    </CardContent>
-    <CardContent alignItems="center" onClick = {() =>  navigate('/Fee/Add/NewFeeForClass')}>
-    <Stack direction="row" spacing={2}>
-     <Box   alignItems="center" sx={{  width: 300,  height: 100, backgroundColor: 'primary.dark', '&:hover': {  backgroundColor: 'primary.main', opacity: [0.9, 0.8, 0.7],}, }}>
-     
-     <Avatar
-        sx={{ bgcolor: deepOrange[500] }}
-        alt="Remy Sharp"
-        src="/broken-image.jpg"
-      >
-        B
-      </Avatar>
-    
-    </Box>
-     <Typography>
-      Hello
-    </Typography>
-    <Typography>
-      Np
-    </Typography>
-    </Stack>
+    <Card sx={{ width: "90%", maxWidth: "300"  }} >
+    <CardContent alignItems="center">
+    <Button startIcon = {<PersonIcon/>} size="large" onClick = {StudentFeeClicked}>
+      SINGLE STUDENT
+    </Button>
     </CardContent>
     </Card>
-    
+    </Grid>
+    <Grid item >
+    <Card sx={{ width: "90%", maxWidth: "300"  }} >
+    <CardContent alignItems="center">
+    <Button startIcon={<GroupsIcon />} textAlign = "center" size="large" onClick = {ClassFeeClicked}>
+      MULTIPLE STUDENTS
+    </Button>
+    </CardContent>
+    </Card>
+    </Grid>
     </Grid>
       
   );

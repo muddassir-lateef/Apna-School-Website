@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Image } from "cloudinary-react";
-import { Typography, Card, Grid, Box, Button, CardContent, CardActions } from "@mui/material";
+import { Typography, Card, Grid, Box, Button, CardContent, CardActions, TextField } from "@mui/material";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Avatar from "@mui/material/Avatar";
@@ -22,26 +22,29 @@ const AddNewTeacher = () => {
   const [previewSource, setPreviewSource] = useState("");
   const [pageFlag, setPageFlag] = useState(0)
   const [imageValue, setImageValue] = useState("")
+  const [tuitionFee, setTuitionFee] = useState(0)
+  const [otherFee, setOtherFee] = useState(0)
+  const [scholarshipAmount, setScholarShipAmount] = useState(0)
   const navigate = useNavigate();
-  const [formStateFee, InputHandlerFee] = useForm(
-    {
-    tuitionFee: {
-      type: Number,
-      value: 0,
-      isValid: false,
-    },
-    otherFee: {
-      type: Number,
-      value: 0,
-      isValid: false
-    },
-    scholarshipAmount: {
-      type: Number,
-      value: 0,
-      isValid: false,
-    },
-  }
-  )
+  // const [formStateFee, InputHandlerFee] = useForm(
+  //   {
+  //   tuitionFee: {
+  //     type: Number,
+  //     value: 0,
+  //     isValid: false,
+  //   },
+  //   otherFee: {
+  //     type: Number,
+  //     value: 0,
+  //     isValid: false
+  //   },
+  //   scholarshipAmount: {
+  //     type: Number,
+  //     value: 0,
+  //     isValid: false,
+  //   },
+  // }
+  // )
 
   const [formStateStudent, InputHandlerStudent] = useForm(
     {
@@ -102,9 +105,9 @@ const AddNewTeacher = () => {
       formStateStudent.inputs.phoneNumber.value,
       formStateStudent.inputs.houseAddress.value,
       image,
-      formStateFee.inputs.tuitionFee.value,
-      formStateFee.inputs.otherFee.value,
-      formStateFee.inputs.scholarshipAmount.value
+      tuitionFee,
+      otherFee,
+      scholarshipAmount
     )
       .then((res) => {
         if (res.status === 201) {
@@ -122,7 +125,6 @@ const AddNewTeacher = () => {
         setSnackOpen(true);
       });
     console.log(formStateStudent.inputs)
-    console.log(formStateFee.inputs);
   };
 
   const StatusAlert = () => {
@@ -280,7 +282,7 @@ const AddNewTeacher = () => {
             <Input
               sx={{ pr: 2, pb: 2, flex: "100%" }}
               id="phoneNumber"
-              label="Phone Nmmber"
+              label="Phone Number"
               variant="standard"
               onInput={InputHandlerStudent}
               validators={[VALIDATOR_MINLENGTH(1)]}
@@ -353,33 +355,24 @@ const AddNewTeacher = () => {
               p: 1,
             }}
           >
-            <Input
-              sx={{ pr: 2, pb: 3, flex: "100%" }}
-              id="tuitionFee"
-              label="Tuition Fee"
-              variant="standard"
-              onInput={InputHandlerFee}
-              validators={[VALIDATOR_MIN(0)]}
-              errorText="Tuition Fee is a required field (Can be 0)"
-            />
-            <Input
-              sx={{ pr: 2, pb: 3, flex: "100%" }}
-              id="otherFee"
-              label="Other Fees"
-              variant="standard"
-              onInput={InputHandlerFee}
-              validators={[VALIDATOR_MIN(0)]}
-              errorText="Other Fees is a required field (Can be 0)"
-            />
-            <Input
-              sx={{ pr: 2, pb: 3, flex: "100%" }}
-              id="scholarshipAmount"
-              label="Scholarship (If Any)"
-              variant="standard"
-              onInput={InputHandlerFee}
-              validators={[VALIDATOR_MIN(0)]}
-              errorText="Scholarship Amount is a required Field(Can be 0)"
-            />
+            <Box sx={{ width: '100%'}}>
+            <TextField value = {tuitionFee} variant="standard" label="Tuition Fee" onChange = {(event) => {setTuitionFee(event.target.value.replace(/\D/g, ''))}}>
+              
+            </TextField >
+            </Box>
+            <Box sx={{ width: '100%'}}>
+            <TextField variant="standard" label="Other Fees" value = {otherFee} onChange = {(event) => {setOtherFee(event.target.value.replace(/\D/g, ''))}} >
+              Hey
+            </TextField >
+            </Box>
+
+            <Box sx={{ width: '100%'}}>
+            <TextField variant="standard" label="Scholarship Amount" value = {scholarshipAmount} onChange = {(event) => {setScholarShipAmount(event.target.value.replace(/\D/g, ''))}}>
+              Hey
+            </TextField>
+            </Box>
+
+
             <Box
               sx={{
                 display: "flex",
@@ -406,7 +399,7 @@ const AddNewTeacher = () => {
                 variant="contained"
                 endIcon={<ArrowForwardIcon />}
                 sx={{ mt: 2 }}
-                disabled={!formStateFee.isValid}
+              
               >
                 Next
               </Button>
@@ -460,13 +453,13 @@ const AddNewTeacher = () => {
               {'Student Fee Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Tuition Fee: ' + formStateFee.inputs.tuitionFee.value }
+              {'Tuition Fee: ' + tuitionFee }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Other Fees Fee: ' + formStateFee.inputs.otherFee.value }
+              {'Other Fees Fee: ' + otherFee }
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Scholarship Amount : ' + formStateFee.inputs.scholarshipAmount.value }
+              {'Scholarship Amount : ' + scholarshipAmount }
             </Typography>
             <Grid container display="flex" justifyContent="space-between" >
               <Box

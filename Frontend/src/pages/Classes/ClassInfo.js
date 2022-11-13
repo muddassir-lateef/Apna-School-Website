@@ -141,6 +141,7 @@ const SearchTeacher = () => {
             All Sections in Class {classYear}
           </Typography>
           </Paper>
+          
       </Grid>
       <Grid item xs={11}>
         <Modal
@@ -186,7 +187,7 @@ const SearchTeacher = () => {
           <Paper>
           <TextField  error = {error === true}
           id="filled-error-helper-text"
-           helperText= {helperText}  sx={{ height: '100%', width: '100%' }} variant="outlined" label = "Section Name" 
+           helperText= {helperText}   variant="outlined" label = "Section Name" 
            value={addSectionName}
            onChange = {onTextField}
           > 
@@ -224,7 +225,10 @@ const SearchTeacher = () => {
             <Card sx={{ padding: 1, height: 45, display: "flex", alignItems: "center", textAlign: 'center' }}>
               <Typography width='100%'> Strength : {item.strength}</Typography>
             </Card>
+           
           </Grid>
+          
+          
           <Grid item xs={12} sm={2} lg={3}>
             <Button  variant='outlined' sx={{ height: '100%', width: '100%' }} onClick={() => handleTeacherDelete(item.sectionName)}>Remove</Button>
           </Grid>

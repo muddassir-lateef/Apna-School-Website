@@ -262,6 +262,9 @@ export default function AlignItemsList() {
             <Typography variant="h4" sx={{ textAlign: 'center' }}>
               Class : {classYear + sectionName}
             </Typography>
+            <Typography variant = "h4"  sx={{ textAlign: 'center' }}>
+            Section Head : {}
+          </Typography>
           </Grid>
           <Grid item xs={8}>
 
