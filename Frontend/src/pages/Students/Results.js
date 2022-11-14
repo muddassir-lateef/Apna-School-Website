@@ -25,7 +25,7 @@ const ref = React.createRef();
 
 const StyledTableCell = styled(TableCell)(({ }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.results.table.main,
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
