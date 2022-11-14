@@ -17,11 +17,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Cloudinary } from "@cloudinary/url-gen";
+import { theme } from '../../Themes/Default-theme';
 
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(({ }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -29,7 +29,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(({  }) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
     },
@@ -207,6 +207,7 @@ const Results = () => {
                 </Grid>
 
             ))}
+            {rows.length > 0 && (
             <Grid item xs={12} sx={{ display: "flex", pb:1, width: '100%'}} >
                 <TableContainer sx={{overflowX: 'scroll'}} component={Paper}>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -232,7 +233,7 @@ const Results = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Grid>
+            </Grid>)}
         </Grid>
     )
 }
