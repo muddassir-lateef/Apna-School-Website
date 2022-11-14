@@ -10,6 +10,7 @@ import Face6Icon from '@mui/icons-material/Face6';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import AddIcon from '@mui/icons-material/Add';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
 const drawerWidth = 240;
 const initial_menuItems = [
   {
@@ -110,7 +111,19 @@ const initial_menuItems = [
     },
 
     ]
-  }
+  },
+  {
+    
+    menuTitle: "Certifications",
+    visible: false,
+    enteries: [{
+      title: "Generate Certificate",
+      path: '/certificates/generate',
+      icon: <CardMembershipIcon />
+    },
+    ]
+  },
+
 
 
 
