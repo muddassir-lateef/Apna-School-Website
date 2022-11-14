@@ -5,7 +5,8 @@ import {
     Card,
     CardContent,
     Typography,
-    Avatar
+    Avatar,
+    Button
 } from "@mui/material";
 import SearchBox from "../../components/SearchBox";
 import { styled } from '@mui/material/styles';
@@ -18,6 +19,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { theme } from '../../Themes/Default-theme';
+import Pdf from "react-to-pdf";
+const ref = React.createRef();
+
 
 const StyledTableCell = styled(TableCell)(({ }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -29,7 +33,7 @@ const StyledTableCell = styled(TableCell)(({ }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({  }) => ({
+const StyledTableRow = styled(TableRow)(({ }) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
     },
@@ -43,8 +47,8 @@ function createData(subject, totalMarks, obtainedMarks, percentage) {
     return { subject, totalMarks, obtainedMarks, percentage };
 }
 //const rows = [
-  //  createData('Shayan Amir', 7, 'C', 88, 95),
- //   createData('Salar Abbas', 7, 'C', 90, 97)
+//  createData('Shayan Amir', 7, 'C', 88, 95),
+//   createData('Salar Abbas', 7, 'C', 90, 97)
 //]
 function stringToColor(string) {
     let hash = 0;
@@ -111,9 +115,9 @@ const Results = () => {
         });// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(()=>{
-        getAllMarks().then((res)=>{
-            if (res.status === 201 && Array.isArray(res.data)){
+    useEffect(() => {
+        getAllMarks().then((res) => {
+            if (res.status === 201 && Array.isArray(res.data)) {
                 console.log("All Marks: ", res.data)
                 setAllMarks(res.data)
             }
@@ -122,26 +126,26 @@ const Results = () => {
     }, [])
 
     //whenever we change the student
-    useEffect(()=>{
-        if (username === ""){
+    useEffect(() => {
+        if (username === "") {
             setRows([])
             return;
         }
-        const tempMarks = allMarks.filter(item=>item.studentId && item.studentId.rollNumber == username)
+        const tempMarks = allMarks.filter(item => item.studentId && item.studentId.rollNumber == username)
         console.log("TEMP MARKS: ", tempMarks)
-        if (Array.isArray(tempMarks) && tempMarks.length > 0){
+        if (Array.isArray(tempMarks) && tempMarks.length > 0) {
             const tempRows = [];
-            for (let i=0; i<tempMarks.length; i++){
+            for (let i = 0; i < tempMarks.length; i++) {
                 //'Shayan Amir', 7, 'C', 88, 95
-                tempRows.push(createData(tempMarks[i].examId.subject, 
-                    tempMarks[i].examId.totalMarks, 
-                    tempMarks[i].obtainedMarks, 
+                tempRows.push(createData(tempMarks[i].examId.subject,
+                    tempMarks[i].examId.totalMarks,
+                    tempMarks[i].obtainedMarks,
                     ((parseFloat(tempMarks[i].obtainedMarks) / parseFloat(tempMarks[i].examId.totalMarks) * 100).toFixed(2))
                 ))
             }
             setRows(tempRows)
         }
-        else{
+        else {
             setRows([])
             return;
 
@@ -173,7 +177,7 @@ const Results = () => {
             <Grid item xs={12}>
                 <Card>
                     <Typography variant='h4' sx={{ textAlign: 'center' }}>
-                       Select a Student
+                        Select a Student
                     </Typography>
                 </Card>
             </Grid>
@@ -208,32 +212,47 @@ const Results = () => {
 
             ))}
             {rows.length > 0 && (
-            <Grid item xs={12} sx={{ display: "flex", pb:1, width: '100%'}} >
-                <TableContainer sx={{overflowX: 'scroll'}} component={Paper}>
-                    <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Exam</StyledTableCell>
-                                <StyledTableCell align="right">Total Marks</StyledTableCell>
-                                <StyledTableCell align="right">Obtained Marks</StyledTableCell>
-                                <StyledTableCell align="right">Percentage</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows.map((row) => (
-                                <StyledTableRow key={row.name}>
-                                    <StyledTableCell component="th" scope="row">
-                                        {row.subject}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">{row.totalMarks}</StyledTableCell>
-                                    <StyledTableCell align="right">{row.obtainedMarks}</StyledTableCell>
-                                    <StyledTableCell align="right">{row.percentage}</StyledTableCell>
-                                </StyledTableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>)}
+                <Grid item xs={12} sx={{ display: "flex", pb: 1, width: '100%', overflowX: 'scroll' }} >
+                    <TableContainer ref={ref} sx={{ minWidth: { xs: 350, sm: 800 }, maxWidth: { xs: 350, sm: 800 } }} component={Paper}>
+                        <Table aria-label="customized table">
+                            <TableHead>
+                                {studentList.length > 0 && 
+                                <TableRow>
+                                    <StyledTableCell><Avatar alt={studentList[0].name} src={imgToUrl(studentList[0].image)} sx={{ bgcolor: stringToColor(studentList[0]), width: 60, height: 60 }} /></StyledTableCell>
+                                    <StyledTableCell align="right">{studentList[0].firstName}</StyledTableCell>
+                                    <StyledTableCell align="right">{ studentList[0].lastName}</StyledTableCell>
+                                    <StyledTableCell align="right">{studentList[0].rollNumber}</StyledTableCell>
+                                </TableRow>
+                                }
+                                <TableRow>
+                                    <StyledTableCell>Exam</StyledTableCell>
+                                    <StyledTableCell align="right">Total Marks</StyledTableCell>
+                                    <StyledTableCell align="right">Obtained Marks</StyledTableCell>
+                                    <StyledTableCell align="right">Percentage</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map((row) => (
+                                    <StyledTableRow key={row.name}>
+                                        <StyledTableCell component="th" scope="row">
+                                            {row.subject}
+                                        </StyledTableCell>
+                                        <StyledTableCell align="right">{row.totalMarks}</StyledTableCell>
+                                        <StyledTableCell align="right">{row.obtainedMarks}</StyledTableCell>
+                                        <StyledTableCell align="right">{row.percentage}</StyledTableCell>
+                                    </StyledTableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>)}
+            {studentList.length > 0 &&
+            <Grid item sx={12} >
+                <Pdf targetRef={ref} filename={`${studentList[0].rollNumber}_result.pdf`}>
+                    {({ toPdf }) => <Button variant="contained" onClick={toPdf}>Download Result</Button>}
+                </Pdf>
+            </Grid>
+            }
         </Grid>
     )
 }
