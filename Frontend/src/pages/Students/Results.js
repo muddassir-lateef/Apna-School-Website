@@ -189,7 +189,7 @@ const Results = () => {
                     label="Student Roll Number"
                 />
             </Grid>
-            {studentList.map((value, index) => (
+            {rows.length===0 && studentList.map((value, index) => (
                 <Grid item xs={12} key={value.rollNumber}>
                     <Grid container spacing={2} >
                         <Grid item xs={0}  >
