@@ -1,5 +1,5 @@
 import axios from "axios";
-let apiURL = "http://localhost:5000/";
+let apiURL = "https://orca-app-5kw65.ondigitalocean.app/";
 
 export async function getCert(name) {
     let tempURL = apiURL + `certificate/generate/${name}`;
