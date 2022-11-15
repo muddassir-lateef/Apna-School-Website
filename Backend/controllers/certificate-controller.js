@@ -18,10 +18,10 @@ const genCert = async (req, res, next) => {
 
     // The name
     const name = req.params.name
-    const absPath = path.join(__dirname, "../certificate-Templates/cert2/images/certificate.png"); // <-- absolute path
+    const absPath = path.join(__dirname, "../certificateTemplates/cert2/images/certificate.png"); // <-- absolute path
 
     doc.image(absPath, 0, 0, { width: 842 });
-    const absPath1 = path.join(__dirname, "../certificate-Templates/cert2/fonts/DancingScript-VariableFont_wght.ttf"); // <-- absolute path
+    const absPath1 = path.join(__dirname, "../certificateTemplates/cert2/fonts/DancingScript-VariableFont_wght.ttf"); // <-- absolute path
     doc.font(absPath1);
     doc.fontSize(60).text(name, 60, 290, {
         align: "center"
