@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 require('dotenv').config();
 const HttpError = require('./models/http-error');
 
@@ -36,6 +35,7 @@ const teacherRouter = require('./routes/teacher-routes')
 const feeRecordRouter = require('./routes/feeRecord-routes');
 const classRouter = require('./routes/class-routes');
 const studentAttendanceRouter = require('./routes/studentAttendance-routes');
+const certificateRouter = require('./routes/certificate-routes');
 
 //app.use('/exercises', exercisesRouter);
 app.use('/staff',staffRouter);
@@ -51,6 +51,7 @@ app.use('/exam', examRouter);
 app.use('/marks', marksRouter);
 app.use('/lecture', lectureRouter);
 app.use('/studentAttendance', studentAttendanceRouter);
+app.use('/certificate', certificateRouter);
 
 //only runs if we get some request which did not get a response from upper middlewares
 app.use((req, res, next)=>{
