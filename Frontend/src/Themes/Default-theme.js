@@ -11,6 +11,11 @@ export const theme = createTheme({
     },
     otherColor:{
       main:"#999"
-    }
+    },
+    results : {
+      table: {
+        main: "#182747"
+      }
+    } 
   }
 })
