@@ -20,9 +20,9 @@ const genCert = async (req, res, next) => {
     const name = req.params.name
     const absPath = path.join(__dirname, "../certificateTemplates/cert2/images/certificate.png"); // <-- absolute path
 
-    doc.image(absPath, 0, 0, { width: 842 });
+    doc.image("/Backend/certificateTemplates/cert2/images/certificate.png", 0, 0, { width: 842 });
     const absPath1 = path.join(__dirname, "../certificateTemplates/cert2/fonts/DancingScript-VariableFont_wght.ttf"); // <-- absolute path
-    doc.font(absPath1);
+    doc.font("/Backend/certificateTemplates/cert2/fonts/DancingScript-VariableFont_wght.ttf");
     doc.fontSize(60).text(name, 60, 290, {
         align: "center"
     });
