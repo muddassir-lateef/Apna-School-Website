@@ -1,11 +1,12 @@
 const moment = require("moment");
 const PDFDocument = require("pdfkit");
 const path = require("path");
+const { dirname } = require("path");
 
 
 
 
-
+    
 const genCert = async (req, res, next) => {
 
     const doc = new PDFDocument({
@@ -19,10 +20,12 @@ const genCert = async (req, res, next) => {
     // The name
     const name = req.params.name
     const absPath = path.join(__dirname, "../certificateTemplates/cert2/images/certificate.png"); // <-- absolute path
+    console.log("Dir:",__dirname)
+    console.log("Path:",absPath)
 
-    doc.image("/Backend/certificateTemplates/cert2/images/certificate.png", 0, 0, { width: 842 });
+    doc.image(absPath, 0, 0, { width: 842 });
     const absPath1 = path.join(__dirname, "../certificateTemplates/cert2/fonts/DancingScript-VariableFont_wght.ttf"); // <-- absolute path
-    doc.font("/Backend/certificateTemplates/cert2/fonts/DancingScript-VariableFont_wght.ttf");
+    doc.font(absPath1);
     doc.fontSize(60).text(name, 60, 290, {
         align: "center"
     });
