@@ -34,7 +34,7 @@
     "xtypejs": "^0.7.1"
   },
   "scripts": {
-    "start": "serve  -s build",
+    "start": "react-scripts start",
     "build": " react-scripts --max_old_space_size=512 build --f",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
