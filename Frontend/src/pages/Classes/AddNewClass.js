@@ -68,6 +68,7 @@ const AddNewTeacher = () => {
         setStatusFlag(2)
       }
     })
+    
     console.log("All checks failed")
 
     

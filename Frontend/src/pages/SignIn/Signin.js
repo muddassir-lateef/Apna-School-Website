@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import LandingImage from './LandingImage.png'; 
 import { AuthContext } from '../../context/AuthContext';
 import {login as LoginUser} from '../../services/UserService';
 
@@ -80,8 +80,9 @@ export default function SignInSide() {
           xs={false}
           sm={4}
           md={7}
-          sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+          sx={{        
+            backgroundImage: `url(${LandingImage})`,
+
             backgroundRepeat: "no-repeat",
             backgroundColor: "primary", //(t) =>
             //t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

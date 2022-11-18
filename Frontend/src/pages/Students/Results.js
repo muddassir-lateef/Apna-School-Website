@@ -19,8 +19,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { theme } from '../../Themes/Default-theme';
-import Pdf from "react-to-pdf";
-const ref = React.createRef();
+//import Pdf from "react-to-pdf";
+//const ref = React.createRef();
 
 
 const StyledTableCell = styled(TableCell)(({ }) => ({
@@ -189,7 +189,7 @@ const Results = () => {
                     label="Student Roll Number"
                 />
             </Grid>
-            {rows.length===0 && studentList.map((value, index) => (
+            {rows.length === 0 && studentList.map((value, index) => (
                 <Grid item xs={12} key={value.rollNumber}>
                     <Grid container spacing={2} >
                         <Grid item xs={0}  >
@@ -213,16 +213,17 @@ const Results = () => {
             ))}
             {rows.length > 0 && (
                 <Grid item xs={12} sx={{ display: "flex", pb: 1, width: '100%', overflowX: 'scroll' }} >
-                    <TableContainer ref={ref} sx={{ minWidth: { xs: 350, sm: 800 }, maxWidth: { xs: 350, sm: 800 } }} component={Paper}>
+
+                    <TableContainer sx={{ minWidth: { xs: 350, sm: 800 }, maxWidth: { xs: 350, sm: 800 } }} component={Paper}>
                         <Table aria-label="customized table">
                             <TableHead>
-                                {studentList.length > 0 && 
-                                <TableRow>
-                                    <StyledTableCell><Avatar alt={studentList[0].name} src={imgToUrl(studentList[0].image)} sx={{ bgcolor: stringToColor(studentList[0]), width: 60, height: 60 }} /></StyledTableCell>
-                                    <StyledTableCell align="right">{studentList[0].firstName}</StyledTableCell>
-                                    <StyledTableCell align="right">{ studentList[0].lastName}</StyledTableCell>
-                                    <StyledTableCell align="right">{studentList[0].rollNumber}</StyledTableCell>
-                                </TableRow>
+                                {studentList.length > 0 &&
+                                    <TableRow>
+                                        <StyledTableCell><Avatar alt={studentList[0].name} src={imgToUrl(studentList[0].image)} sx={{ bgcolor: stringToColor(studentList[0]), width: 60, height: 60 }} /></StyledTableCell>
+                                        <StyledTableCell align="right">{studentList[0].firstName}</StyledTableCell>
+                                        <StyledTableCell align="right">{studentList[0].lastName}</StyledTableCell>
+                                        <StyledTableCell align="right">{studentList[0].rollNumber}</StyledTableCell>
+                                    </TableRow>
                                 }
                                 <TableRow>
                                     <StyledTableCell>Exam</StyledTableCell>
@@ -247,11 +248,9 @@ const Results = () => {
                     </TableContainer>
                 </Grid>)}
             {studentList.length > 0 &&
-            <Grid item sx={12} >
-                <Pdf targetRef={ref} filename={`${studentList[0].rollNumber}_result.pdf`}>
-                    {({ toPdf }) => <Button variant="contained" onClick={toPdf}>Download Result</Button>}
-                </Pdf>
-            </Grid>
+                <Grid item sx={12} >
+                    <Button variant="contained" >Download Result</Button>
+                </Grid>
             }
         </Grid>
     )
