@@ -28,6 +28,7 @@ import AddNewFeeForStudent from "../pages/Fee/NewFeeForStudent";
 import ViewExamMarks from "../pages/Exams/ViewExamMarks";
 import Results from "../pages/Students/Results";
 import GenCert from "../pages/Certificate/GenerateCertificate";
+import PrintFees from "../pages/Fee/PrintFee";
 
 export const LoggedOutRoutes = () => {
   let routes;
@@ -74,6 +75,7 @@ export const LoggedInRoutes = () => {
         <Route path = "Fee/FeeList" element = {<FeeList/>} />
         <Route path = "Fee/Add/NewFeeForClass" element = {<NewFeeForClass/>} />
         <Route path = "Fee/Add/NewFeeForStudent"element = {<AddNewFeeForStudent/>} />
+        <Route path = "/Fee/PrintFees" element = {<PrintFees/> } />
         </Routes>
     );
     return routes;

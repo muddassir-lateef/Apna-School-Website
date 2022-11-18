@@ -7,6 +7,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React, { useState } from "react";
 import ClassIcon from '@mui/icons-material/Class';
 import Face6Icon from '@mui/icons-material/Face6';
+import PrintIcon from '@mui/icons-material/Print';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import AddIcon from '@mui/icons-material/Add';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
@@ -98,6 +99,11 @@ const initial_menuItems = [
       title: "New Fees",
       path: '/Fee/AddNewFees',
       icon: <AddIcon />
+    },
+    {
+    title : "Print Fee",
+    path : '/Fee/PrintFees',
+    icon: <PrintIcon />
     }
     ]
   },

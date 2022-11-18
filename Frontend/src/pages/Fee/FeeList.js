@@ -52,10 +52,12 @@ const FeeRecordInfo = () => {
                 console.log("Sections Found")
                 setFeeList(response.data);
                 console.log(response.data)
-                setDisplayFlag(true)
+                
                 if (response.data === null) {
                     setDisplayFlag(false)
+                    console.log("Null data")
                 }
+                setDisplayFlag(true)
 
             }
             else if (response.status === -1) {
@@ -157,7 +159,8 @@ const FeeRecordInfo = () => {
 
 
     const FeeDisplay = () => {
-        if (displayFlag === true)
+        if (feeList !== null)
+        {
         feeList.sort((a,b) => b.remainingFee - a.remainingFee);
             return (
                 feeList.map((fee) => (
@@ -307,6 +310,7 @@ const FeeRecordInfo = () => {
                         
                 ))
             );
+                            }
 
     }
     const payAmountClicked = (id, rem) => {
