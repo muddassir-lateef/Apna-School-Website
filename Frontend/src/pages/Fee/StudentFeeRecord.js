@@ -11,6 +11,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, Input, Grid } from '@mui/material'
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
+import PrintIcon from '@mui/icons-material/Print';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -78,6 +79,12 @@ const StudentFeeRecord = () => {
         state: { param1: rollNumber, param2 : firstName, param3 : lastName},
       })
 
+    }
+    const printClicked = () => {
+      console.log("Print clicked")
+      navigate("/Fee/PrintFees", {
+        state : {param1 : rollNumber, param2 : firstName, param3 : lastName}
+      })
     }
 
     const onSaveClicked = () => {
@@ -192,6 +199,10 @@ const StudentFeeRecord = () => {
                 <Button variant = "outlined" startIcon={<ArrowBackIcon />} onClick={handleGoBackClick}>
                     Back
                   </Button>
+                  <Button variant = "outlined" startIcon={<PrintIcon />} onClick={printClicked}>
+                    Print Challan
+                  </Button>
+
                 <Button endIcon = {<ArrowForwardIcon/>} variant = "outlined" onClick = {viewAllFeeClick}>
                     View All Fees
                   </Button>
