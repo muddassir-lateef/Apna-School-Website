@@ -34,11 +34,15 @@ const AddNewFeeForStudent= () => {
     const [username, setUsername] = useState(0);
     const [formattedSectionList, setFormattedSectionList] = useState([])
     const [tuFee, setTuFee] = useState("")
-    const [fiFee, setFiFee] = useState("")
+    const [adFee, setAdFee] = useState("")
+    const [exFee, setExFee] = useState("")
+    const [spFee, setSpFee] = useState("")
     const [otFee, setOtFee] = useState("")
     const [errCheck, setErrCheck] = useState(false)
     const [errCheck1, setErr1Check] = useState(false)
     const [errCheck2, setErr2Check] = useState(false)
+    const [errCheck3, setErr3Check] = useState(false)
+    const [errCheck4, setErr4Check] = useState(false)
     const [teachersList, setTeachersList] = useState([]);
   const [teachersMasterList, setTeachersMasterList] = useState([]);
     
@@ -147,10 +151,11 @@ const AddNewFeeForStudent= () => {
 
     const ConfirmHandler = () =>
     {
+        console.log("Confirmed hanler")
 
         if(otFee.trim().length === 0)
         {
-       
+
             setErrCheck(true)
         }
         else {
@@ -158,13 +163,13 @@ const AddNewFeeForStudent= () => {
         }
         if(tuFee.trim().length === 0)
         {
-    
+  
             setErr1Check(true)
         }
         else {
             setErr1Check(false)
         }
-        if(fiFee.trim().length === 0)
+        if(adFee.trim().length === 0)
         {
         
             setErr2Check(true)
@@ -172,11 +177,28 @@ const AddNewFeeForStudent= () => {
         else {
             setErr2Check(false)
         }
-        if(fiFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && username !== "")
+        if(exFee.trim().length === 0)
+        {
+        
+            setErr4Check(true)
+        }
+        else {
+            setErr4Check(false)
+        }
+        if(spFee.trim().length === 0)
+        {
+        
+            setErr3Check(true)
+        }
+        else {
+            setErr3Check(false)
+        }
+        console.log("Before handler")
+        if(adFee.trim().length !== 0 && spFee.trim().length !== 0 && exFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && username !== "")
         {
           
-   
-            generateNewStudentFee(Number(username), examDate.$d, Number(tuFee), Number(fiFee), Number(otFee)).then((res) => {
+            console.log("Here")
+            generateNewStudentFee(Number(username), examDate.$d, Number(tuFee), Number(adFee), Number(spFee), Number(exFee), Number(otFee)).then((res) => {
                 console.log(res)
                 if(res === 1)
                 {
@@ -259,7 +281,19 @@ const AddNewFeeForStudent= () => {
                                 sx={{ mb: 2 }}
                             >
                             <Box sx={{ width: '100%'}}>
-                            <TextField  error = {errCheck2} value = {fiFee} label="Fine Fee" onChange = {(event) => {setFiFee(event.target.value.replace(/\D/g, ''))}}>
+                            <TextField  error = {errCheck2} value = {adFee} label="Admission Fee" onChange = {(event) => {setAdFee(event.target.value.replace(/\D/g, ''))}}>
+
+                            </TextField>
+                            </Box>
+                            </Typography>
+                            <Typography
+                                id="transition-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={{ mb: 2 }}
+                            >
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck3} value = {spFee} label="Sports Fee" onChange = {(event) => {setSpFee(event.target.value.replace(/\D/g, ''))}}>
 
                             </TextField>
                             </Box>
@@ -283,8 +317,20 @@ const AddNewFeeForStudent= () => {
                                 sx={{ mb: 2 }}
                             >
                             <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck4} value = {exFee} label="Exam Fee" onChange = {(event) => {setExFee(event.target.value.replace(/\D/g, ''))}}>
+
+                            </TextField>
+                            </Box>
+                            </Typography>
+                            <Typography
+                                id="transition-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={{ mb: 2 }}
+                            >
+                            <Box sx={{ width: '100%'}}>
                             <Typography>
-                                Total Fee : {Number(otFee) + Number(fiFee) + Number(tuFee)}
+                                Total Fee : {Number(otFee) + Number(exFee) + Number(adFee) + Number(spFee) + Number(tuFee)}
                             </Typography>
                             </Box>
                             </Typography>

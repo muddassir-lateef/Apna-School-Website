@@ -21,8 +21,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Pdf from "react-to-pdf";
-const ref = React.createRef();
 
 import Paper from '@mui/material/Paper';
 import { getAllFeeDetailsFromStudentFeeRecord, markFeePaid, deleteFeeDetails,payFee, getStudentFeeRecord } from "../../services/UserService";
@@ -223,9 +221,7 @@ export default function PrintFees() {
       </TableContainer>
       </Grid>
       <Grid item sx={12} >
-                <Pdf targetRef={ref} filename={`${rollNo}_FeeChallan.pdf`}>
-                    {({ toPdf }) => <Button variant="contained" onClick={toPdf}>Download Result</Button>}
-                </Pdf>
+
             </Grid>
 
       </Grid>

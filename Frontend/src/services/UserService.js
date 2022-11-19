@@ -1,5 +1,4 @@
 import axios from "axios";
-//let URL = "https://orca-app-5kw65.ondigitalocean.app/";
 let URL = "http://localhost:5000/";
 
 export async function login(username, password) {
@@ -131,18 +130,11 @@ export async function generateStudentFee(rollNumber, date)
     return -1
   }
 }
-export async function generateNewStudentFee(rollNumber, date, tuitionFee, fineFee, otherFee)
+export async function generateNewStudentFee(rollNumber, date, tuitionFee, admissionFee, sportsFee, examFee, otherFee)
 {
-  console.log("in generation user serivce")
-  console.log(rollNumber)
-  console.log(date)
-  console.log(tuitionFee)
-  console.log(fineFee)
-  console.log(otherFee)
-  const totalFee = tuitionFee + otherFee + fineFee
-  console.log(totalFee)
+  const totalFee = tuitionFee + otherFee + admissionFee + sportsFee + examFee;
   let tempURL = URL + 'feeRecord/generateNewStudentFee'
-  const response = await axios.patch(tempURL, {rollNumber, date, totalFee, tuitionFee, otherFee, fineFee})
+  const response = await axios.patch(tempURL, {rollNumber, date, totalFee, tuitionFee, otherFee, admissionFee, sportsFee, examFee})
   if(response.status === 201)
   {
     return 1
@@ -644,3 +636,4 @@ export async function getAllMarks() {
   const response = await axios.get(tempURL);
   return response;
 }
+

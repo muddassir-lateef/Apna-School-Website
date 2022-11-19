@@ -21,7 +21,15 @@ const feeDetailsSchema = new Schema({
 
   },
   //If any fines
-  fineFee: {
+  sportsFee: {
+    type: Number,
+    required: true,
+  },
+  admissionFee: {
+    type: Number,
+    required: true,
+  },
+  examFee: {
     type: Number,
     required: true,
   },
