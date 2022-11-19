@@ -17,7 +17,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { CardContent, TextField, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, {tableCellClasses} from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -127,7 +127,7 @@ export default function PrintFees() {
         <Grid container spacing={3}>
         <Grid item xs={12} sx={{ display: "flex", pb: 1, width: '100%', overflowX: 'scroll' }} >
 
-        <TableContainer component={Paper} ref={ref}  sx={{ minWidth: { xs: 350, sm: 800 }, maxWidth: { xs: 350, sm: 800 } }}>
+        <TableContainer component={Paper}   sx={{ minWidth: { xs: 350, sm: 800 }, maxWidth: { xs: 350, sm: 800 } }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
           <StyledTableRow sx={{ backgroundColor: theme.palette.primary.main }}>
