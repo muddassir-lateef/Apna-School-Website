@@ -49,6 +49,7 @@ const genCert = async (req, res, next) => {
 
 const genResult = async (req, res, next) => {
     let doc = new PDFDoc({ margin: 30, size: 'A4' });
+    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#c2cfff');
     const img1 = await fetchImage(NAPHS_LOGO_URL);
     doc.image(img1, 230, 10, {fit: [150, 120], align: 'center'})
     doc.moveDown();
