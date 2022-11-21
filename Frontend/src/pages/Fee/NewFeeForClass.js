@@ -120,6 +120,19 @@ const AddNewFeeForClass = () => {
                     Fee Generated Successfully!
                 </Alert>
             );
+
+            if(submitStatus === 2)
+            {
+                return(
+                <Alert
+                        onClose={() => setSnackOpen(false)}
+                        severity="error"
+                        sx={{ width: "100%" }}
+                    >
+                        Please Enter Due Date!
+                    </Alert>
+                )
+            }
     };
 
     const handleClassChange = (event) => {
@@ -148,6 +161,10 @@ const AddNewFeeForClass = () => {
         console.log("JS Date: ", new Date(examDate.$d))
         console.log("The section is")
         console.log(selectedSection)
+        console.log(examDate.$d)
+        if(examDate.$d !== undefined)
+        {
+            console.log("In submission")
         generateFeeForListOfStudents(selectedClass, examDate.$d, selectedSection).then((res) => {
             console.log(res)
             if (res === 1) {
@@ -158,6 +175,15 @@ const AddNewFeeForClass = () => {
             setSnackOpen(true)
         }
         )
+    }
+    else {
+        if(examDate.$d === undefined)
+        {
+            console.log("Undefined")
+            setSubmitStatus(2)
+            setSnackOpen(true)
+        }
+    }
     }
     const BackButtonClicked = () => {
         let url = '/Fee/AddNewFees';
@@ -184,9 +210,17 @@ const AddNewFeeForClass = () => {
     }
 
     const ConfirmHandler = () => {
+        console.log("ADGHSJDVHSDVH")
         console.log("In submission")
         console.log(tuFee)
         console.log(otFee)
+        console.log(examDate.$d)
+        if(examDate.$d === undefined)
+        {
+            console.log("Undefined")
+            setSubmitStatus(2)
+            setSnackOpen(true)
+        }
         if(otFee.trim().length === 0)
         {
 
@@ -227,7 +261,7 @@ const AddNewFeeForClass = () => {
         else {
             setErr3Check(false)
         }
-        if (spFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && adFee.trim().length !== 0 && exFee.trim().length !== 0)  {
+        if (spFee.trim().length !== 0 && examDate.$d !== undefined && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && adFee.trim().length !== 0 && exFee.trim().length !== 0)  {
             addFeeDetailToStudentFeeRecord(selectedClass, selectedSection, Number(tuFee), Number(adFee), Number(otFee), Number(spFee), Number(exFee)).then
                 ((res) => {
                     if (res == 1) {

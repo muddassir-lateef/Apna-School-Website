@@ -118,10 +118,10 @@ export default function PrintFees() {
       let currentDate = `${day}-${month}-${year}`;
       console.log(currentDate); // "17-6-2022"
       const rows = [
-        createData('Mohtly Tuition Fee', tempAmount),
+        createData('Monthly Tuition Fee', tempAmount),
         createData('Monthly Other Fee(s) ', tempAmount1),
         createData('Monthly Scholarship Amount ', tempAmount2),
-        createData('Monhtly Total Fee', feeRecord.totalFee),
+        createData('Monthly Total Fee', feeRecord.totalFee),
       ];
     return (
         <Grid container spacing={3}>
@@ -163,66 +163,14 @@ export default function PrintFees() {
               </TableRow>
             ))}
              <StyledTableRow>
-              <TableCell  align="center" colSpan={3}>Total Amount To Be Paid</TableCell>
+              <TableCell  align="center" colSpan={3}>Total Amount To Be Paid Including Previous Dues</TableCell>
               <TableCell  align="center" colSpan={3} >{feeRecord.outStandingFees}</TableCell>
               </StyledTableRow>
           </TableBody>
         </Table>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        <Divider/>
-        
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-          <StyledTableRow sx={{ backgroundColor: theme.palette.primary.main }}>
-              <TableCell>Roll Number</TableCell>
-              <TableCell align="right">First Name</TableCell>
-              <TableCell align="right">Last Name</TableCell>
-              <TableCell align="right">Fee Record ID</TableCell>
-              <TableCell align="right">Generation Date</TableCell>
-              </StyledTableRow>
-            <TableRow>
-              <TableCell>{rollNo}</TableCell>
-              <TableCell align="right">{fname}</TableCell>
-              <TableCell align="right">{lname}</TableCell>
-              <TableCell align="right">{feeRecord._id}</TableCell>
-              <TableCell align="right">{currentDate}</TableCell>
-            </TableRow>
-            <StyledTableRow>
-              <TableCell align="center" colSpan = {3} >Fee Type</TableCell>
-              <TableCell align="center" colSpan={3} >Amount in PKR</TableCell>
-              </StyledTableRow>
-            
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" align="center" colSpan={3}>
-                  {row.name}
-                </TableCell>
-                <TableCell  align="center" colSpan={3}>{row.Amount}</TableCell>
-              </TableRow>
-            ))}
-             <StyledTableRow>
-              <TableCell  align="center" colSpan={3}>Total Amount To Be Paid</TableCell>
-              <TableCell  align="center" colSpan={3} >{feeRecord.outStandingFees}</TableCell>
-              </StyledTableRow>
-          </TableBody>
-        </Table>
+    
       </TableContainer>
       </Grid>
-      <Grid item sx={12} >
-
-            </Grid>
 
       </Grid>
     )
