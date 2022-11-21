@@ -2,11 +2,21 @@ const moment = require("moment");
 const PDFDocument = require("pdfkit");
 const path = require("path");
 const { dirname } = require("path");
+let Student = require('../models/student.model');
+let { cloudinary } = require("../utils/cloudinary");
+const axios = require("axios")
 
+const PDFDoc = require("pdfkit-table")
+const IMG_URL = "http://res.cloudinary.com/dqxdmayga/image/upload/r_max/v1/";   //base url for student images 
+const NAPHS_LOGO_URL = "https://res.cloudinary.com/dqxdmayga/image/upload/v1669017689/ApnaSchoolAssets/276025027_3169127859989568_1243177423614720716_n_lekvgp.jpg";
 
-
-
-    
+  async function fetchImage(src) {
+    const image = await axios
+        .get(src, {
+            responseType: 'arraybuffer'
+        })
+    return image.data;
+}
 const genCert = async (req, res, next) => {
 
     const doc = new PDFDocument({
@@ -36,4 +46,91 @@ const genCert = async (req, res, next) => {
     doc.end();
 };
 
+
+const genResult = async (req, res, next) => {
+    let doc = new PDFDoc({ margin: 30, size: 'A4' });
+    const img1 = await fetchImage(NAPHS_LOGO_URL);
+    doc.image(img1, 230, 10, {fit: [150, 120], align: 'center'})
+    doc.moveDown();
+    //adding logo at the top 
+    res.setHeader('Content-type', 'application/pdf');
+   // console.log("ROW DATA: ", req.body)
+    const rollNumber = req.params.rollNumber
+    const tempStudent = await Student.find({rollNumber})
+   /* if (tempStudent !== null){
+        console.log("Student: ", tempStudent)
+        try{
+            const imgURL = IMG_URL + tempStudent[0].image;
+            //console.log("URL: ", imgURL)
+            const img = await fetchImage(imgURL);
+            doc.image(img, 420, 10, {fit: [100, 100]})
+            doc.moveDown();
+        }
+        catch (error) {
+            console.error(error);
+        }
+
+    }*/
+    
+    //console.log("ROLL NUMBER: ", rollNumber)
+
+    var totalMarks = 0;
+    var obtainedMarks = 0;
+    const rowData = []
+    if (Array.isArray(req.body) && req.body.length > 0){
+        for (let i=0; i<req.body.length; i++){
+            rowData.push([req.body[i].subject, req.body[i].totalMarks, req.body[i].obtainedMarks, req.body[i].percentage])
+            totalMarks += parseFloat(req.body[i].totalMarks)
+            obtainedMarks += parseFloat((req.body[i].obtainedMarks))
+        }
+    }
+
+    const tableArray0 = {
+        title: "Student Information",
+        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+        headers: [
+            { label: "Name", property: 'name', renderer: null }, 
+            { label: "Roll Number", property: 'rollNo', renderer: null }, 
+            { label: "Class", property: 'class', renderer: null }, 
+          ],
+        rows: [[tempStudent[0].firstName  + tempStudent[0].lastName, tempStudent[0].rollNumber , tempStudent[0].classYear]],
+    };
+    doc.table( tableArray0,{ width: 530, x: 25, y: 150, headerColor:'#182747'});
+    doc.moveDown(); doc.moveDown();
+    
+    const tableArray = {
+        title: "Term Performance",
+        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+        headers: [
+            { label: "Exam", property: 'exam', renderer: null },
+            { label: "Total Marks", property: 'totalmarks', renderer: null }, 
+            { label: "Obtained Marks", property: 'obtainedmarks', renderer: null }, 
+            { label: "percentage", property: 'perventage', renderer: null }, 
+          ],
+        rows: rowData,
+      };
+    doc.table( tableArray,{ width: 530, x: 25, headerColor:'#182747'});
+
+    for (let i=0; i<rowData.length-2; i++){
+        doc.moveDown();
+    }
+
+    const tableArray2 = {
+        title: "Overall Performance",
+        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+        headers: [
+            { label: "Total Marks", property: 'totalmarks', renderer: null }, 
+            { label: "Obtained Marks", property: 'obtainedmarks', renderer: null }, 
+            { label: "Percentage", property: 'percentage', renderer: null }, 
+          ],
+        rows: [[totalMarks, obtainedMarks, ((obtainedMarks/totalMarks) * 100).toFixed(2)]],
+    };
+    doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'});
+
+ 
+    doc.pipe(res);
+    doc.end();
+};
+
 exports.genCert = genCert;
+exports.genResult = genResult;

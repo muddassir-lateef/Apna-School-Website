@@ -19,6 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { theme } from '../../Themes/Default-theme';
+import { getResult } from '../../services/PDFService';
 //import Pdf from "react-to-pdf";
 //const ref = React.createRef();
 
@@ -247,9 +248,9 @@ const Results = () => {
                         </Table>
                     </TableContainer>
                 </Grid>)}
-            {studentList.length > 0 &&
+            {rows.length > 0 &&
                 <Grid item sx={12} >
-                    <Button variant="contained" >Download Result</Button>
+                    <Button onClick={()=>getResult(rows, username)} variant="contained" >Download Result</Button>
                 </Grid>
             }
         </Grid>
