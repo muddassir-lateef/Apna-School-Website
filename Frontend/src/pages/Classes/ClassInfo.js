@@ -190,6 +190,7 @@ const SearchTeacher = () => {
            helperText= {helperText}   variant="outlined" label = "Section Name" 
            value={addSectionName}
            onChange = {onTextField}
+           sx={{ height: '100%', width: '100%' }}
           > 
          
           </TextField>

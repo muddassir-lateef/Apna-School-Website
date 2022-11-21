@@ -299,7 +299,7 @@ export async function getAllFeeDetailsFromStudentFeeRecord(rollNumber) {
 }
 
 export async function getStudentFeeRecord(rollNumber) {
-  console.log("In get Fee Record User Service")
+  console.log("User Service " + rollNumber)
   let tempURL = URL + 'feeRecord/getStudentFeeRecord/' + rollNumber;
   const response = await axios.get(tempURL);
   if (response.status === 201) {
@@ -597,14 +597,14 @@ export async function getStudentsForFee(classYear, sectionName) {
   }
 }
 
-export async function addFeeDetailToStudentFeeRecord(classYear, sectionName, tuitionFee, otherFee, fineFee) {
+export async function addFeeDetailToStudentFeeRecord(classYear, sectionName, tuitionFee, otherFee, sportsFee, admissionFee, examFee) {
   let tempURL = URL + 'feeRecord/addFeeDetailToStudentFeeRecord'
   console.log("classYear " + classYear)
   console.log("Section " + sectionName)
   console.log("Tuition Fee " + tuitionFee)
   console.log("Other Fee " + otherFee)
-  console.log("Fine Fee " + fineFee)
-  const response = await axios.patch(tempURL, {classYear, sectionName, tuitionFee, otherFee, fineFee})
+
+  const response = await axios.patch(tempURL, {classYear, sectionName, tuitionFee, otherFee, sportsFee, admissionFee, examFee})
   if(response.status === 201)
   {
     return 1

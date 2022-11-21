@@ -7,12 +7,16 @@ import {
     Card,
     Typography,
 } from "@mui/material";
-
+import Checkbox from '@mui/material/Checkbox';
 import SearchBox from "../../components/SearchBox";
 import { Cloudinary } from "@cloudinary/url-gen";
 import Divider from '@mui/material/Divider';
-
-import { getAllStudents } from "../../services/UserService";
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { getAllStudents, getStudentFeeRecord } from "../../services/UserService";
 import { Image } from "cloudinary-react";
 import Avatar from '@mui/material/Avatar';
 const style = {
@@ -34,6 +38,7 @@ const SearchStudent = () => {
     const [teachersMasterList, setTeachersMasterList] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState('');
+    const [feeFilter, setFeeFilter] = useState('All')
     const navigate = useNavigate();
     useEffect(() => {
         getAllStudents().then((response) => {
@@ -120,13 +125,62 @@ const SearchStudent = () => {
 
         return color;
     }
+    const ColorPicker = (value) => {
+        let colorT = "";
+        let Text = ""
+        if (value.Type <= 0) {
+            colorT = "success"
+            Text = "PAID"
+        }
+        else {
+            colorT = "error"
+            Text = "UNPAID"
+        }
+        return (
+            <Button variant="contained" color={colorT} onClick={() => console.log("Hello")}>
+                {Text}
+            </Button>
+        )
+    }
 
+    const handleChange = (event) => {
+        setFeeFilter(event.target.value)
+        if(event.target.value === 'Paid')
+        {
+            const filteredArray = teachersMasterList.filter((teacher) => {
+                console.log(teacher.feeRecord.outStandingFees)
+                if(teacher.feeRecord.outStandingFees === 0)
+                {
+                return teacher
+                }
+        })
+        setTeachersList(filteredArray)
+        }
+        if(event.target.value === 'Unpaid')
+        {
+            const filteredArray = teachersMasterList.filter((teacher) => {
+                console.log(teacher.feeRecord.outStandingFees)
+                if(teacher.feeRecord.outStandingFees > 0)
+                {
+                return teacher
+                }
+                
+            });
+            setTeachersList(filteredArray)
+        }
+        if(event.target.value === 'All')
+        {
+            setTeachersList(teachersMasterList)
+        }
+        
+        
+    }
+    
     const DisplayStudent = () => {
         return (
             teachersList.map((value) => (
                 <Grid item xs={12}>
-
-                    <Grid item xs={12} key={value.rollNunber}>
+                    <Grid item xs={12} key={value.rollNumber}>
                         <Grid container spacing={2} >
                             <Grid item >
                                 <Avatar alt={value.firstName} src={imgToUrl(value.image)} sx={{ bgcolor: stringToColor(value), width: 60, height: 60 }} />
@@ -145,6 +199,15 @@ const SearchStudent = () => {
                             <Grid item xs={12} sm={2} lg={3}>
                                 <Button variant='outlined' sx={{ height: '100%', width: '100%' }} onClick={() => ViewFeeButton(value.rollNumber, value.firstName, value.lastName)}>View Fee Record</Button>
                             </Grid>
+                            <Grid item xs={9} sm={4} >
+                                <Card sx={{ padding: 1, height: 45, display: "flex", alignItems: "center", textAlign: 'center' }}>
+                                    <Typography width='100%'>OutStanding Fees : {value.feeRecord.outStandingFees}</Typography>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={9} sm={4} >
+                                <ColorPicker Type = {value.feeRecord.outStandingFees}/>
+                            </Grid>
+                            
                         </Grid>
                         <Divider sx={{ mt: 2 }} />
                     </Grid>
@@ -161,6 +224,26 @@ const SearchStudent = () => {
                     options={teacherOptions}
                     label="Student Roll Number"
                 />
+            </Grid>
+            <Grid item xs = {12}>
+            <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Fee Payment Status</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value = {feeFilter}
+          label="Fee Payment Status"
+          onChange = {handleChange}
+         
+        >
+          <MenuItem value={'Paid'}>Paid</MenuItem>
+          <MenuItem value={'Unpaid'}>Unpaid</MenuItem>
+          <MenuItem value={'All'}>All</MenuItem>
+        </Select>
+      </FormControl>
+            </Grid>
+            <Grid item xs = {4}>
+            <Divider sx={{ mt: 2 }} />
             </Grid>
             <Grid item xs={12}>
                 <DisplayStudent />

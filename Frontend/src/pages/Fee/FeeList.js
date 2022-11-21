@@ -163,7 +163,7 @@ const FeeRecordInfo = () => {
         {
         feeList.sort((a,b) => b.remainingFee - a.remainingFee);
             return (
-                feeList.map((fee) => (
+                feeList.map((fee, index) => (
 
 
                         <Card  sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper' }}>
@@ -238,7 +238,35 @@ const FeeRecordInfo = () => {
                                         variant="h7" gutterBottom
                                         color="text.primary"
                                     >
-                                        Fine Fee:   {fee.fineFee}
+                                        Sports Fee:   {fee.sportsFee}
+                                    </Typography>
+
+                                }
+                            />
+                             <ListItemText
+                                primary={
+
+                                    <Typography 
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="h7" gutterBottom
+                                        color="text.primary"
+                                    >
+                                        Exam Fee:   {fee.examFee}
+                                    </Typography>
+
+                                }
+                            />
+                             <ListItemText
+                                primary={
+
+                                    <Typography 
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="h7" gutterBottom
+                                        color="text.primary"
+                                    >
+                                        Admission Fee:   {fee.admissionFee}
                                     </Typography>
 
                                 }

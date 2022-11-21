@@ -32,11 +32,15 @@ const AddNewFeeForClass = () => {
     const [selectedSection, setSelectedSection] = useState("")
     const [formattedSectionList, setFormattedSectionList] = useState([])
     const [tuFee, setTuFee] = useState("")
-    const [fiFee, setFiFee] = useState("")
+    const [adFee, setAdFee] = useState("")
+    const [exFee, setExFee] = useState("")
+    const [spFee, setSpFee] = useState("")
     const [otFee, setOtFee] = useState("")
     const [errCheck, setErrCheck] = useState(false)
     const [errCheck1, setErr1Check] = useState(false)
     const [errCheck2, setErr2Check] = useState(false)
+    const [errCheck3, setErr3Check] = useState(false)
+    const [errCheck4, setErr4Check] = useState(false)
     useEffect(() => {
         if (selectedClass === "") {
             getAllClasses()
@@ -182,31 +186,49 @@ const AddNewFeeForClass = () => {
     const ConfirmHandler = () => {
         console.log("In submission")
         console.log(tuFee)
-        console.log(fiFee)
         console.log(otFee)
-        if (otFee.trim().length === 0) {
-            console.log("Empty Value lol")
+        if(otFee.trim().length === 0)
+        {
+
             setErrCheck(true)
         }
         else {
             setErrCheck(false)
         }
-        if (tuFee.trim().length === 0) {
-            console.log("Empty Value lol")
+        if(tuFee.trim().length === 0)
+        {
+  
             setErr1Check(true)
         }
         else {
             setErr1Check(false)
         }
-        if (fiFee.trim().length === 0) {
-            console.log("Empty Value lol")
+        if(adFee.trim().length === 0)
+        {
+        
             setErr2Check(true)
         }
         else {
             setErr2Check(false)
         }
-        if (fiFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0) {
-            addFeeDetailToStudentFeeRecord(selectedClass, selectedSection, Number(tuFee), Number(fiFee), Number(otFee)).then
+        if(exFee.trim().length === 0)
+        {
+        
+            setErr4Check(true)
+        }
+        else {
+            setErr4Check(false)
+        }
+        if(spFee.trim().length === 0)
+        {
+        
+            setErr3Check(true)
+        }
+        else {
+            setErr3Check(false)
+        }
+        if (spFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && adFee.trim().length !== 0 && exFee.trim().length !== 0)  {
+            addFeeDetailToStudentFeeRecord(selectedClass, selectedSection, Number(tuFee), Number(adFee), Number(otFee), Number(spFee), Number(exFee)).then
                 ((res) => {
                     if (res == 1) {
                         setAddModalOpen((isOpen) => !isOpen)
@@ -264,9 +286,9 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <TextField error={errCheck1} value={tuFee} label="Tuition Fee" onChange={(event) => { setTuFee(event.target.value.replace(/\D/g, '')) }}></TextField>
-                                </Box>
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck1} value = {tuFee} label="Tuition Fee" onChange = {(event) => {setTuFee(event.target.value.replace(/\D/g, ''))}}></TextField>
+                            </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -274,11 +296,11 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <TextField error={errCheck2} value={fiFee} label="Fine Fee" onChange={(event) => { setFiFee(event.target.value.replace(/\D/g, '')) }}>
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck2} value = {adFee} label="Admission Fee" onChange = {(event) => {setAdFee(event.target.value.replace(/\D/g, ''))}}>
 
-                                    </TextField>
-                                </Box>
+                            </TextField>
+                            </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -286,11 +308,35 @@ const AddNewFeeForClass = () => {
                                 component="h2"
                                 sx={{ mb: 2 }}
                             >
-                                <Box sx={{ width: '100%' }}>
-                                    <TextField error={errCheck} value={otFee} label="Other Fee(s)" onChange={(event) => { setOtFee(event.target.value.replace(/\D/g, '')) }}>
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck3} value = {spFee} label="Sports Fee" onChange = {(event) => {setSpFee(event.target.value.replace(/\D/g, ''))}}>
 
-                                    </TextField>
-                                </Box>
+                            </TextField>
+                            </Box>
+                            </Typography>
+                            <Typography
+                                id="transition-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={{ mb: 2 }}
+                            >
+                            <Box sx={{ width: '100%'}}>
+                            <TextField error = {errCheck} value = {otFee} label="Other Fee(s)" onChange = {(event) => {setOtFee(event.target.value.replace(/\D/g, ''))}}>
+
+                            </TextField>
+                            </Box>
+                            </Typography>
+                            <Typography
+                                id="transition-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={{ mb: 2 }}
+                            >
+                            <Box sx={{ width: '100%'}}>
+                            <TextField  error = {errCheck4} value = {exFee} label="Exam Fee" onChange = {(event) => {setExFee(event.target.value.replace(/\D/g, ''))}}>
+
+                            </TextField>
+                            </Box>
                             </Typography>
                             <Typography
                                 id="transition-modal-title"
@@ -300,7 +346,7 @@ const AddNewFeeForClass = () => {
                             >
                                 <Box sx={{ width: '100%' }}>
                                     <Typography>
-                                        Total Fee : {Number(otFee) + Number(fiFee) + Number(tuFee)}
+                                        Total Fee : {Number(otFee) + Number(spFee) + Number(tuFee) + Number(exFee) + Number(adFee)}
                                     </Typography>
                                 </Box>
                             </Typography>
