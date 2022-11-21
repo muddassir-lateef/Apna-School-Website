@@ -6,6 +6,7 @@ let Section = require('../models/section.model');
 const HttpError = require('../models/http-error');
 let { cloudinary } = require("../utils/cloudinary");
 const FeeDetails = require('../models/feeDetails.model');
+const { default: mongoose } = require('mongoose');
 
 const addStudent = async (req, res, next) => {
   console.log("In")
@@ -140,9 +141,10 @@ const addStudent = async (req, res, next) => {
 }
 
 const getAllStudents = async (req, res, next) => {
+  console.log("In function")
   try {
     Student.find()
-      .populate("sectionId", "feeRecord")
+      .populate('feeRecord')
       .then((students) => res.status(201).json(students))
       .catch((err) => res.status(400).json("Error: " + err));
   } catch (err) {
