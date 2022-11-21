@@ -392,7 +392,7 @@ const generateFeeForListOfStudents = async(req,res,next) => {
     const paidFee = 0;
     const remainingFee = totalFee;
     const newFeeDetails = new FeeDetail({
-    date, totalFee, tuitionFee, fineFee,  paidFee, remainingFee, otherFee
+        date, totalFee, tuitionFee, admissionFee, examFee, sportsFee,  paidFee, remainingFee, otherFee
     });
     newFeeDetails.save();
 
@@ -428,7 +428,7 @@ const generateFeeForListOfStudents = async(req,res,next) => {
         const paidFee = 0;
         const remainingFee = totalFee;
     const newFeeDetails = new FeeDetail({
-    date, totalFee, tuitionFee, fineFee,  paidFee, remainingFee, otherFee
+    date, totalFee, tuitionFee, admissionFee, examFee, sportsFee,  paidFee, remainingFee, otherFee
     });
     newFeeDetails.save();
 

@@ -128,7 +128,6 @@ const SearchStudent = () => {
     const ColorPicker = (value) => {
         let colorT = "";
         let Text = ""
-        console.log(value.Type)
         if (value.Type <= 0) {
             colorT = "success"
             Text = "PAID"
@@ -146,6 +145,35 @@ const SearchStudent = () => {
 
     const handleChange = (event) => {
         setFeeFilter(event.target.value)
+        if(event.target.value === 'Paid')
+        {
+            const filteredArray = teachersMasterList.filter((teacher) => {
+                console.log(teacher.feeRecord.outStandingFees)
+                if(teacher.feeRecord.outStandingFees === 0)
+                {
+                return teacher
+                }
+        })
+        setTeachersList(filteredArray)
+        }
+        if(event.target.value === 'Unpaid')
+        {
+            const filteredArray = teachersMasterList.filter((teacher) => {
+                console.log(teacher.feeRecord.outStandingFees)
+                if(teacher.feeRecord.outStandingFees > 0)
+                {
+                return teacher
+                }
+                
+            });
+            setTeachersList(filteredArray)
+        }
+        if(event.target.value === 'All')
+        {
+            setTeachersList(teachersMasterList)
+        }
+        
+        
     }
     
     const DisplayStudent = () => {

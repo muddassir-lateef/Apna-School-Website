@@ -98,6 +98,18 @@ const AddNewFeeForStudent= () => {
                     Fee Generated Successfully!
                 </Alert>
             );
+        if(submitStatus === 2)
+        {
+            return(
+            <Alert
+                    onClose={() => setSnackOpen(false)}
+                    severity="error"
+                    sx={{ width: "100%" }}
+                >
+                    Please Enter Due Date!
+                </Alert>
+            )
+        }
     };
 
 
@@ -113,6 +125,11 @@ const AddNewFeeForStudent= () => {
             setSubmitStatus(-1)
             setSnackOpen(true)
             console.log("No student")
+        }
+        if(examDate.$d === undefined)
+        {
+            setSubmitStatus(2)
+            setSnackOpen(true)
         }
         else {
             generateStudentFee(Number(username), examDate.$d ).then((res) =>{
@@ -152,6 +169,13 @@ const AddNewFeeForStudent= () => {
     const ConfirmHandler = () =>
     {
         console.log("Confirmed hanler")
+        console.log(examDate.$d)
+        if(examDate.$d === undefined)
+        {
+            console.log("Undefined")
+            setSubmitStatus(2)
+            setSnackOpen(true)
+        }
 
         if(otFee.trim().length === 0)
         {
@@ -194,7 +218,7 @@ const AddNewFeeForStudent= () => {
             setErr3Check(false)
         }
         console.log("Before handler")
-        if(adFee.trim().length !== 0 && spFee.trim().length !== 0 && exFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && username !== "")
+        if(adFee.trim().length !== 0 && examDate.$d !== undefined && spFee.trim().length !== 0 && exFee.trim().length !== 0 && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && username !== "")
         {
           
             console.log("Here")
