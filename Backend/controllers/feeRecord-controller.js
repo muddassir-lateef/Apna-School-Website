@@ -465,6 +465,27 @@ const deleteFeeDetails = async(req,res,next) => {
     return
 }
 
+const getCommulativeFeeChallan = async(req,res,next) => {
+    console.log("Hahaha")
+    console.log(req.params.rollNumber)
+ 
+    const rollNumber = { rollNumber: req.params.rollNumber };
+    const TempStudent = await Student.findOne(rollNumber)
+    const TempFeeRecord = await FeeRecord.findById(TempStudent.feeRecord._id).populate('feeList')
+    let tempFee;
+    for(let i=0;i < TempFeeRecord.feeList.length ; i++)
+    {
+        console.log(TempFeeRecord.feeList[i].createdAt)
+        if(TempFeeRecord.feeList[i] < TempFeeRecord.feeList[i+1])
+        {
+            tempFee = TempFeeRecord.feeList[i+1]
+        }
+        console.log(i)
+    }
+    res.status(201).json(tempFee)
+}
+
+exports.getCommulativeFeeChallan = getCommulativeFeeChallan;
 exports.deleteFeeDetails = deleteFeeDetails
 exports.getStudentFeeRecord = getStudentFeeRecord;
 exports.markFeePaid = markFeePaid;

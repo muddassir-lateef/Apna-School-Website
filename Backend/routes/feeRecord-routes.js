@@ -45,7 +45,6 @@ router.patch('/addFeeDetailToStudentFeeRecord', FeeRecordController.addFeeDetail
     "rollNumber" : 4664
 }
 */
-
 router.get('/getAllFeeDetailsFromStudentFeeRecord/:rollNumber', FeeRecordController.getAllFeeDetailsFromStudentFeeRecord);
 /*
 {
@@ -97,7 +96,7 @@ router.patch('/deleteFeeDetails', FeeRecordController.deleteFeeDetails)
 
 router.post('/generateFeeForListOfStudents', FeeRecordController.generateFeeForListOfStudents);
 
-
+router.get('/getCommulativeFeeChallan/:rollNumber', FeeRecordController.getCommulativeFeeChallan)
 
 
 module.exports = router;

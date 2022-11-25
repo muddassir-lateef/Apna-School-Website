@@ -64,6 +64,8 @@ const AddNewFeeForStudent= () => {
                   temp_list.push(tempObj);
               }
               setTeacherOptions(temp_list);
+              console.log("Printing the list")
+              console.log(temp_list)
             }
           } else if (response.status === 401) {
             alert("Teacher not found");
@@ -376,7 +378,7 @@ const AddNewFeeForStudent= () => {
                     </Fade>
                 </Modal>
             </Grid>
-            <Card sx={{ width: "90%", maxWidth: "900px" }}>
+            <Card sx={{ width: "90%", maxWidth: "900px" , minHeight : "900px"}}>
                 <Box
                     sx={{
                         display: "flex",
