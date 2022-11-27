@@ -11,4 +11,7 @@ router.get('/generate/:name', certificateController.genCert)
 router.patch('/getResult/:rollNumber', certificateController.genResult)
 
 
+router.patch('/getFeeChallan/:rollNumber', certificateController.genFeeChallan)
+
+
 module.exports = router;

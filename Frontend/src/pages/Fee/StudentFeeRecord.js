@@ -23,7 +23,9 @@ import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { useNavigate, useLocation } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
-import { getAllFeeDetailsFromStudentFeeRecord, getStudentFeeRecord, editFeeRecord } from "../../services/UserService";
+import { getAllFeeDetailsFromStudentFeeRecord, getStudentFeeRecord, editFeeRecord} from "../../services/UserService";
+import {printChallanForSingleStudent} from "../../services/PDFService"
+
 
 const StudentFeeRecord = () => {
     const [rollNumber, setRollNumber] = useState(0)
@@ -82,9 +84,35 @@ const StudentFeeRecord = () => {
     }
     const printClicked = () => {
       console.log("Print clicked")
-      navigate("/Fee/PrintFees", {
-        state : {param1 : rollNumber, param2 : firstName, param3 : lastName}
+      console.log(feeRecord)
+      let tempFee = feeRecord.feeList[0]
+      console.log(feeRecord.feeList.length)
+      for(let i=0;i< feeRecord.feeList.length ; i++)
+      {
+        if(feeRecord.feeList[i].createdAt > tempFee.createdAt )
+        {
+          tempFee = feeRecord.feeList[i]
+          console.log("Greater")
+        }
+        
+      }
+
+      //
+      var d = new Date(tempFee.date);
+      //INVALID CHECK
+   
+      var date = d.getDate();
+      var month = d.getMonth() + 1; 
+      var year = d.getFullYear();
+      var newDate = date + "/" + month + "/" + year;
+      //
+      printChallanForSingleStudent(rollNumber, newDate, tempFee._id, tempFee.tuitionFee, tempFee.otherFee, tempFee.sportsFee, tempFee.examFee, tempFee.admissionFee, 
+        tempFee.paidFee, tempFee.totalFee, feeRecord.outStandingFees ,tempFee.remainingFee).then((res) => {
+        console.log(res)
       })
+      // navigate("/Fee/PrintFees", {
+      //   state : {param1 : rollNumber, param2 : firstName, param3 : lastName}
+      // })
     }
 
     const onSaveClicked = () => {

@@ -192,7 +192,7 @@ const markFeePaid = async (req, res, next) => {
 const getStudentFeeRecord = async (req, res, next) => {
     const student_query = { rollNumber: req.params.rollNumber };
     const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
-    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord);
+    const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
 
     res.status(201).json(tempFeeRecord);
     return;

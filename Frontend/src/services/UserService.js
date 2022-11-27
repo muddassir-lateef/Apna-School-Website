@@ -637,3 +637,28 @@ export async function getAllMarks() {
   return response;
 }
 
+export async function printChallanForSingleStudent(dueDate, feeId, tuitionFee, otherFee, sportsFee, examFee, admissionFee, paidFee, totalFee, OutstandingFees, remainingFee)
+{
+  console.log("Fee Details Most Recent")
+  console.log("Due Date " + dueDate)
+  console.log("Fee Id " + feeId)
+  console.log("Tuition Fee " + tuitionFee)
+  console.log("Other Fees " + otherFee)
+  console.log("Sports Fee " + sportsFee)
+  console.log("Exam Fee " + examFee)
+  console.log("Admission " + admissionFee)
+  console.log("Tuition Fee " + tuitionFee)
+  console.log("Total Fee" + totalFee)
+  console.log("Paid Amount " + paidFee)
+  console.log("Remaining Fee " + remainingFee)
+  let due = OutstandingFees - totalFee
+  if(due <= 0) {
+    due = 0;
+  }
+  console.log("Remaining Dues " + due)
+  console.log("Grand Total " + OutstandingFees)
+
+  let tempURL = URL + 'printChallanForSingleStudent'
+  //const response = await axios.get(tempURL)
+  return 1
+}
