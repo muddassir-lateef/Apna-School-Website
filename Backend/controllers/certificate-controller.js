@@ -225,54 +225,19 @@ const genFeeChallan = async (req, res, next) => {
           ],
         rows: [[gt, tempFeeRecord.outStandingFees, newDate]],
     };
-    doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'});
+    doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'})
+    
+    doc.moveDown();
+    doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();
+    doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();
+    doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();
+    doc.image(img1, 220, 380, {fit: [150, 120], align: 'center'})
+    doc.moveDown();
+    doc.table( tableArray0,{ width: 530, x: 25, headerColor:'#182747'});
+     doc.table( tableArray,{ width: 530, x: 25, headerColor:'#182747'});
+   doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'});
 
     //
-    const tableArray4 = {
-        title: "Student Information",
-        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
-        headers: [
-            { label: "Name", property: 'name', renderer: null }, 
-            { label: "Roll Number", property: 'rollNo', renderer: null }, 
-            { label: "Class", property: 'class', renderer: null }, 
-            { label: "Fee ID", propaert: 'feeID', renderer: null}
-            
-          ],
-        rows: [[tempStudent.firstName  +" " + tempStudent.lastName, tempStudent.rollNumber , tempStudent.classYear + tempStudent.sectionName, tempFee._id]],
-    };
-    doc.table( tableArray0,{ width: 530, x: 25, y: 150, headerColor:'#182747'});
-    doc.moveDown(); doc.moveDown();
-    console.log("fdknfj")
-    console.log(tempFee.remainingFee)
-    
-    const tableArray5 = {
-        title: "Monthly Fee Details",
-        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
-        headers: [
-            { label: "Tution Fee", property: 'exam', renderer: null },
-            { label: "Admission Fee", property: 'totalmarks', renderer: null }, 
-            { label: "Exam Fee", property: 'obtainedmarks', renderer: null }, 
-            { label: "Sports Fee", property: 'perventage', renderer: null }, 
-            { label: "Other Fee(s)", property: 'obtainedmarks', renderer: null }, 
-            { label: "Total Fee", property: 'perventage', renderer: null }, 
-            { label: "Paid Fee", property: 'obtainedmarks', renderer: null }, 
-            { label: "Remaining Fee", property: 'remaFee', renderer: null }, 
-
-          ],
-          rows: [[tempFee.tuitionFee, tempFee.admissionFee , tempFee.examFee , tempFee.sportsFee, tempFee.otherFee, tempFee.totalFee, tempFee.paidFee, tempFee.remainingFee]],
-      };
-    doc.table( tableArray,{ width: 530, x: 25, headerColor:'#182747'});
-    const tableArray7 = {
-        title: "Extensive Fee Details",
-        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
-        headers: [
-            { label: "Previous Dues", property: 'previousdues', renderer: null }, 
-            { label: "Grand Total", property: 'obtainedmarks', renderer: null }, 
-            { label: "Due Date", property: 'percentage', renderer: null }, 
-          ],
-        rows: [[gt, tempFeeRecord.outStandingFees, newDate]],
-    };
-    doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'});
  
     doc.pipe(res);
     doc.end();
