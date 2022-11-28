@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { printChallanForClass } from "../../services/PDFService";
 import {
   Button,
   Grid,
@@ -86,6 +87,13 @@ const SearchTeacher = () => {
         })
 }
 
+const onFeeClicked = (event) => {
+  console.log(event)
+  printChallanForClass(event).then((res) => {
+    console.log("Back here")
+    console.log(res)
+  })
+}
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -157,6 +165,9 @@ const SearchTeacher = () => {
           </Grid>
           <Grid item xs={12} sm={2} lg={3}>
             <Button  variant='outlined' sx={{ height: '100%', width: '100%' }}  onClick={() => onViewClick(item.classYear)}>View</Button>
+          </Grid>
+          <Grid item xs={12} sm={2} lg={3}>
+            <Button  variant='outlined' sx={{ height: '100%', width: '100%' }}  onClick={() => onFeeClicked(item.classYear)}>Print Fee</Button>
           </Grid>
         </Grid>
         

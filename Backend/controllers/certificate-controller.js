@@ -137,13 +137,15 @@ const genResult = async (req, res, next) => {
 
 const genFeeChallan = async (req, res, next) => {
     let doc = new PDFDoc({ margin: 30, size: 'A4' });
+    for(let i =0 ; i < 2; i++)
+    {
+
     doc.rect(0, 0, doc.page.width, doc.page.height).fill('#c2cfff');
     const img1 = await fetchImage(NAPHS_LOGO_URL);
     doc.image(img1, 220, 10, {fit: [150, 120], align: 'center'})
     doc.moveDown();
     doc.text("School Copy", 220, 10, {fit : [150,120], align : 'center'})
     //adding logo at the top 
-    res.setHeader('Content-type', 'application/pdf');
    // console.log("ROW DATA: ", req.body)
    const student_query = { rollNumber: req.params.rollNumber };
    const tempStudent = await Student.findOne(student_query).populate('sectionId', 'feeRecord');
@@ -194,7 +196,6 @@ const genFeeChallan = async (req, res, next) => {
     };
     doc.table( tableArray0,{ width: 530, x: 25, y: 150, headerColor:'#182747'});
     doc.moveDown(); doc.moveDown();
-    console.log("fdknfj")
     console.log(tempFee.remainingFee)
     
     const tableArray = {
@@ -211,7 +212,7 @@ const genFeeChallan = async (req, res, next) => {
             { label: "Remaining Fee", property: 'remaFee', renderer: null }, 
 
           ],
-          rows: [[tempFee.tuitionFee, tempFee.admissionFee , tempFee.examFee , tempFee.sportsFee, tempFee.otherFee, tempFee.totalFee, tempFee.paidFee, tempFee.remainingFee]],
+          rows: [[tempFee.tuitionFee, tempFee.admissionFee , tempFee.examFee , tempFee.sportsFee, tempFee.otherFee, tempFee.totalFee + tempFeeRecord.scholarshipAmount, tempFee.paidFee + tempFeeRecord.scholarshipAmount, tempFee.remainingFee]],
       };
     doc.table( tableArray,{ width: 530, x: 25, headerColor:'#182747'});
     const gt = tempFeeRecord.outStandingFees - tempFee.remainingFee
@@ -238,12 +239,134 @@ const genFeeChallan = async (req, res, next) => {
    doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'});
 
     //
- 
+}}
+res.setHeader('Content-type', 'application/pdf');
     doc.pipe(res);
     doc.end();
-}
 };
 
+
+const genFeeForClass = async (req,res,next) => {
+console.log(req.params.classYear)
+const student_list = await Student.find({classYear : req.params.classYear})
+//-----------//
+let doc = new PDFDoc({ margin: 30, size: 'A4' });
+    for(let i =0 ; i < student_list.length; i++)
+    {
+        console.log(student_list[i].classYear)
+    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#c2cfff');
+    const img1 = await fetchImage(NAPHS_LOGO_URL);
+    doc.image(img1, 220, 10, {fit: [150, 120], align: 'center'})
+    doc.moveDown();
+    doc.text("School Copy", 220, 10, {fit : [150,120], align : 'center'})
+    //adding logo at the top 
+   // console.log("ROW DATA: ", req.body)
+   const tempStudent = await Student.findOne({rollNumber : student_list[i].rollNumber}).populate('sectionId', 'feeRecord');
+   console.log(tempStudent)
+   const tempFeeRecord = await FeeRecord.findById(tempStudent.feeRecord).populate('feeList');
+
+   if(tempFeeRecord.feeList.length > 0)
+   {
+    //
+    //
+    //
+    let tempFee = tempFeeRecord.feeList[0]
+
+    for(let i=0;i< tempFeeRecord.feeList.length ; i++)
+    {
+      if(tempFeeRecord.feeList[i].createdAt > tempFee.createdAt )
+      {
+        tempFee = tempFeeRecord.feeList[i]
+ 
+      }
+      
+    }
+
+    //
+    var d = new Date(tempFee.date);
+    //INVALID CHECK
+ 
+    var date = d.getDate();
+    var month = d.getMonth() + 1; 
+    var year = d.getFullYear();
+    var newDate = date + "/" + month + "/" + year;
+    //
+
+
+    //
+    //
+    //
+    const tableArray0 = {
+        title: "Student Information",
+        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+        headers: [
+            { label: "Name", property: 'name', renderer: null }, 
+            { label: "Roll Number", property: 'rollNo', renderer: null }, 
+            { label: "Class", property: 'class', renderer: null }, 
+            { label: "Fee ID", propaert: 'feeID', renderer: null}
+            
+          ],
+        rows: [[tempStudent.firstName  +" " + tempStudent.lastName, tempStudent.rollNumber , tempStudent.classYear + tempStudent.sectionName, tempFee._id]],
+    };
+    doc.table( tableArray0,{ width: 530, x: 25, y: 150, headerColor:'#182747'});
+    doc.moveDown(); doc.moveDown();
+
+    
+    const tableArray = {
+        title: "Monthly Fee Details",
+        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+        headers: [
+            { label: "Tution Fee", property: 'exam', renderer: null },
+            { label: "Admission Fee", property: 'totalmarks', renderer: null }, 
+            { label: "Exam Fee", property: 'obtainedmarks', renderer: null }, 
+            { label: "Sports Fee", property: 'perventage', renderer: null }, 
+            { label: "Other Fee(s)", property: 'obtainedmarks', renderer: null }, 
+            { label: "Total Fee", property: 'perventage', renderer: null }, 
+            { label: "Paid Fee", property: 'obtainedmarks', renderer: null }, 
+            { label: "Remaining Fee", property: 'remaFee', renderer: null }, 
+
+          ],
+          rows: [[tempFee.tuitionFee, tempFee.admissionFee , tempFee.examFee , tempFee.sportsFee, tempFee.otherFee, tempFee.totalFee + tempFeeRecord.scholarshipAmount, tempFee.paidFee + tempFeeRecord.scholarshipAmount, tempFee.remainingFee]],
+      };
+    doc.table( tableArray,{ width: 530, x: 25, headerColor:'#182747'});
+    const gt = tempFeeRecord.outStandingFees - tempFee.remainingFee
+    const tableArray2 = {
+        title: "Extensive Fee Details",
+        //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+        headers: [
+            { label: "Previous Dues", property: 'previousdues', renderer: null }, 
+            { label: "Grand Total", property: 'obtainedmarks', renderer: null }, 
+            { label: "Due Date", property: 'percentage', renderer: null }, 
+          ],
+        rows: [[gt, tempFeeRecord.outStandingFees, newDate]],
+    };
+    doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'})
+    
+    doc.moveDown();
+    doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();
+    doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();
+    doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();  doc.moveDown(); doc.moveDown();
+    doc.image(img1, 220, 380, {fit: [150, 120], align: 'center'})
+    doc.moveDown();
+    doc.table( tableArray0,{ width: 530, x: 25, headerColor:'#182747'});
+     doc.table( tableArray,{ width: 530, x: 25, headerColor:'#182747'});
+   doc.table( tableArray2,{ width: 530, x: 25, headerColor:'#182747'});
+   if(i < student_list.length-1)
+   {
+   doc.addPage();
+   }
+
+    //
+}}
+console.log("Outside")
+res.setHeader('Content-type', 'application/pdf');
+    doc.pipe(res);
+    doc.end();
+};
+//-----//
+
+
+exports.genFeeForClass = genFeeForClass
 exports.genFeeChallan = genFeeChallan
 exports.genCert = genCert;
 exports.genResult = genResult;

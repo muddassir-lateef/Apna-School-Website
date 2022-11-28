@@ -13,5 +13,5 @@ router.patch('/getResult/:rollNumber', certificateController.genResult)
 
 router.patch('/getFeeChallan/:rollNumber', certificateController.genFeeChallan)
 
-
+router.patch('/genFeeForClass/:classYear', certificateController.genFeeForClass)
 module.exports = router;
