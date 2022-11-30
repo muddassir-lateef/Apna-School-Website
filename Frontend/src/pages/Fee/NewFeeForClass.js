@@ -213,8 +213,12 @@ const AddNewFeeForClass = () => {
     const ConfirmHandler = () => {
         console.log("ADGHSJDVHSDVH")
         console.log("In submission")
-        console.log(classYear)
+        console.log("JS Date: ", new Date(examDate.$d))
+        console.log("Class")
+        console.log(selectedClass)
+        console.log("Section")
         console.log(selectedSection)
+        console.log("Date")
         console.log(examDate.$d)
         console.log(tuFee)
         console.log(otFee)
