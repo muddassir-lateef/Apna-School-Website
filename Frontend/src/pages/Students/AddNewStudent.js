@@ -429,7 +429,7 @@ const AddNewTeacher = () => {
               {'Student Personal Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Name : ' + formStateStudent.inputs.guardianFirstName.value + " " + formStateStudent.inputs.guardianLastName.value}
+              {'Student Name : ' + formStateStudent.inputs.firstName.value + " " + formStateStudent.inputs.lastName.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
               {'Age : ' + formStateStudent.inputs.age.value}
