@@ -171,6 +171,7 @@ const AddNewFeeForClass = () => {
                 setSnackOpen(true)
                 console.log("Success x2")
                 setSubmitStatus(1)
+                setDateCheck(true)
             }
             setSnackOpen(true)
         }
