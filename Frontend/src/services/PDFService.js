@@ -58,6 +58,33 @@ export async function getResult(rowData, rollNumber) {
 
 }
 
+export async function getDatesheet(rowData, rollNumber) {
+    let tempURL = apiURL + `certificate/getDatesheet/${rollNumber}`;
+
+
+
+    axios(tempURL, {
+        method: 'PATCH',
+        responseType: 'blob', //Force to receive data in a Blob Format
+        data: rowData
+    })
+        .then(response => {
+            //Create a Blob from the PDF Stream
+            const file = new Blob(
+                [response.data],
+                { type: 'application/pdf' });
+            //Build a URL from the file
+            const fileURL = URL.createObjectURL(file);
+            //Open the URL on new Window
+            window.open(fileURL);
+            return response;
+        })
+        .catch(error => {
+            console.log(error);
+            return error;
+        });
+
+}
 
 export async function printChallanForClass(classYear) {
     let tempURL = apiURL + `certificate/genFeeForClass/${classYear}`;

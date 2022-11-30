@@ -9,6 +9,7 @@ const certificateController = require('../controllers/certificate-controller');
 router.get('/generate/:name', certificateController.genCert)
 
 router.patch('/getResult/:rollNumber', certificateController.genResult)
+router.patch('/getDatesheet/:rollNumber', certificateController.genDatesheet)
 
 
 router.patch('/getFeeChallan/:rollNumber', certificateController.genFeeChallan)

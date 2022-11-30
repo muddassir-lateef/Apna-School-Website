@@ -43,6 +43,56 @@ const genCert = async (req, res, next) => {
   doc.pipe(res);
   doc.end();
 };
+const genDatesheet = async (req, res, next) => {
+  let doc = new PDFDoc({ margin: 30, size: 'A4' });
+  doc.rect(0, 0, doc.page.width, doc.page.height).fill('#c2cfff');
+  const img1 = await fetchImage(NAPHS_LOGO_URL);
+  doc.image(img1, 220, 10, { fit: [150, 120], align: 'center' })
+  doc.moveDown();
+  //adding logo at the top 
+  res.setHeader('Content-type', 'application/pdf');
+  // console.log("ROW DATA: ", req.body)
+  const rollNumber = req.params.rollNumber
+  const tempStudent = await Student.find({ rollNumber })
+
+  var totalMarks = 0;
+  var obtainedMarks = 0;
+  const rowData = []
+  if (Array.isArray(req.body) && req.body.length > 0) {
+    for (let i = 0; i < req.body.length; i++) {
+      rowData.push([req.body[i].subject, req.body[i].date.slice(0,10)])
+    }
+  }
+
+  const tableArray0 = {
+    title: "Student Information",
+    //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+    headers: [
+      { label: "Name", property: 'name', renderer: null },
+      { label: "Roll Number", property: 'rollNo', renderer: null },
+      { label: "Class", property: 'class', renderer: null },
+    ],
+    rows: [[tempStudent[0].firstName + tempStudent[0].lastName, tempStudent[0].rollNumber, tempStudent[0].classYear]],
+  };
+  doc.table(tableArray0, { width: 530, x: 25, y: 150, headerColor: '#182747' });
+  doc.moveDown(); doc.moveDown();
+
+  const tableArray = {
+    title: "Term Performance",
+    //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+    headers: [
+      { label: "Exam", property: 'exam', renderer: null },
+      { label: "Date", property: 'date', renderer: null },
+    ],
+    rows: rowData,
+  };
+  doc.table(tableArray, { width: 530, x: 25, headerColor: '#182747' });
+
+
+
+  doc.pipe(res);
+  doc.end();
+};
 
 
 const genResult = async (req, res, next) => {
@@ -343,3 +393,5 @@ exports.genFeeForClass = genFeeForClass
 exports.genFeeChallan = genFeeChallan
 exports.genCert = genCert;
 exports.genResult = genResult;
+exports.genDatesheet = genDatesheet;
+

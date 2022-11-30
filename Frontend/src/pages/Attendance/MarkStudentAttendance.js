@@ -12,7 +12,7 @@ import { setStudentAttendanceEnteries, getAllStudents, getAllClasses, getstudent
 import { Image } from "cloudinary-react";
 import { Cloudinary } from "@cloudinary/url-gen";
 
-
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const MarkStudentAttendance = () => {
 
@@ -29,7 +29,7 @@ const MarkStudentAttendance = () => {
         console.log(studentList)
         setStudentAttendanceEnteries(studentList).then((response) => {
             if (response.status === 201) {
-                
+
                 console.log("Enteries Added!")
             } else if (response.status === 401) {
                 alert("Enteries not found");
@@ -156,6 +156,26 @@ const MarkStudentAttendance = () => {
 
     };
 
+    const handleRefreshBtn = () => {
+
+        var cs = selectedClass
+        var arr = cs.split('-')
+        var section = arr[1]
+        var classYear = Number(arr[0])
+
+        getstudentAttendanceRegisteries(section, classYear).then((response) => {
+            if (response.status === 201) {
+                let tempList = response.data
+
+                setDateList(tempList.registry)
+                console.log(tempList)
+            } else if (response.status === 401) {
+                alert("Registeries not found");
+                console.log(response.data);
+            }
+        });
+
+    };
 
     return (
 
@@ -194,6 +214,7 @@ const MarkStudentAttendance = () => {
 
                     </Select>
                 </FormControl>
+                <Button onClick={handleRefreshBtn} variant={"contained"} sx={{ m: 1, minHeight: 55 }}><RefreshIcon /></Button>
             </Grid>
 
             {studentList.map((value, index) => (

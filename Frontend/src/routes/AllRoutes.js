@@ -27,6 +27,8 @@ import NewFeeForClass from "../pages/Fee/NewFeeForClass";
 import AddNewFeeForStudent from "../pages/Fee/NewFeeForStudent";
 import ViewExamMarks from "../pages/Exams/ViewExamMarks";
 import Results from "../pages/Students/Results";
+import Datesheet from "../pages/Students/Datesheet";
+
 import GenCert from "../pages/Certificate/GenerateCertificate";
 import PrintFees from "../pages/Fee/PrintFee";
 
@@ -51,6 +53,7 @@ export const LoggedInRoutes = () => {
         <Route path="/students/search" element={<SearchStudent />} />
         <Route path="/students/add" element={<AddNewStudent />} />
         <Route path="/students/results"element = {<Results/>} />
+        <Route path="/students/datesheet"element = {<Datesheet/>} />
         <Route path="/teacher/add" element={<AddNewTeacher />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/teacher/search" element={<SearchTeacher/>} />

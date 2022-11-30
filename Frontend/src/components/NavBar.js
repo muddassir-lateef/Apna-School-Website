@@ -59,7 +59,7 @@ const NavBar = (props) => {
           </IconButton>
           <Icons>
             <SchoolIcon />
-            <Typography variant="h6">Apna School</Typography>
+            <Typography variant="h6">NAPHS</Typography>
           </Icons>
 
           <LogoutButton variant="contained" onClick={logoutHandler}>

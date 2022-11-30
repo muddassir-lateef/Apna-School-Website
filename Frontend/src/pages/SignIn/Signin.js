@@ -143,7 +143,6 @@ export default function SignInSide() {
               >
                 Sign In
               </Button>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

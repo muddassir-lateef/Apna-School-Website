@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllStudents, getAllMarks } from "../../services/UserService";
+import { getAllStudents, getExamById, getAllMarks } from "../../services/UserService";
 import {
     Grid,
     Card,
@@ -19,7 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { theme } from '../../Themes/Default-theme';
-import { getResult } from '../../services/PDFService';
+import { getDatesheet } from '../../services/PDFService';
 //import Pdf from "react-to-pdf";
 //const ref = React.createRef();
 
@@ -44,8 +44,8 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
     },
 }));
 
-function createData(subject, totalMarks, obtainedMarks, percentage) {
-    return { subject, totalMarks, obtainedMarks, percentage };
+function createData(subject, date) {
+    return { subject, date };
 }
 //const rows = [
 //  createData('Shayan Amir', 7, 'C', 88, 95),
@@ -81,7 +81,7 @@ const imgToUrl = (publicId) => {
     return myUrl
 }
 
-const Results = () => {
+const Datesheet = () => {
     const [studentOptions, setStudentOptions] = useState([]);
     const [username, setUsername] = useState(0);
     const [studentList, setStudentList] = useState([]);
@@ -139,10 +139,7 @@ const Results = () => {
             for (let i = 0; i < tempMarks.length; i++) {
                 //'Shayan Amir', 7, 'C', 88, 95
                 tempRows.push(createData(tempMarks[i].examId.subject,
-                    tempMarks[i].examId.totalMarks,
-                    tempMarks[i].obtainedMarks,
-                    ((parseFloat(tempMarks[i].obtainedMarks) / parseFloat(tempMarks[i].examId.totalMarks) * 100).toFixed(2))
-                ))
+                    tempMarks[i].examId.date))
             }
             setRows(tempRows)
         }
@@ -221,16 +218,12 @@ const Results = () => {
                                 {studentList.length > 0 &&
                                     <TableRow>
                                         <StyledTableCell><Avatar alt={studentList[0].name} src={imgToUrl(studentList[0].image)} sx={{ bgcolor: stringToColor(studentList[0]), width: 60, height: 60 }} /></StyledTableCell>
-                                        <StyledTableCell align="right">{studentList[0].firstName}</StyledTableCell>
-                                        <StyledTableCell align="right">{studentList[0].lastName}</StyledTableCell>
-                                        <StyledTableCell align="right">{studentList[0].rollNumber}</StyledTableCell>
+                                        <StyledTableCell align="right">{studentList[0].firstName+" "+studentList[0].lastName+" "+studentList[0].rollNumber}</StyledTableCell>
                                     </TableRow>
                                 }
                                 <TableRow>
                                     <StyledTableCell>Exam</StyledTableCell>
-                                    <StyledTableCell align="right">Total Marks</StyledTableCell>
-                                    <StyledTableCell align="right">Obtained Marks</StyledTableCell>
-                                    <StyledTableCell align="right">Percentage</StyledTableCell>
+                                    <StyledTableCell align="right">Date</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -239,9 +232,7 @@ const Results = () => {
                                         <StyledTableCell component="th" scope="row">
                                             {row.subject}
                                         </StyledTableCell>
-                                        <StyledTableCell align="right">{row.totalMarks}</StyledTableCell>
-                                        <StyledTableCell align="right">{row.obtainedMarks}</StyledTableCell>
-                                        <StyledTableCell align="right">{row.percentage}</StyledTableCell>
+                                        <StyledTableCell align="right">{row.date.slice(0,10)}</StyledTableCell>
                                     </StyledTableRow>
                                 ))}
                             </TableBody>
@@ -250,11 +241,11 @@ const Results = () => {
                 </Grid>)}
             {rows.length > 0 &&
                 <Grid item sx={12} >
-                    <Button onClick={() => getResult(rows, username)} variant="contained" >Download Result</Button>
+                    <Button onClick={() => getDatesheet(rows, username)} variant="contained" >Download Result</Button>
                 </Grid>
             }
         </Grid>
     )
 }
 
-export default Results;
+export default Datesheet;
