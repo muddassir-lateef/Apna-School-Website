@@ -53,6 +53,8 @@ export default function AlignItemsList() {
         console.log("Students Found")
         setStudentList(response.data.studentIdList);
         setTeacher(response.data.sectionHead)
+        console.log("Zuberi kanjar")
+        console.log(response.data)
         console.log("after setting")
       }
       else if (response.status === -1) {

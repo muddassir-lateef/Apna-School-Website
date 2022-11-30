@@ -145,9 +145,11 @@ const getSectionById = async (req, res, next) => {
 
 const getAllStudentsInSection = async (req, res, next) => {
     const class_query = { classYear: req.body.classYear }
-    console.log(class_query)
-    console.log("Starting")
-    const temp_class = await Class.findOne(class_query).populate('sectionList');
+    console.log(req.body.sectionName)
+    console.log(req.body.classYear)
+    console.log("/-----------------------------------------/")
+    
+    const temp_class = await Class.findOne(class_query).populate('sectionList')
     if (temp_class === null) {
         res.status(401)
         return;
@@ -157,12 +159,8 @@ const getAllStudentsInSection = async (req, res, next) => {
         if (temp_class.sectionList[i].sectionName === req.body.sectionName) {
             console.log("found")
             const temp_section = await Section.findById(temp_class.sectionList[i]._id).populate('studentIdList').populate('sectionHead');
-            console.log("after displaying")
             console.log(temp_section)
-            console.log("after displaying")
-            console.log(temp_section.studentIdList)
-            console.log("after displaying")
-            res.status(201).json(temp_section.studentIdList);
+            res.status(201).json(temp_section);
             return
         }
 
