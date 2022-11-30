@@ -149,7 +149,7 @@ const SearchStudent = () => {
                 component="h2"
                 sx={{mb:2}}
               >
-                Are you sure you want to delete this teacher?
+                Are you sure you want to delete this Student?
               </Typography>
               <Box sx={{ width:'100%', display: 'flex', justifyContent: 'space-between' }}>
                 <Button
