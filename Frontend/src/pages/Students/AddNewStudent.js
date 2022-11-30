@@ -88,9 +88,9 @@ const AddNewTeacher = () => {
     false
   );
 
-    const diffHandler = () => {
-      
-    }
+  const diffHandler = () => {
+
+  }
   const StudentSubmitHandler = () => {
     const image = previewSource || '';
     console.log(previewSource)
@@ -298,7 +298,7 @@ const AddNewTeacher = () => {
               errorText="House Address is must"
             />
 
-            
+
 
             <Grid container display="flex" justifyContent="flex-end">
               <Button
@@ -355,21 +355,21 @@ const AddNewTeacher = () => {
               p: 1,
             }}
           >
-            <Box sx={{ width: '100%'}}>
-            <TextField value = {tuitionFee} variant="standard" label="Tuition Fee" onChange = {(event) => {setTuitionFee(event.target.value.replace(/\D/g, ''))}}>
-              
-            </TextField >
+            <Box sx={{ width: '100%' }}>
+              <TextField value={tuitionFee} variant="standard" label="Tuition Fee" onChange={(event) => { setTuitionFee(event.target.value.replace(/\D/g, '')) }}>
+
+              </TextField >
             </Box>
-            <Box sx={{ width: '100%'}}>
-            <TextField variant="standard" label="Other Fees" value = {otherFee} onChange = {(event) => {setOtherFee(event.target.value.replace(/\D/g, ''))}} >
-              Hey
-            </TextField >
+            <Box sx={{ width: '100%' }}>
+              <TextField variant="standard" label="Other Fees" value={otherFee} onChange={(event) => { setOtherFee(event.target.value.replace(/\D/g, '')) }} >
+                Hey
+              </TextField >
             </Box>
 
-            <Box sx={{ width: '100%'}}>
-            <TextField variant="standard" label="Scholarship Amount" value = {scholarshipAmount} onChange = {(event) => {setScholarShipAmount(event.target.value.replace(/\D/g, ''))}}>
-              Hey
-            </TextField>
+            <Box sx={{ width: '100%' }}>
+              <TextField variant="standard" label="Scholarship Amount" value={scholarshipAmount} onChange={(event) => { setScholarShipAmount(event.target.value.replace(/\D/g, '')) }}>
+                Hey
+              </TextField>
             </Box>
 
 
@@ -399,7 +399,7 @@ const AddNewTeacher = () => {
                 variant="contained"
                 endIcon={<ArrowForwardIcon />}
                 sx={{ mt: 2 }}
-              
+
               >
                 Next
               </Button>
@@ -425,7 +425,7 @@ const AddNewTeacher = () => {
       <Grid item sm={12} md={6} lg={4}>
         <Card sx={{ maxWidth: 500 }}>
           <CardContent>
-          <Typography gutterBottom variant="h4" component="div">
+            <Typography gutterBottom variant="h4" component="div">
               {'Student Personal Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
@@ -441,63 +441,63 @@ const AddNewTeacher = () => {
               {'Guardian Name : ' + formStateStudent.inputs.guardianFirstName.value + " " + formStateStudent.inputs.guardianLastName.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Phone Number : ' + formStateStudent.inputs.phoneNumber.value }
+              {'Phone Number : ' + formStateStudent.inputs.phoneNumber.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'House Address : ' + formStateStudent.inputs.houseAddress.value }
+              {'House Address : ' + formStateStudent.inputs.houseAddress.value}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Email Address : ' + formStateStudent.inputs.email.value }
+              {'Email Address : ' + formStateStudent.inputs.email.value}
             </Typography>
             <Typography gutterBottom variant="h4" component="div">
               {'Student Fee Details'}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Tuition Fee: ' + tuitionFee }
+              {'Tuition Fee: ' + tuitionFee}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Other Fees Fee: ' + otherFee }
+              {'Other Fees Fee: ' + otherFee}
             </Typography>
             <Typography gutterBottom variant="div" component="div">
-              {'Scholarship Amount : ' + scholarshipAmount }
+              {'Scholarship Amount : ' + scholarshipAmount}
             </Typography>
             <Grid container display="flex" justifyContent="space-between" >
               <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                alignItems: "center",
-                width: "100%",
-                p: 1,
-              }}
-            >
-              <InputLabel sx={{ p: "-1px", w: "100%" }}>
-                Students Picture
-              </InputLabel>
-              <input
-                style={{
-                  display: "inline-block",
-                  padding: "6px 12px",
-                  cursor: "pointer",
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  width: "100%",
+                  p: 1,
                 }}
-                id="imagefile"
-                type="file"
-                onChange={handleFileInputChange}
-                value={fileInputState}
-              />
-            </Box>
-            {previewSource && (
-              <img
-                src={previewSource}
-                alt="chosen"
-                style={{ height: "300px", class: "center", borderRadius: "50%" }}
-              />
-            )}
-            
+              >
+                <InputLabel sx={{ p: "-1px", w: "100%" }}>
+                  Students Picture
+                </InputLabel>
+                <input
+                  style={{
+                    display: "inline-block",
+                    padding: "6px 12px",
+                    cursor: "pointer",
+                  }}
+                  id="imagefile"
+                  type="file"
+                  onChange={handleFileInputChange}
+                  value={fileInputState}
+                />
+              </Box>
+              {previewSource && (
+                <img
+                  src={previewSource}
+                  alt="chosen"
+                  style={{ height: "300px", class: "center", borderRadius: "50%" }}
+                />
+              )}
+
             </Grid>
             <Grid container display="flex" justifyContent="space-between" >
-            <Button
+              <Button
                 onClick={editHandler}
                 variant="contained"
                 startIcon={<ArrowBackIcon />}
@@ -514,7 +514,7 @@ const AddNewTeacher = () => {
               >
                 Submit
               </Button>
-              </Grid>
+            </Grid>
           </CardContent>
         </Card>
         <StatusAlert />

@@ -15,7 +15,7 @@ import CardMembershipIcon from '@mui/icons-material/CardMembership';
 const drawerWidth = 240;
 const initial_menuItems = [
   {
-    
+
     menuTitle: "All Students",
     visible: false,
     enteries: [{
@@ -31,7 +31,7 @@ const initial_menuItems = [
     {
       title: "Results",
       path: '/students/results',
-      icon: <SportsScoreIcon /> 
+      icon: <SportsScoreIcon />
     }
     ]
   },
@@ -99,13 +99,7 @@ const initial_menuItems = [
       title: "New Fees",
       path: '/Fee/AddNewFees',
       icon: <AddIcon />
-    },
-    {
-    title : "Print Fee",
-    path : '/Fee/PrintFees',
-    icon: <PrintIcon />
-    }
-    ]
+    }]
   },
   {
     menuTitle: "Attendance",
@@ -119,7 +113,7 @@ const initial_menuItems = [
     ]
   },
   {
-    
+
     menuTitle: "Certifications",
     visible: false,
     enteries: [{
@@ -183,7 +177,7 @@ const SDrawer = (props) => {
 
           {menuItems.map((menu, index) => (
             <div key={index}>
-              <ListItemButton onClick={()=>handleStudentMenuClick(index)}>
+              <ListItemButton onClick={() => handleStudentMenuClick(index)}>
                 <ListItemText primary={menu.menuTitle} />
                 {menu.visible ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
@@ -207,7 +201,7 @@ const SDrawer = (props) => {
       </Drawer>
 
 
-      
+
       <Drawer
         variant="permanent"
         sx={{
@@ -225,7 +219,7 @@ const SDrawer = (props) => {
 
           {menuItems.map((menu, index) => (
             <div key={index}>
-              <ListItemButton onClick={()=>handleStudentMenuClick(index)}>
+              <ListItemButton onClick={() => handleStudentMenuClick(index)}>
                 <ListItemText primary={menu.menuTitle} />
                 {menu.visible ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
