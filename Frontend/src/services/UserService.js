@@ -1,5 +1,5 @@
 import axios from "axios";
-let URL = "http://localhost:5000/";
+let URL = "https://orca-app-5kw65.ondigitalocean.app/";
 
 export async function login(username, password) {
   let tempURL = URL + "login/verify/";
