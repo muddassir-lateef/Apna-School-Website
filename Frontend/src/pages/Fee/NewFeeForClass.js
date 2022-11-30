@@ -263,7 +263,7 @@ const AddNewFeeForClass = () => {
             setErr3Check(false)
         }
         if (spFee.trim().length !== 0 && examDate.$d !== undefined && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && adFee.trim().length !== 0 && exFee.trim().length !== 0)  {
-            addFeeDetailToStudentFeeRecord(selectedClass, selectedSection, Number(tuFee), Number(adFee), Number(otFee), Number(spFee), Number(exFee)).then
+            addFeeDetailToStudentFeeRecord(examDate.$d, selectedClass, selectedSection, Number(tuFee), Number(adFee), Number(otFee), Number(spFee), Number(exFee)).then
                 ((res) => {
                     if (res == 1) {
                         setAddModalOpen((isOpen) => !isOpen)
