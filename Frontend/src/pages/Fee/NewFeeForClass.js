@@ -213,9 +213,15 @@ const AddNewFeeForClass = () => {
     const ConfirmHandler = () => {
         console.log("ADGHSJDVHSDVH")
         console.log("In submission")
+        console.log(classYear)
+        console.log(selectedSection)
+        console.log(examDate.$d)
         console.log(tuFee)
         console.log(otFee)
-        console.log(examDate.$d)
+        console.log(tuFee)
+        console.log(spFee)
+        console.log(adFee)
+      
         if(examDate.$d === undefined)
         {
             console.log("Undefined")
@@ -263,6 +269,7 @@ const AddNewFeeForClass = () => {
             setErr3Check(false)
         }
         if (spFee.trim().length !== 0 && examDate.$d !== undefined && tuFee.trim().length !== 0 && otFee.trim().length !== 0 && adFee.trim().length !== 0 && exFee.trim().length !== 0)  {
+           
             addFeeDetailToStudentFeeRecord(examDate.$d, selectedClass, selectedSection, Number(tuFee), Number(adFee), Number(otFee), Number(spFee), Number(exFee)).then
                 ((res) => {
                     if (res == 1) {

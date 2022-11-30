@@ -8,8 +8,10 @@ let FeeDetail = require('../models/feeDetails.model');
 const addFeeDetailToStudentFeeRecord = async (req, res, next) => {
     const class_query = {classYear : req.body.classYear}
     const section_query = {sectionName : req.body.sectionName}
+    console.log(date)
     console.log(req.body.classYear)
     console.log(req.body.sectionName)
+    
     // All Classes Selected
     if(req.body.classYear === "All")
     {
