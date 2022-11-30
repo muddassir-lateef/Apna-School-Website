@@ -156,7 +156,7 @@ const getAllStudentsInSection = async (req, res, next) => {
     for (let i = 0; i < temp_class.sectionList.length; i++) {
         if (temp_class.sectionList[i].sectionName === req.body.sectionName) {
             console.log("found")
-            const temp_section = await Section.findById(temp_class.sectionList[i]._id).populate('studentIdList')
+            const temp_section = await Section.findById(temp_class.sectionList[i]._id).populate('studentIdList').populate('sectionHead');
             console.log("after displaying")
             console.log(temp_section)
             console.log("after displaying")

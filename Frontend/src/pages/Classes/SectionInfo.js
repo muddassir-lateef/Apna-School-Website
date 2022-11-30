@@ -39,6 +39,7 @@ export default function AlignItemsList() {
   const [addStudentRollNumber, setAddStudentRollNumber] = useState([])
   const [refreshFlag, setRefreshFlag] = useState(false)
   const location = useLocation();
+  const [teacher, setTeacher] = useState("");
   const [count, setCount] = useState(0);
   const classYear = Number(location.state.param2);
   const sectionName = location.state.param1;
@@ -50,7 +51,8 @@ export default function AlignItemsList() {
       if (response.status === 201) {
         console.log(response.data);
         console.log("Students Found")
-        setStudentList(response.data);
+        setStudentList(response.data.studentIdList);
+        setTeacher(response.data.sectionHead)
         console.log("after setting")
       }
       else if (response.status === -1) {
@@ -263,7 +265,7 @@ export default function AlignItemsList() {
               Class : {classYear + sectionName}
             </Typography>
             <Typography variant = "h4"  sx={{ textAlign: 'center' }}>
-            Section Head : {}
+            Section Head : {teacher.firstName + " " + teacher.lastName}
           </Typography>
           </Grid>
           <Grid item xs={8}>
