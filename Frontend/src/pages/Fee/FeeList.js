@@ -52,7 +52,7 @@ const FeeRecordInfo = () => {
                 console.log("Sections Found")
                 setFeeList(response.data);
                 console.log(response.data)
-                
+                console.log("Fixing my mistakes")
                 if (response.data === null) {
                     setDisplayFlag(false)
                     console.log("Null data")

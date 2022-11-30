@@ -253,7 +253,6 @@ export async function getTeacher(username) {
   const response = await axios.get(tempURL);
   return response;
 }
-
 export async function getAllStudentsInSection(classYear, sectionName) {
   console.log("Year")
   console.log(classYear)
@@ -599,6 +598,7 @@ export async function getStudentsForFee(classYear, sectionName) {
 
 export async function addFeeDetailToStudentFeeRecord(date, classYear, sectionName, tuitionFee, otherFee, sportsFee, admissionFee, examFee) {
   let tempURL = URL + 'feeRecord/addFeeDetailToStudentFeeRecord'
+  console.log(date)
   console.log("classYear " + classYear)
   console.log("Section " + sectionName)
   console.log("Tuition Fee " + tuitionFee)
