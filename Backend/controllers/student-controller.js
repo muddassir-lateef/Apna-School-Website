@@ -34,17 +34,15 @@ const addStudent = async (req, res, next) => {
 
     //Fee Record Attributes
 
-    const securityFee = req.body.securityFee;
     const outStandingFees = 0;
-    const otherFee = req.body.otherFee;
-    const tuitionFee = req.body.tuitionFee;
+    const otherFee = req.body.otherFee ? req.body.otherFee : 0;
+    const tuitionFee = req.body.tuitionFee ? req.body.tuitionFee : 0;
     
     const feeList = req.body.feeList ? req.body.feeList : null;
-    const scholarshipAmount = req.body.scholarshipAmount;
+    const scholarshipAmount = req.body.scholarshipAmount ? req.body.scholarshipAmount : 0;
  
     const totalFee = Number(tuitionFee) + Number(otherFee) - Number(scholarshipAmount);
     console.log(totalFee)
-    console.log(securityFee)
     console.log(tuitionFee)
     console.log(otherFee)
     console.log(scholarshipAmount)
@@ -64,7 +62,7 @@ const addStudent = async (req, res, next) => {
     console.log(totalFee)
     console.log(tuitionFee)
     const feeRecord = new FeeRecord({
-      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee, securityFee, otherFee,
+      feeList, outStandingFees, scholarshipAmount, totalFee, tuitionFee,  otherFee,
     })
     console.log("Before adding fee")
     console.log(feeRecord)
