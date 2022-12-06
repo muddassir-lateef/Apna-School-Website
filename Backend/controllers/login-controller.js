@@ -4,6 +4,7 @@ let Teacher = require('../models/teacher.model');
 let Staff = require('../models/staff.model');
 var crypto = require('crypto');
 const HttpError = require('../models/http-error');
+require('dotenv').config();
 
 const addUser = async(req, res, next) => {
 
@@ -96,6 +97,7 @@ const getAllLogin = async (req, res, next) => {
     }
   };
   const verifyLogin = async (req, res, next) => {
+    const key = process.env.SECRET_KEY;
     console.log("In verify Login Function")
     try {
       console.log("The hash of password")
@@ -105,8 +107,7 @@ const getAllLogin = async (req, res, next) => {
       const log= await Login.findOne({username:user, password:pass});
       if(log)
       {
-        res.status(201).json(log)
-
+        res.status(201).json({log, key})
       }
       else
       {

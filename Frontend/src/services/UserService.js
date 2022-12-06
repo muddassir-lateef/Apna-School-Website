@@ -6,8 +6,8 @@ export async function login(username, password) {
   let tempURL = URL + "login/verify/";
   console.log(tempURL);
   let loginDetails = { username, password };
-
   const response = await axios.post(tempURL, loginDetails);
+  console.log("HERE: ", response)
   if (response.status === 201) {
     return response;
   } else if (response.status === 401) {
