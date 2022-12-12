@@ -11,7 +11,6 @@ function App() {
   /////
   const [loggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState("");
-  const [key, setKey] = useState("");
   const login = useCallback(() => {
     setIsLoggedIn(true);
   }, []);
@@ -20,9 +19,6 @@ function App() {
   }, []);
   const setCurrentUser = useCallback((u) => {
     setUser(u);
-  }, []);
-  const setSecretKey = useCallback((k) => {
-    setKey(k);
   }, []);
 
   let routes = loggedIn ? LoggedInRoutes() : LoggedOutRoutes();
@@ -33,10 +29,8 @@ function App() {
         isLogged: loggedIn,
         login: login,
         logout: logout,
-        key: key,
         user: user,
         setUser: setCurrentUser,
-        setKey: setSecretKey
       }}
     >
       <Router>

@@ -8,18 +8,20 @@ let { cloudinary } = require("../utils/cloudinary");
 const FeeDetails = require('../models/feeDetails.model');
 const { default: mongoose } = require('mongoose');
 require('dotenv').config();
-var CryptoJS = require("crypto-js");
+var crypto = require("crypto-js");
 const addStudent = async (req, res, next) => {
 
   try {
     const key = process.env.SECRET_KEY;
-    console.log("KEY: ", key)
-    console.log("CIPHER: ", req.body.firstName)
-    var ciphertext = req.body.firstName
-    var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
-    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    console.log("Decrypted Data: ", decryptedData)
-    return res.status(201).json({message: "Student added"});
+    console.log(key)
+   var msg =  crypto.AES.encrypt("Zuberi Khusra" , key.toString()).toString();
+   console.log("The Encrypter Message");
+    console.log(msg)
+    console.log("The Decrypter Message");
+    var bytes  = crypto.AES.decrypt(msg, key.toString());
+    var decryptedData = JSON.parse(bytes.toString(crypto.enc.Utf8));
+    console.log(decryptedData);
+    return;
     //Student Attributes
     const firstName = req.body.firstName;
     const Age = req.body.Age;

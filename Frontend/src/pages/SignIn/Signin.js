@@ -61,9 +61,7 @@ export default function SignInSide() {
     LoginUser(email, password)
       .then((log) => {
         if (log.status === 201) {
-          console.log("USER: ", log.data.log.username)
-          auth.setKey(log.data.key)
-          auth.setUser(log.data.log.username);
+          auth.setUser(log.data.username);
           auth.login();
         }
       })

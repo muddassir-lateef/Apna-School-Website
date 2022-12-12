@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Image } from "cloudinary-react";
 import { Typography, Card, Grid, Box, Button, CardContent, CardActions, TextField } from "@mui/material";
@@ -15,8 +15,6 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import InputLabel from "@mui/material/InputLabel";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { AuthContext } from '../../context/AuthContext';
-
 
 const AddNewTeacher = () => {
   const [submitStatus, setSubmitStatus] = useState(0);
@@ -28,8 +26,6 @@ const AddNewTeacher = () => {
   const [tuitionFee, setTuitionFee] = useState(0)
   const [otherFee, setOtherFee] = useState(0)
   const [scholarshipAmount, setScholarShipAmount] = useState(0)
-  const auth = useContext(AuthContext);
-
   const navigate = useNavigate();
   // const [formStateFee, InputHandlerFee] = useForm(
   //   {
@@ -102,7 +98,7 @@ const AddNewTeacher = () => {
     console.log(previewSource)
     addStudent(
       formStateStudent.inputs.age.value,
-      CryptoJS.AES.encrypt(JSON.stringify(formStateStudent.inputs.firstName.value), auth.key).toString(),
+      formStateStudent.inputs.firstName.value,
       formStateStudent.inputs.lastName.value,
       formStateStudent.inputs.guardianFirstName.value,
       formStateStudent.inputs.guardianLastName.value,
@@ -185,12 +181,8 @@ const AddNewTeacher = () => {
 
   const nextButtonHandler = () => {
     console.log("In Encryption Handler")
-    console.log("Secret Key: ", auth.key)
-    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(formStateStudent.inputs.firstName.value), auth.key).toString();
-    var bytes  = CryptoJS.AES.decrypt(ciphertext,  auth.key);
-    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(formStateStudent.inputs.firstName.value), 'secret key 123').toString();
     console.log(ciphertext);
-    console.log(decryptedData)
     setPageFlag(1);
   }
   const onBackHandler = () => {
