@@ -11,14 +11,12 @@ app.use(cors());
 app.use(express.json({limit: '50mb'}));
 
 const uri = process.env.ATLAS_URI;
-const key = process.env.SECRET_KEY;
-console.log(key)
 mongoose.connect(uri);
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
 })
-
+console.log("hello")
 
 //const exercisesRouter = require('./routes/exercises');
 

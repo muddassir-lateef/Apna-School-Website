@@ -7,7 +7,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Avatar from "@mui/material/Avatar";
 import SendIcon from "@mui/icons-material/Send";
 import Input from "../../components/Input";
-import * as CryptoJS from 'crypto-js';
 import { useForm } from "../../hooks/form-hook";
 import { VALIDATOR_MIN, VALIDATOR_MINLENGTH } from "../../services/validators";
 import { addStudent } from "../../services/UserService";
@@ -93,7 +92,6 @@ const AddNewTeacher = () => {
 
   }
   const StudentSubmitHandler = () => {
-    console.log("In Add Student")
     const image = previewSource || '';
     console.log(previewSource)
     addStudent(
@@ -180,9 +178,6 @@ const AddNewTeacher = () => {
   const [snackOpen, setSnackOpen] = React.useState(false);
 
   const nextButtonHandler = () => {
-    console.log("In Encryption Handler")
-    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(formStateStudent.inputs.firstName.value), 'secret key 123').toString();
-    console.log(ciphertext);
     setPageFlag(1);
   }
   const onBackHandler = () => {
