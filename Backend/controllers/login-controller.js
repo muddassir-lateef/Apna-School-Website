@@ -2,21 +2,17 @@ let Login = require('../models/login.model');
 let Admin = require('../models/admin.model');
 let Teacher = require('../models/teacher.model');
 let Staff = require('../models/staff.model');
-var crypto = require('crypto');
+
 const HttpError = require('../models/http-error');
 
 const addUser = async(req, res, next) => {
-
     try{
         const type = req.body.type;
         const username = req.body.username;
-        const password =  crypto.createHash('md5').update(req.body.password).digest('hex')
-        console.log("Adding user with Hash Password");
-        console.log(password);
+        const password = req.body.password; 
         const firstName = req.body.firstName; 
         const lastName = req.body.lastName? req.body.lastName: " ";
         const age = req.body.age? req.body.age: -1;
-        console.log(password);
 
         if(type=='Admin')
         {
@@ -96,12 +92,10 @@ const getAllLogin = async (req, res, next) => {
     }
   };
   const verifyLogin = async (req, res, next) => {
-    console.log("In verify Login Function")
+    console.log("here")
     try {
-      console.log("The hash of password")
       const user=req.body.username;
-      const pass =  crypto.createHash('md5').update(req.body.password).digest('hex')
-      console.log(pass)
+      const pass=req.body.password;
       const log= await Login.findOne({username:user, password:pass});
       if(log)
       {

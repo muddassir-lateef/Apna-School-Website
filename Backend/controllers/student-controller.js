@@ -7,17 +7,11 @@ const HttpError = require('../models/http-error');
 let { cloudinary } = require("../utils/cloudinary");
 const FeeDetails = require('../models/feeDetails.model');
 const { default: mongoose } = require('mongoose');
-var crypto = require("crypto-js");
-const addStudent = async (req, res, next) => {
 
+const addStudent = async (req, res, next) => {
+  console.log("In")
   try {
-   var msg =  crypto.AES.encrypt(JSON.stringify(req.body.cnic), 'secret key 123').toString();
-   console.log("The Encrypted Message");
-    console.log(msg)
-    var bytes  = crypto.AES.decrypt(msg, 'secret key 123');
-    console.log("The Decrypter Message");
-    var decryptedData = JSON.parse(bytes.toString(crypto.enc.Utf8));
-    console.log(decryptedData);
+
     //Student Attributes
     const firstName = req.body.firstName;
     const Age = req.body.Age;
