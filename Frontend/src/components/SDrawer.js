@@ -12,6 +12,8 @@ import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import AddIcon from '@mui/icons-material/Add';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import CardMembershipIcon from '@mui/icons-material/CardMembership';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 const drawerWidth = 240;
 const initial_menuItems = [
   {
@@ -37,7 +39,12 @@ const initial_menuItems = [
     {
       title: "Datesheet",
       path: '/students/datesheet',
-      icon: <SportsScoreIcon />
+      icon: <CalendarTodayIcon />
+    },
+    {
+      title: "ID Cards",
+      path: '/students/idcards',
+      icon: <PermIdentityIcon />
     }
 
     ]

@@ -1,6 +1,6 @@
 import axios from "axios";
-let apiURL = "https://orca-app-5kw65.ondigitalocean.app/";
-//let apiURL = "http://localhost:5000/";
+//let apiURL = "https://orca-app-5kw65.ondigitalocean.app/";
+let apiURL = "http://localhost:5000/";
 
 export async function getCert(name) {
     let tempURL = apiURL + `certificate/generate/${name}`;
@@ -163,4 +163,32 @@ export async function printChallanForSingleStudent(rollNumber, dueDate, feeId, t
       });
 
   return 1
+}
+
+export async function getIDCard(student) {
+    console.log("Student: ", student)
+    let tempURL = apiURL + `certificate/getIDCard/${student.rollNumber}`;
+
+
+
+    axios(tempURL, {
+        method: 'PATCH',
+        responseType: 'blob', //Force to receive data in a Blob Format
+    })
+        .then(response => {
+            //Create a Blob from the PDF Stream
+            const file = new Blob(
+                [response.data],
+                { type: 'application/pdf' });
+            //Build a URL from the file
+            const fileURL = URL.createObjectURL(file);
+            //Open the URL on new Window
+            window.open(fileURL);
+            return response;
+        })
+        .catch(error => {
+            console.log(error);
+            return error;
+        });
+
 }

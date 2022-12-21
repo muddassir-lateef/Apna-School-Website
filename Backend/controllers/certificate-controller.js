@@ -388,10 +388,67 @@ const genFeeForClass = async (req, res, next) => {
 };
 //-----//
 
+const genIDCard = async (req, res, next) => {
+  console.log("Reached")
+  let doc = new PDFDoc({ margin: 30, size: 'A6' });
+  doc.rect(0, 0, doc.page.width, doc.page.height).fill('#fffffff');
+  
+  doc.moveDown();
+  //adding logo at the top 
+  res.setHeader('Content-type', 'application/pdf');
+  // console.log("ROW DATA: ", req.body)
+  const rollNumber = req.params.rollNumber
+  const tempStudent = await Student.find({ rollNumber })
+  const img1 = await fetchImage(IMG_URL + tempStudent[0].image);
+  doc.image(img1, 70, 10, { fit: [150, 120], align: 'center' })
+
+
+  const tableArray0 = {
+    title: "Student Information",
+    //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+    headers: [
+      { label: "Name", property: 'name', renderer: null },
+      { label: "Roll Number", property: 'rollNo', renderer: null },
+    ],
+    rows: [[tempStudent[0].firstName + " " + tempStudent[0].lastName, tempStudent[0].rollNumber]],
+  };
+  doc.table(tableArray0, { width: 250, x: 25, y: 150, headerColor: '#182747' });
+  //doc.moveDown();
+
+  const tableArray1 = {
+    //title: "Student Information",
+    //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+    headers: [
+      { label: "CNIC", property: 'cnic', renderer: null },
+      { label: "Guardian", property: 'guardian', renderer: null },
+    ],
+    rows: [[tempStudent[0].cnic, tempStudent[0].guardianFirstName + " " + tempStudent[0].guardianLastName]],
+  };
+
+  doc.table(tableArray1, { width: 250, x: 25, headerColor: '#182747' });
+  doc.moveDown(); 
+
+  const tableArray = {
+    title: "Contact Information",
+    //headers: ["Exam", "Total Marks", "Obtained Marks", "Percentage"],
+    headers: [
+      { label: "Email", property: 'email', renderer: null },
+      { label: "Phone", property: 'phone', renderer: null },
+    ],
+    rows: [[tempStudent[0].emailAddress, tempStudent[0].phoneNumber]],
+  };
+  doc.table(tableArray, { width: 250, x: 25, headerColor: '#182747' });
+
+  doc.moveDown();
+
+  doc.pipe(res);
+  doc.end();
+};
 
 exports.genFeeForClass = genFeeForClass
 exports.genFeeChallan = genFeeChallan
 exports.genCert = genCert;
 exports.genResult = genResult;
 exports.genDatesheet = genDatesheet;
+exports.genIDCard = genIDCard;
 

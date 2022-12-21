@@ -31,6 +31,7 @@ import Datesheet from "../pages/Students/Datesheet";
 
 import GenCert from "../pages/Certificate/GenerateCertificate";
 import PrintFees from "../pages/Fee/PrintFee";
+import IDCard from "../pages/Students/IDCard";
 
 export const LoggedOutRoutes = () => {
   let routes;
@@ -54,6 +55,7 @@ export const LoggedInRoutes = () => {
         <Route path="/students/add" element={<AddNewStudent />} />
         <Route path="/students/results"element = {<Results/>} />
         <Route path="/students/datesheet"element = {<Datesheet/>} />
+        <Route path="/students/idcards"element = {<I DCard/>} />
         <Route path="/teacher/add" element={<AddNewTeacher />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/teacher/search" element={<SearchTeacher/>} />
