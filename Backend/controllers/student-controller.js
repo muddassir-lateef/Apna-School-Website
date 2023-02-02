@@ -13,15 +13,15 @@ const addStudent = async (req, res, next) => {
   try {
 
     //Student Attributes
-    const firstName = req.body.firstName;
-    const Age = req.body.Age;
-    const lastName = req.body.lastName;
-    const guardianFirstName = req.body.guardianFirstName;
-    const guardianLastName = req.body.guardianLastName;
-    const cnic = req.body.cnic;
-    const houseAddress = req.body.houseAddress;
-    const phoneNumber = req.body.phoneNumber;
-    const emailAddress = req.body.emailAddress;
+    const firstName = req.body.firstName ? req.body.firstName : 'None'
+    const Age = req.body.Age ? req.body.Age : 0
+    const lastName = req.body.lastName ? req.body.lastName : 'None'
+    const guardianFirstName = req.body.guardianFirstName ? req.body.guardianFirstName : 'None'
+    const guardianLastName = req.body.guardianLastName ? req.body.guardianLastName : 'None'
+    const cnic = req.body.cnic ? req.body.cnic : 'None'
+    const houseAddress = req.body.houseAddress ? req.body.phoneNumber : 'None'
+    const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : 'None'
+    const emailAddress = req.body.emailAddress ? req.body.emailAddress : 'None'
     const sectionId = req.body.sectionId ? req.body.sectionId : null;
     const classYear = req.body.classYear? req.body.classYear : 0;
     const sectionName = req.body.sectionName ? req.body.sectionName : 'None';

@@ -306,7 +306,6 @@ const AddNewTeacher = () => {
                 variant="contained"
                 endIcon={<ArrowForwardIcon />}
                 sx={{ mt: 2 }}
-                disabled={!formStateStudent.isValid}
               >
                 Next
               </Button>

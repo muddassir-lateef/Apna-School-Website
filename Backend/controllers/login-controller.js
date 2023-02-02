@@ -96,6 +96,7 @@ const getAllLogin = async (req, res, next) => {
     try {
       const user=req.body.username;
       const pass=req.body.password;
+      console.log(req.body.password)
       const log= await Login.findOne({username:user, password:pass});
       if(log)
       {
