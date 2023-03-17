@@ -42,6 +42,10 @@ const AddNewTeacher = () => {
     {
       return(<Alert severity="error"> Invalid Class Year</Alert>)
     }
+    if(statusFlag === 4)
+    {
+      return(<Alert severity="error"> Class Year must be greater than 0</Alert>)
+    }
   } 
 
   const handleChange = (event) => {
@@ -54,6 +58,11 @@ const AddNewTeacher = () => {
     if(tempClass === "")
     {
       setStatusFlag(3)
+      return
+    }
+    if(Number(tempClass) < 1)
+    {
+      setStatusFlag(4)
       return
     }
     addClass(Number(tempClass)).then((res) => {
