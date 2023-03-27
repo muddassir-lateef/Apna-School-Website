@@ -8,7 +8,10 @@ let Class = require('../models/class.model');
 
 const addStudentToSection = async (req, res, next) => {
     const student_query = { rollNumber: req.body.rollNumber }
+    console.log(req.body.rollNumber)
+
     const tempStudent = await Student.findOne(student_query);
+
     if (tempStudent.classYear === req.body.classYear) {
         if (tempStudent.sectionName === req.body.newSection) {
             res.status(401).json(tempStudent)
@@ -50,6 +53,11 @@ const changeStudentSection = async (req, res, next) => {
     const tempStudent = await Student.findOne(student_query);
 
     //Check for same new and old values
+    if(tempStudent == null || tempStudent === 'undefined' || req.body.rollNumber === 0)
+    {
+        res.status(401).json(tempStudent)
+        return
+    }
     
         if (tempStudent.classYear === req.body.classYear) {
             if (tempStudent.sectionName === req.body.sectionName) {
