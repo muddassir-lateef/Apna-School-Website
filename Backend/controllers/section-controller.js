@@ -186,19 +186,22 @@ const removeStudentFromSection = async (req, res, next) => {
     console.log(req.body.classYear)
     const student_query = { rollNumber: req.body.rollNumber };
     const class_query = { classYear: req.body.classYear };
-    const section_query = { sectionName: req.body.sectionName };
+    const section_query = { sectionName: req.body.sectionName, classYear : req.body.classYear };
 
     const tempStudent = await Student.findOne(student_query);
-    // console.log(tempStudent)
+     console.log(tempStudent)
 
     const tempOldClass = await Class.findOne(class_query).populate('sectionList');
     for (let i = 0; i < tempOldClass.sectionList.length; i++) {
         if (tempOldClass.sectionList[i].sectionName === req.body.sectionName) {
             // console.log(tempOldClass.sectionList[i].sectionName)
             const tempOldSection = await Section.findOne(section_query).populate('studentIdList');
+            console.log(tempOldSection)
             for (let j = 0; j < tempOldSection.studentIdList.length; j++) {
-                if (tempOldSection.studentIdList[j].rollNumber === tempStudent.rollNumber) {
-                    console.log(j)
+                console.log("In 1st loop")
+                console.log(tempOldSection.studentIdList[j].rollNumber)
+                if (tempOldSection.studentIdList[j].rollNumber === req.body.rollNumber) {
+                    console.log("In loop")
                     tempOldSection.studentIdList.splice(j, 1);
                     console.log("popped from")
                     console.log(tempOldSection.studentIdList)
